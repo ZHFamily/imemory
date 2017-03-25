@@ -11,7 +11,7 @@
     <!-- 自定样式 -->
     <style name="TopBarButton">
         <item name="android:layout_height">@dimen/top_bar_height</item>
-        <item name="android:layout_width">@dimen/top_bar_width</item>
+        <item name="android:layout_width">@dimen/top_bar_btn_width</item>
         <item name="android:background">@color/colorPrimary</item>
     </style>
 
@@ -29,8 +29,8 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
-    <!--其他样式-->
 
+    <!--其他样式-->
     <style name="FullscreenTheme" parent="AppTheme">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowActionBarOverlay">true</item>

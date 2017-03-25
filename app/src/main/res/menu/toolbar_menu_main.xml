@@ -3,9 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/add_life"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/ic_location_on"
         android:title="添加回忆"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/item_enjoy"
+        android:orderInCategory="100"
+        android:title="欣赏"
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/item_scan"

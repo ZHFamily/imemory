@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:ignore="GradleDependency">
+    tools:ignore="GradleDependency"
+    tools:context=".activity.UserActivity">
 
 </android.support.constraint.ConstraintLayout>

@@ -23,13 +23,14 @@ public class zxing {
         BitMatrix result;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            result = multiFormatWriter.encode(str, BarcodeFormat.QR_CODE, 200, 200);
+            result = multiFormatWriter.encode(str, BarcodeFormat.QR_CODE, 800,800);
             // 使用 ZXing Android Embedded 要写的代码
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(result);
         } catch (WriterException e){
             e.printStackTrace();
-        } catch (IllegalArgumentException iae){ // ?
+        } catch (IllegalArgumentException iae){
+            iae.printStackTrace();
             return null;
         }
         return bitmap;

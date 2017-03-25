@@ -11,6 +11,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -32,6 +34,7 @@ import club.imemory.app.R;
 import club.imemory.app.adapter.LifeAdapter;
 import club.imemory.app.base.BaseActivity;
 import club.imemory.app.bean.Life;
+import club.imemory.app.other.zxing;
 import club.imemory.app.util.AppManager;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
@@ -43,6 +46,7 @@ public class MainActivity extends BaseActivity
     private ImageView mImageHead;
     private LinearLayout mHeaderLayout;
     private LinearLayout mUserInfoLayout;
+    private ImageButton mTwoDimensionCodeBtn;
     private List<Life> mLifeList = new ArrayList<>();
     // 首次按下返回键时间戳
     private long firstBackPressedTime = 0;
@@ -56,12 +60,13 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         //悬浮按钮
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
+        fabCreateLife.hide();
+        fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
             }
         });
 
@@ -82,6 +87,23 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        mTwoDimensionCodeBtn = (ImageButton) mHeaderLayout.findViewById(R.id.btn_two_dimension_code);
+        mTwoDimensionCodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                ImageView imgView = getDialogView();
+                builder.setTitle("我的二维码");
+                builder.setView(imgView);
+                final AlertDialog dialog = builder.show();
+                imgView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            }
+        });
         //主要内容
         initLife();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -99,6 +121,13 @@ public class MainActivity extends BaseActivity
             life.setCreatetime("20170325");
             mLifeList.add(life);
         }
+    }
+
+    private ImageView getDialogView() {
+        ImageView imgView = new ImageView(this);
+        imgView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
+        imgView.setImageBitmap(new zxing().getEncodeBitmap("年青正好"));
+        return imgView;
     }
 
     /**
@@ -130,6 +159,9 @@ public class MainActivity extends BaseActivity
         switch (item.getItemId()) {
             case R.id.add_life:
                 AppManager.showToast("记录生活从点滴开始");
+                break;
+            case R.id.item_enjoy:
+                AppManager.showToast("不一样的美");
                 FullscreenActivity.actionStart(MainActivity.this, "");
                 break;
             case R.id.item_scan:
@@ -137,7 +169,6 @@ public class MainActivity extends BaseActivity
                 new IntentIntegrator(this)
                         .setCaptureActivity(ScanActivity.class)
                         .setOrientationLocked(false)
-                        .setPrompt("abc")
                         .initiateScan(); // 初始化扫描
                 break;
             case R.id.item_settings:

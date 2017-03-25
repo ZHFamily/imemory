@@ -3,6 +3,7 @@ package club.imemory.app.activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,15 @@ public class ScanActivity extends BaseActivity implements DecoratedBarcodeView.T
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.scan_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         mDBV = (DecoratedBarcodeView) findViewById(R.id.dbv_scan);
         mDBV.setTorchListener(this);

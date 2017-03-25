@@ -10,28 +10,24 @@
         android:id="@+id/scan_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#10000000"
+        android:background="@color/colorAccent"
         android:elevation="@dimen/top_bar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="@drawable/ic_arrow_back_white_32dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="二维码/条形码" />
+        app:title="扫一扫" />
 
     <com.journeyapps.barcodescanner.DecoratedBarcodeView
         android:id="@+id/dbv_scan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:zxing_framing_rect_height="200dp"
-        app:zxing_framing_rect_width="200dp"
-        app:zxing_preview_scaling_strategy="fitXY"
-        app:zxing_use_texture_view="true">
-
+        app:zxing_scanner_layout="@layout/scanner_custom">
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
     <Button
         android:id="@+id/btn_switch_light"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="52dp"
+        android:layout_height="70dp"
         android:paddingTop="10dp"
         android:background="@color/colorTransparent"
         android:textColor="@color/colorWhite"

@@ -15,7 +15,7 @@
         android:background="#10000000"
         android:elevation="@dimen/top_bar_elevation"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="@drawable/ic_arrow_back_white_32dp"
+        app:navigationIcon="@drawable/ic_arrow_back"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/login" />
 
@@ -118,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/ic_vertical_line" />
+                    android:src="@drawable/ic_vertical_line" />
 
                 <Button
                     android:id="@+id/btn_forget"
