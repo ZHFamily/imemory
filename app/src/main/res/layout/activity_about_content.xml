@@ -9,7 +9,7 @@
         android:id="@+id/btn_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?selectableItemBackgroundGeneral"
+        style="?metaButtonBarButtonStyle"
         android:orientation="vertical"
         android:padding="16dp">
 
