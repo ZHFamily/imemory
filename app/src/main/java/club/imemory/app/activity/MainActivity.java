@@ -83,7 +83,7 @@ public class MainActivity extends BaseActivity
         mUserInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginActivity.actionStart(MainActivity.this, "");
+                LoginActivity.actionStart(MainActivity.this);
             }
         });
 
@@ -159,10 +159,11 @@ public class MainActivity extends BaseActivity
         switch (item.getItemId()) {
             case R.id.add_life:
                 AppManager.showToast("记录生活从点滴开始");
+                MapActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_enjoy:
                 AppManager.showToast("不一样的美");
-                FullscreenActivity.actionStart(MainActivity.this, "");
+                FullscreenActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_scan:
                 AppManager.showToast("进入扫描，请做好准备");
@@ -173,7 +174,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.item_settings:
                 AppManager.showToast("设置让你与众不同");
-                SettingsActivity.actionStart(MainActivity.this, "");
+                SettingsActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_close:
                 AppManager.showToast("欢迎下次光临");
@@ -198,9 +199,10 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_setting:
                 AppManager.showToast("设置你的天堂");
-                SettingsActivity.actionStart(MainActivity.this, "");
+                SettingsActivity.actionStart(MainActivity.this);
                 break;
             case R.id.nav_about:
+                AboutActivity.actionStart(MainActivity.this);
                 AppManager.showToast("想进一步了解我么");
                 break;
             case R.id.nav_recommend:

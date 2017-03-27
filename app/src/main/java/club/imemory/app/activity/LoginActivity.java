@@ -10,10 +10,13 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -29,14 +32,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSONObject;
+import com.tencent.connect.UserInfo;
+import com.tencent.connect.common.Constants;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.base.BaseActivity;
+import club.imemory.app.callback.LoginListener;
+import club.imemory.app.callback.UserInfoListener;
 import club.imemory.app.util.AppManager;
+import club.imemory.app.util.ApplicationUtil;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static club.imemory.app.util.AppManager.APP_ID;
 
 /**
  * 实现手机号与密码登录
@@ -63,6 +77,13 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private Button mQQloginBtn;
+    private Button mForgetBtn;
+    //QQ登录
+    private Tencent mTencent; //qq主操作对象
+    private IUiListener mLoginListener; //授权登录监听器
+    private IUiListener mUserInfoListener; //获取用户信息监听器
+    private UserInfo mUserInfo; //qq用户信息
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,24 +97,26 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
                 onBackPressed();
             }
         });
-
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+        mQQloginBtn = (Button) findViewById(R.id.btn_QQ);
+        mForgetBtn = (Button) findViewById(R.id.btn_forget);
         mPhoneTV = (AutoCompleteTextView) findViewById(R.id.tv_phone);
-        populateAutoComplete();
-
         mPasswordView = (EditText) findViewById(R.id.tv_password);
+        Button mLoginButton = (Button) findViewById(R.id.btn_login);
+
+        populateAutoComplete();
         //点击软键盘上的回车键时执行
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    AppManager.logI("LoginActivity", "点击回车键提交");
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mLoginButton = (Button) findViewById(R.id.btn_login);
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,8 +124,40 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        /**
+         * QQ登录
+         */
+        mQQloginBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mTencent = Tencent.createInstance(APP_ID, ApplicationUtil.getContext());
+                mLoginListener = new LoginListener(mTencent);
+                //调用QQ登录，用IUiListener对象作参数
+                if (!mTencent.isSessionValid()) {
+                    mTencent.login(LoginActivity.this, "all", mLoginListener);
+                } else {
+                    mTencent.logout(LoginActivity.this);
+                    AppManager.showToast("已注销");
+                }
+            }
+        });
+    }
+    //显示获取到的头像和昵称
+/*    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 0) {//获取昵称
+                tvNickName.setText((CharSequence) msg.obj);
+            } else if (msg.what == 1) {//获取头像
+                headerLogo.setImageBitmap((Bitmap) msg.obj);
+            }
+        }
+    };*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mTencent.onActivityResult(requestCode, resultCode, data);
     }
 
     /**

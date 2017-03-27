@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
+
+import com.blankj.utilcode.utils.CleanUtils;
 
 import club.imemory.app.R;
 import club.imemory.app.base.BaseActivity;
+import club.imemory.app.util.AppManager;
 
 
 /**
  * APP设置中心
  */
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements View.OnClickListener{
     /**
      * 启动SettingsActivity
      */
@@ -36,5 +40,25 @@ public class SettingsActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        initView();
+    }
+
+    private void initView(){
+        TextView mClearBtn = (TextView) findViewById(R.id.btn_clear);
+        mClearBtn.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btn_clear:
+                CleanUtils.cleanInternalCache();
+                AppManager.showToast("缓存已清除");
+                break;
+            default:
+                break;
+        }
+
     }
 }

@@ -2,7 +2,10 @@ package club.imemory.app.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Process;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +31,9 @@ public class AppManager {
 
     //App常量定义
     public static final String APP_NAME = "IMEMORY";
+    //QQ登录的APP id和APP key
+    public static final String APP_ID = "1106065084";
+    public static final String APP_KEY = "alLN8RFC6oBoWRsr";
     //控制Log打印
     private static boolean debug = true;
     //关于Toast
@@ -90,5 +96,4 @@ public class AppManager {
         activities.clear();
         Process.killProcess(Process.myPid());
     }
-
 }

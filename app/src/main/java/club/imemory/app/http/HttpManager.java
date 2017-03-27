@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import club.imemory.app.inter.HttpCallbackListener;
+import club.imemory.app.callback.HttpCallbackListener;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

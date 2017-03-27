@@ -1,4 +1,4 @@
-package club.imemory.app.inter;
+package club.imemory.app.callback;
 
 /**
  *

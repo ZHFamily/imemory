@@ -19,7 +19,7 @@ public class ApplicationUtil extends Application {
     public void onCreate() {
         context = getApplicationContext();
         LitePal.initialize(context);
-        //在这里为应用设置异常处理程序，然后我们的程序才能捕获未处理的异常
+        //在这里为应用设置异常处理程序，将捕获的异常信息保存到文件
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init();
     }
