@@ -7,6 +7,6 @@
         </shape>
     </item>
     <item>
-        <bitmap android:src="@mipmap/ic_launcher"></bitmap>
+        <bitmap android:src="@mipmap/logo"></bitmap>
     </item>
 </layer-list>

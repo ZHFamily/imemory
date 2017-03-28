@@ -34,7 +34,7 @@ import club.imemory.app.util.AppManager;
 public class MapActivity extends BaseActivity implements View.OnClickListener{
 
     /**
-     * 启动LoginActivity
+     * 启动MapActivity
      */
     public static void actionStart(Context context, String... strings) {
         Intent intent = new Intent(context, MapActivity.class);

@@ -28,9 +28,9 @@
 #-------------------------------------------------------------------------
 #---------------------------------2.第三方包-------------------------------
 # com.blankj:utilcode:1.3.6
--keep class com.blankj.utilcode.** { *; }
--keepclassmembers class com.blankj.utilcode.** { *; }
--dontwarn com.blankj.utilcode.**
+# -keep class com.blankj.utilcode.** { *; }
+# -keepclassmembers class com.blankj.utilcode.** { *; }
+# -dontwarn com.blankj.utilcode.**
 
 # 3D 地图 V5.0.0之后：
 -keep   class com.amap.api.maps.**{*;}
@@ -45,7 +45,7 @@
 # 搜索
 -keep   class com.amap.api.services.**{*;}
 
-# org.litepal.android:core:1.5.0
+# 数据库
 -keep class org.litepal.** {*;}
 -keep class * extends org.litepal.crud.DataSupport {*;}
 
@@ -58,4 +58,14 @@
 -keep class com.tencent.open.**{*;}
 -keep class com.tencent.tauth.**{*;}
 -keep class * extends android.app.Dialog
+
+# glide 图片加载
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
+# for DexGuard only
+-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 #-------------------------------------------------------------------------

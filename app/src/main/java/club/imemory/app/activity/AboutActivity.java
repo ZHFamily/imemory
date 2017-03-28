@@ -10,8 +10,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.utils.AppUtils;
-
+import club.imemory.app.BuildConfig;
 import club.imemory.app.R;
 import club.imemory.app.base.BaseActivity;
 import club.imemory.app.util.AppManager;
@@ -46,39 +45,35 @@ public class AboutActivity extends BaseActivity{
         });
 
         TextView tvVersion = (TextView) findViewById(R.id.tv_version);
-        tvVersion.setText(AppUtils.getAppVersionName(this)+"-build-"+AppUtils.getAppVersionCode(this));
+        tvVersion.setText(BuildConfig.VERSION_NAME+"-build-"+BuildConfig.VERSION_CODE);
 
-        LinearLayout btnOpenSource = (LinearLayout) findViewById(R.id.btn_open_source_url);
-        btnOpenSource.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_open_source_url).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavigatorUtil.openInBrowser(AboutActivity.this,getString(R.string.open_source_url));
             }
         });
 
-        LinearLayout btnAboutAuthor = (LinearLayout) findViewById(R.id.btn_about_author);
-        btnAboutAuthor.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_about_author).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppManager.showToast("作者很低调，张杭很低调");
             }
         });
 
-        LinearLayout btnOpenInMarket = (LinearLayout) findViewById(R.id.btn_open_in_market);
-        btnOpenInMarket.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_open_in_market).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavigatorUtil.openInMarket(AboutActivity.this);
             }
         });
 
-        LinearLayout btnAdviceFeedback = (LinearLayout) findViewById(R.id.btn_advice_feedback);
-        btnAdviceFeedback.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_advice_feedback).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NavigatorUtil.openEmail(AboutActivity.this,
                         "zhcppy@qq.com",
-                        "来自 imemory" + AppUtils.getAppVersionName(AboutActivity.this) + " 的客户端反馈",
+                        "来自 imemory" + BuildConfig.VERSION_NAME + "-build-" + BuildConfig.VERSION_CODE + " 的客户端反馈",
                         "设备信息：Android " + Build.VERSION.RELEASE + " - " + Build.MANUFACTURER + " - " + Build.MODEL + "\n\n"
                 );
             }

@@ -1,11 +1,9 @@
 package club.imemory.app.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 /**
  * @Author: 张杭
@@ -16,6 +14,7 @@ public class NavigatorUtil {
 
     /**
      * 打开应用市场
+     *
      * @param context
      */
     public static void openInMarket(@NonNull Context context) {
@@ -31,6 +30,7 @@ public class NavigatorUtil {
 
     /**
      * 打开浏览器
+     *
      * @param context
      * @param url
      */
@@ -46,6 +46,7 @@ public class NavigatorUtil {
 
     /**
      * 打开电子邮箱
+     *
      * @param context
      * @param email
      * @param subject
@@ -66,6 +67,7 @@ public class NavigatorUtil {
 
     /**
      * 打开分享
+     *
      * @param context
      * @param text
      */

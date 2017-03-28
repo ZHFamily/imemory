@@ -42,6 +42,8 @@
                 android:id="@+id/btn_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="16dp">
@@ -65,7 +67,7 @@
                         android:layout_marginTop="4dp"
                         android:text="开启也没有，这功能压根就没做"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -89,26 +91,40 @@
                 android:textSize="14sp" />
 
             <LinearLayout
-                android:id="@+id/btn_theme_dark"
+                android:id="@+id/btn_only_wifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:padding="16dp">
 
-                <TextView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingBottom="16dp"
-                    android:paddingTop="16dp"
-                    android:text="仅WiFi下联网"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="16sp" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="仅WiFi下联网"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="2G/3G/4G网络下不耗流量"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/switch_theme_dark"
+                    android:id="@+id/switch_only_wifi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -125,26 +141,28 @@
                 android:text="其他"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <View style="@style/DeepLine" />
 
             <TextView
                 android:id="@+id/btn_clear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="16dp"
                 android:text="清除缓存"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <View style="@style/DeepLine" />
 
             <LinearLayout
-                android:id="@+id/btn_topic_render_compat"
+                android:id="@+id/btn_open_weather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="16dp">
@@ -168,55 +186,59 @@
                         android:layout_marginTop="4dp"
                         android:text="将根据当前地理位置显示天气信息"
                         android:textColor="?android:attr/textColorSecondary"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
                 <android.support.v7.widget.SwitchCompat
-                    android:id="@+id/switch_topic_render_compat"
+                    android:id="@+id/switch_open_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:clickable="false" />
 
             </LinearLayout>
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <View style="@style/ShadowGap" />
 
             <TextView
+                android:id="@+id/btn_check_update"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="16dp"
                 android:text="检查更新"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <View style="@style/DeepLine" />
 
             <TextView
-                android:id="@+id/btn_feedback"
+                android:id="@+id/btn_help_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="16dp"
                 android:text="帮助与反馈"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+
+            <View style="@style/DeepLine" />
 
             <TextView
+                android:id="@+id/btn_user_agreement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:padding="16dp"
                 android:text="用户协议"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
-            <View style="@style/Theme.AppCompat.Light.DeepLine"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+
+            <View style="@style/DeepLine" />
 
             <View
                 android:layout_width="match_parent"

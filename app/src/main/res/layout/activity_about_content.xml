@@ -9,7 +9,8 @@
         android:id="@+id/btn_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?metaButtonBarButtonStyle"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -32,13 +33,14 @@
 
     </LinearLayout>
 
-    <View style="@style/Theme.AppCompat.Light.DeepLine" />
+    <View style="@style/DeepLine" />
 
     <LinearLayout
         android:id="@+id/btn_open_source_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?selectableItemBackgroundGeneral"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -60,13 +62,14 @@
 
     </LinearLayout>
 
-    <View style="@style/Theme.AppCompat.Light.DeepLine" />
+    <View style="@style/DeepLine" />
 
     <LinearLayout
         android:id="@+id/btn_about_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?selectableItemBackgroundGeneral"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -88,13 +91,14 @@
 
     </LinearLayout>
 
-    <View style="@style/Theme.AppCompat.Light.DeepLine" />
+    <View style="@style/ShadowGap" />
 
     <LinearLayout
         android:id="@+id/btn_open_in_market"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?selectableItemBackgroundGeneral"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -116,13 +120,14 @@
 
     </LinearLayout>
 
-    <View style="@style/Theme.AppCompat.Light.ShadowGap" />
+    <View style="@style/DeepLine" />
 
     <LinearLayout
         android:id="@+id/btn_advice_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?selectableItemBackgroundGeneral"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -144,16 +149,16 @@
 
     </LinearLayout>
 
-    <View style="@style/Theme.AppCompat.Light.ShadowGap" />
+    <View style="@style/ShadowGap" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="cppy © 2017"
+        android:layout_height="145dp"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="center|bottom"
+        android:text="没有了"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp" />
+        android:textSize="8sp" />
 
 </LinearLayout>

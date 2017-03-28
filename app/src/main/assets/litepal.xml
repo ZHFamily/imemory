@@ -1,0 +1,9 @@
+<litepal>
+    <dbname value="imemory"/>
+    <version value="1"/>
+    <list>
+        <mapping class="club.imemory.app.db.Province"/>
+        <mapping class="club.imemory.app.db.City"/>
+        <mapping class="club.imemory.app.db.County"/>
+    </list>
+</litepal>

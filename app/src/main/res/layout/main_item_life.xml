@@ -65,5 +65,5 @@
             android:layout_height="80dp"
             android:src="@drawable/ic_format_list_bulleted"/>
     </LinearLayout>
-    <View style="@style/Theme.AppCompat.Light.DeepLine" />
+    <View style="@style/DeepLine" />
 </LinearLayout>

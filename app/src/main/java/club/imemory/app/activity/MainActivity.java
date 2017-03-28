@@ -5,15 +5,17 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.menu.MenuAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -60,15 +62,15 @@ public class MainActivity extends BaseActivity
         setSupportActionBar(toolbar);
 
         //悬浮按钮
-        FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
         fabCreateLife.hide();
         fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*/
+                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*//*
             }
-        });
+        });*/
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,6 +81,7 @@ public class MainActivity extends BaseActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         mHeaderLayout = (LinearLayout) navigationView.getHeaderView(0);
+        //头像
         mUserInfoLayout = (LinearLayout) mHeaderLayout.findViewById(R.id.layout_user_info);
         mUserInfoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +89,7 @@ public class MainActivity extends BaseActivity
                 LoginActivity.actionStart(MainActivity.this);
             }
         });
-
+        //二维码
         mTwoDimensionCodeBtn = (ImageButton) mHeaderLayout.findViewById(R.id.btn_two_dimension_code);
         mTwoDimensionCodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,13 +107,24 @@ public class MainActivity extends BaseActivity
                 });
             }
         });
+        //天气
+        LinearLayout mWeatherBtn = (LinearLayout) mHeaderLayout.findViewById(R.id.btn_weather);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        mWeatherBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (prefs.getString("weather", null) != null) {
+                    WeatherActivity.actionStart(MainActivity.this);
+                }
+            }
+        });
         //主要内容
-        initLife();
+        /*initLife();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         LifeAdapter adapter = new LifeAdapter(mLifeList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
     }
 
     private void initLife() {
@@ -166,7 +180,7 @@ public class MainActivity extends BaseActivity
                 FullscreenActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_scan:
-                AppManager.showToast("进入扫描，请做好准备");
+                AppManager.showToast("扫描开始，请做好准备");
                 new IntentIntegrator(this)
                         .setCaptureActivity(ScanActivity.class)
                         .setOrientationLocked(false)
@@ -189,7 +203,6 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_my:
-                AppManager.showToast("美好生活");
                 break;
             case R.id.nav_partake:
                 AppManager.showToast("分享会是你最大的快乐");
@@ -198,12 +211,11 @@ public class MainActivity extends BaseActivity
                 AppManager.showToast("沟通才能有机会");
                 break;
             case R.id.nav_setting:
-                AppManager.showToast("设置你的天堂");
                 SettingsActivity.actionStart(MainActivity.this);
                 break;
             case R.id.nav_about:
                 AboutActivity.actionStart(MainActivity.this);
-                AppManager.showToast("想进一步了解我么");
+                AppManager.showToast("这里有我的联系方式");
                 break;
             case R.id.nav_recommend:
                 AppManager.showToast("和朋友一起玩耍吧");
@@ -255,7 +267,7 @@ public class MainActivity extends BaseActivity
         AlertDialog.Builder builder = new AlertDialog.Builder(this);  //先得到构造器
         builder.setTitle("提示"); //设置标题
         builder.setMessage(result); //设置内容
-        builder.setIcon(R.mipmap.ic_launcher);//设置图标，图片id即可
+        builder.setIcon(R.mipmap.logo);//设置图标，图片id即可
         builder.setPositiveButton("复制内容", onClickListener);
         builder.setNegativeButton("取消", onClickListener);
         builder.create().show();
