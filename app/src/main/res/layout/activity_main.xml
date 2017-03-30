@@ -8,18 +8,27 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     tools:context=".activity.MainActivity">
-
-    <!--<include
-        layout="@layout/main_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />-->
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <fragment
-        android:id="@+id/choose_area_fragment"
-        android:name="club.imemory.app.fragment.ChooseAreaFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+        <!-- 主要内容显示区 -->
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+    <!-- 侧滑菜单 -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

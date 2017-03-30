@@ -7,7 +7,7 @@ import org.litepal.crud.DataSupport;
 import java.io.Serializable;
 
 /**
- * 天气
+ * 市/镇/区
  *
  * @Author: 张杭
  * @Date: 2017/3/27 17:24

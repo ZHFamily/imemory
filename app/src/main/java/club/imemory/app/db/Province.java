@@ -13,13 +13,13 @@ import java.io.Serializable;
  * @Date: 2017/3/27 17:20
  */
 
-public class Province extends DataSupport implements Serializable {
+public class Province extends DataSupport {
 
-    @JSONField(serialize=false)
+    @JSONField(serialize = false)
     private int id;
-    @JSONField(name="name")
+    @JSONField(name = "name")
     private String provinceName;
-    @JSONField(name="id")
+    @JSONField(name = "id")
     private int provinceCode;
 
     public int getId() {

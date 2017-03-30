@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
+import club.imemory.app.activity.ChooseAreaActivity;
 import club.imemory.app.activity.MainActivity;
 import club.imemory.app.activity.WeatherActivity;
 import club.imemory.app.db.City;
@@ -41,6 +42,18 @@ import static club.imemory.app.util.AppManager.GET_AREA;
  */
 
 public class ChooseAreaFragment extends Fragment {
+
+    private static ChooseAreaFragment mChooseAreaFragment;
+    /**
+     * 实例化MessageFragment
+     * @return
+     */
+    public static ChooseAreaFragment instanceFragment(){
+        if (mChooseAreaFragment==null){
+            mChooseAreaFragment = new ChooseAreaFragment();
+        }
+        return mChooseAreaFragment;
+    }
 
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
@@ -82,11 +95,11 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.weather_choose_area, container, false);
-        titleText = (TextView) view.findViewById(R.id.tv_topbar_title);
+        View view = inflater.inflate(R.layout.fragment_choose_area, container, false);
+        titleText = (TextView) view.findViewById(R.id.tv_area_title);
         backButton = (Button) view.findViewById(R.id.btn_back);
-        listView = (ListView) view.findViewById(R.id.list_view);
-        adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), android.R.layout.simple_list_item_1, dataList);
+        listView = (ListView) view.findViewById(R.id.list_view_area);
+        adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), R.layout.weather_choose_area_item, dataList);
         listView.setAdapter(adapter);
         return view;
     }
@@ -108,7 +121,7 @@ public class ChooseAreaFragment extends Fragment {
                         break;
                     case LEVEL_COUNTY:
                         String weatherId = countyList.get(position).getWeatherId();
-                        if (getActivity() instanceof MainActivity) {
+                        if (getActivity() instanceof ChooseAreaActivity) {
                             Intent intent = new Intent(getActivity(), WeatherActivity.class);
                             intent.putExtra("weather_id", weatherId);
                             startActivity(intent);
@@ -140,7 +153,7 @@ public class ChooseAreaFragment extends Fragment {
      * 查询全国所有的省，优先从数据库查询，如果没有查询到再去服务器上查询。
      */
     private void queryProvinces() {
-        //titleText.setText("中国");
+        titleText.setText("中国");
         backButton.setVisibility(View.GONE);
         provinceList = DataSupport.findAll(Province.class);
         if (provinceList.size() > 0) {

@@ -62,6 +62,7 @@
         <activity android:name=".activity.SettingsActivity" />
         <activity android:name=".activity.ScanActivity" />
         <activity android:name=".activity.AboutActivity"/>
+        <activity android:name=".activity.ChooseAreaActivity"/>
         <activity android:name=".activity.WeatherActivity"/>
         <activity android:name=".activity.MapActivity"/><!-- 高德地图 -->
         <activity

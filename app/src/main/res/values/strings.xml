@@ -16,4 +16,15 @@
     <string name="prompt_password">密码</string>
 
     <string name="open_source_url">http://github.com/ZHFamily/imemory</string>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
 </resources>

@@ -44,7 +44,7 @@ public class AppManager {
     /**
      * 获取全国省市数据地址
      */
-    public static final String GET_AREA = "http://guolin.tech/api/china";
+    public static final String GET_AREA = "http://guolin.tech/api/china/";
     /**
      * 获取对应城市天气的URL
      */

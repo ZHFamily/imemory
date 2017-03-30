@@ -7,11 +7,11 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="我的回忆" />
         <item
-            android:id="@+id/nav_partake"
+            android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="附近分享" />
         <item
-            android:id="@+id/nav_news"
+            android:id="@+id/nav_message"
             android:icon="@drawable/ic_menu_notifications"
             android:title="消息" />
 

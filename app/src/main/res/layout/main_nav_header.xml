@@ -47,6 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginRight="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -62,15 +63,15 @@
                     android:gravity="right"
                     android:text="19"
                     android:textColor="@color/colorWhite"
-                    android:textSize="50dp" />
+                    android:textSize="40sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="right"
-                    android:text="C"
+                    android:text="℃"
                     android:textColor="@color/colorWhite"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <TextView
@@ -79,14 +80,15 @@
                 android:gravity="right"
                 android:text="武汉"
                 android:textColor="@color/colorWhite"
-                android:textSize="20dp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:text="多云  南风"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp" />
         </LinearLayout>
 
 

@@ -2,6 +2,7 @@ package club.imemory.app.db;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class WeatherDataAnalyze {
         } else {
             List<Province> provinceList = JSON.parseArray(response, Province.class);
             for (Province province : provinceList) {
+                province.setProvinceCode(province.getId());
                 province.save();
             }
             return true;
@@ -80,8 +82,11 @@ public class WeatherDataAnalyze {
      */
     public static Weather handleWeatherResponse(String response) {
         try {
-            JSONArray jsonArray = JSON.parseArray(response);
-            return (Weather) JSON.parseArray(response, Weather.class);
+            JSONObject jsonObject = JSON.parseObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
+            String string = jsonArray.get(0).toString();
+            Weather weather = JSON.parseObject(string,Weather.class);
+            return weather;
         } catch (Exception e) {
             e.printStackTrace();
         }

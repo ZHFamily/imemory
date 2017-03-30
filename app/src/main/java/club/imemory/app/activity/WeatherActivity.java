@@ -74,17 +74,17 @@ public class WeatherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 21) {
+        /*if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
-        }
+        }*/
         setContentView(R.layout.activity_weather);
         // 初始化各控件
         bingPicImg = (ImageView) findViewById(R.id.img_bing_pic);
         weatherLayout = (ScrollView) findViewById(R.id.weather_layout);
-        titleArea = (TextView) findViewById(R.id.tv_area_title);
+        titleArea = (TextView) findViewById(R.id.tv_topbar_title);
         //titleUpdateTime = (TextView) findViewById(R.id.title_update_time);
         degreeText = (TextView) findViewById(R.id.tv_degree);
         weatherInfoText = (TextView) findViewById(R.id.tv_weather_info);
@@ -96,8 +96,7 @@ public class WeatherActivity extends BaseActivity {
         sportText = (TextView) findViewById(R.id.tv_sport);
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
         swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //navButton = (Button) findViewById(R.id.nav_button);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
@@ -117,12 +116,6 @@ public class WeatherActivity extends BaseActivity {
                 requestWeather(mWeatherId);
             }
         });
-        /*navButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        });*/
         String bingPic = prefs.getString("bing_pic", null);
         if (bingPic != null) {
             Glide.with(this).load(bingPic).into(bingPicImg);
@@ -209,7 +202,7 @@ public class WeatherActivity extends BaseActivity {
         String degree = weather.now.temperature + "℃";
         String weatherInfo = weather.now.more.info;
         titleArea.setText(cityName);
-        titleUpdateTime.setText(updateTime);
+        //titleUpdateTime.setText(updateTime);
         degreeText.setText(degree);
         weatherInfoText.setText(weatherInfo);
         forecastLayout.removeAllViews();
