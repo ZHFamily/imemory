@@ -36,8 +36,8 @@
             android:id="@+id/login_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="80dp"
@@ -124,9 +124,9 @@
                     android:id="@+id/btn_forget"
                     android:layout_width="72dp"
                     android:layout_height="wrap_content"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:layout_gravity="bottom"
                     android:layout_marginLeft="5dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:text="忘记密码"
                     android:textColor="@color/colorGray"
                     android:textSize="16sp" />

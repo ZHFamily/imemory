@@ -9,8 +9,8 @@
         android:id="@+id/btn_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -39,8 +39,8 @@
         android:id="@+id/btn_open_source_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -68,8 +68,8 @@
         android:id="@+id/btn_about_author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -97,8 +97,8 @@
         android:id="@+id/btn_open_in_market"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -126,8 +126,8 @@
         android:id="@+id/btn_advice_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -154,8 +154,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="145dp"
-        android:clickable="true"
         android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:gravity="center|bottom"
         android:text="没有了"
         android:textColor="?android:attr/textColorSecondary"

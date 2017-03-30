@@ -21,7 +21,6 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.activity.ChooseAreaActivity;
-import club.imemory.app.activity.MainActivity;
 import club.imemory.app.activity.WeatherActivity;
 import club.imemory.app.db.City;
 import club.imemory.app.db.County;
@@ -99,7 +98,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView) view.findViewById(R.id.tv_title_area);
         backButton = (Button) view.findViewById(R.id.btn_back_area);
         listView = (ListView) view.findViewById(R.id.list_view_area);
-        adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), R.layout.weather_choose_area_item, dataList);
+        adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), R.layout.item_weather_choose_area, dataList);
         listView.setAdapter(adapter);
         return view;
     }

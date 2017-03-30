@@ -61,8 +61,6 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_map);
-        mToolbar.setTitle("从这里开始");
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -1,5 +1,7 @@
 package club.imemory.app.adapter;
 
+import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.bean.Life;
+import club.imemory.app.util.TimeUtils;
 
 /**
  * @Author: 张杭
@@ -19,8 +24,9 @@ import club.imemory.app.bean.Life;
 
 public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
 
-    private List<Life> mLifeList;
+    private Context mContext;
 
+    private List<Life> mLifeList;
     public LifeAdapter(List<Life> lifeList) {
         mLifeList = lifeList;
     }
@@ -29,35 +35,39 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
      * 内部静态类，初始化item
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView mAvatarView;
-        private TextView mTitleTV;
-        private TextView mSubheadTV;
-        private TextView mCreateTimeTV;
+        CardView cardView;
+        ImageView mAvatarView;
+        TextView mTitleTV;
+        //private TextView mSubheadTV;
+        TextView mCreateTimeTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mAvatarView = (ImageView) itemView.findViewById(R.id.img_avatar);
+            cardView = (CardView) itemView;
+            mAvatarView = (ImageView) itemView.findViewById(R.id.image_avatar);
             mTitleTV = (TextView) itemView.findViewById(R.id.tv_title);
-            mSubheadTV = (TextView) itemView.findViewById(R.id.tv_subhead);
+            //mSubheadTV = (TextView) itemView.findViewById(R.id.tv_subhead);
             mCreateTimeTV = (TextView) itemView.findViewById(R.id.tv_create_time);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.main_item_life, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        if (mContext==null){
+            mContext = parent.getContext();
+        }
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_life, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Life life = mLifeList.get(position);
-        holder.mAvatarView.setImageResource(R.drawable.ic_screenshot06);
         holder.mTitleTV.setText(life.getTitle());
-        holder.mSubheadTV.setText(life.getSubhead());
-        holder.mCreateTimeTV.setText(life.getCreatetime());
+        //holder.mSubheadTV.setText(life.getSubhead());
+        holder.mCreateTimeTV.setText(TimeUtils.getDataToString(life.getCreatetime()));
+        //使用Glide库加载图片
+        Glide.with(mContext).load(life.getAvatar()).into(holder.mAvatarView);
     }
 
     @Override

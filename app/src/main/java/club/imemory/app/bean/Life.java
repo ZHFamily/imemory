@@ -1,20 +1,21 @@
 package club.imemory.app.bean;
 
+import java.util.Date;
+
 /**
- * Life entity.
+ * Life entity. @author MyEclipse Persistence Tools
  */
 
 public class Life implements java.io.Serializable {
 
-	// Fields
-
 	private Integer id;
+	private Integer userId;
 	private String title;
 	private String subhead;
-	private byte[] avatar;
+	private String avatar;
 	private Integer top;
-	private String createtime;
-	private String updatetime;
+	private Date createtime;
+	private Date updatetime;
 
 	// Constructors
 
@@ -22,9 +23,17 @@ public class Life implements java.io.Serializable {
 	public Life() {
 	}
 
+	/** minimal constructor */
+	public Life(Integer userId, String title, Date createtime) {
+		this.userId = userId;
+		this.title = title;
+		this.createtime = createtime;
+	}
+
 	/** full constructor */
-	public Life(String title, String subhead, byte[] avatar, Integer top,
-			String createtime, String updatetime) {
+	public Life(Integer userId, String title, String subhead, String avatar,
+			Integer top, Date createtime, Date updatetime) {
+		this.userId = userId;
 		this.title = title;
 		this.subhead = subhead;
 		this.avatar = avatar;
@@ -35,12 +44,28 @@ public class Life implements java.io.Serializable {
 
 	// Property accessors
 
+	@Override
+	public String toString() {
+		return "Life [id=" + id + ", userId=" + userId + ", title=" + title
+				+ ", subhead=" + subhead + ", avatar=" + avatar + ", top="
+				+ top + ", createtime=" + createtime + ", updatetime="
+				+ updatetime + "]";
+	}
+
 	public Integer getId() {
 		return this.id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Integer getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getTitle() {
@@ -59,11 +84,11 @@ public class Life implements java.io.Serializable {
 		this.subhead = subhead;
 	}
 
-	public byte[] getAvatar() {
+	public String getAvatar() {
 		return this.avatar;
 	}
 
-	public void setAvatar(byte[] avatar) {
+	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 
@@ -75,19 +100,19 @@ public class Life implements java.io.Serializable {
 		this.top = top;
 	}
 
-	public String getCreatetime() {
+	public Date getCreatetime() {
 		return this.createtime;
 	}
 
-	public void setCreatetime(String createtime) {
+	public void setCreatetime(Date createtime) {
 		this.createtime = createtime;
 	}
 
-	public String getUpdatetime() {
+	public Date getUpdatetime() {
 		return this.updatetime;
 	}
 
-	public void setUpdatetime(String updatetime) {
+	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
 	}
 
