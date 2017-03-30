@@ -30,11 +30,11 @@ public class ChooseAreaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_area);
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        /*SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getString("weather", null) != null) {
             WeatherActivity.actionStart(ChooseAreaActivity.this);
             finish();
-        }
+        }*/
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.choose_area__frame, ChooseAreaFragment.instanceFragment()).commit();
     }

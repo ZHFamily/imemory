@@ -60,18 +60,8 @@ public class MainActivity extends BaseActivity
         setContentView(R.layout.activity_main);
         AppManager.logI("MainActivity", "onCreate");
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("生活");
         setSupportActionBar(mToolbar);
-
-        //悬浮按钮
-        /*FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
-        fabCreateLife.hide();
-        fabCreateLife.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();*//*
-            }
-        });*/
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

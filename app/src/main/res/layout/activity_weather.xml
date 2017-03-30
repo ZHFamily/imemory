@@ -32,9 +32,9 @@
 
                 <include layout="@layout/weather_now" />
 
-                <include layout="@layout/weather_forecast" />
-
                 <include layout="@layout/weather_aqi" />
+
+                <include layout="@layout/weather_forecast" />
 
                 <include layout="@layout/weather_suggestion" />
 

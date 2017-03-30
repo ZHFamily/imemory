@@ -96,8 +96,8 @@ public class ChooseAreaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_choose_area, container, false);
-        titleText = (TextView) view.findViewById(R.id.tv_area_title);
-        backButton = (Button) view.findViewById(R.id.btn_back);
+        titleText = (TextView) view.findViewById(R.id.tv_title_area);
+        backButton = (Button) view.findViewById(R.id.btn_back_area);
         listView = (ListView) view.findViewById(R.id.list_view_area);
         adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), R.layout.weather_choose_area_item, dataList);
         listView.setAdapter(adapter);
@@ -128,7 +128,6 @@ public class ChooseAreaFragment extends Fragment {
                             getActivity().finish();
                         } else if (getActivity() instanceof WeatherActivity) {
                             WeatherActivity activity = (WeatherActivity) getActivity();
-                            activity.drawerLayout.closeDrawers();
                             activity.swipeRefresh.setRefreshing(true);
                             activity.requestWeather(weatherId);
                         }
