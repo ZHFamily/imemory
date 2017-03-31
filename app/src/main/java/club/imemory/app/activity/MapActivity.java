@@ -48,7 +48,7 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar_map);
+        mToolbar = (Toolbar) findViewById(R.id.map_toolbar);
         setSupportActionBar(mToolbar);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

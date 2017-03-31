@@ -1,6 +1,7 @@
 package club.imemory.app.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import club.imemory.app.R;
+import club.imemory.app.activity.LifeActivity;
 import club.imemory.app.entity.Life;
 import club.imemory.app.util.AppUtils;
 
@@ -57,7 +59,17 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_life, parent, false);
-        return new ViewHolder(view);
+
+        final ViewHolder holder = new ViewHolder(view);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = holder.getAdapterPosition();
+                Life life = mLifeList.get(position);
+                LifeActivity.actionStart(mContext,life.getAvatar(),life.getTitle());
+            }
+        });
+        return holder;
     }
 
     @Override

@@ -2,6 +2,7 @@ package club.imemory.app.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -31,7 +32,7 @@ public class MyLifeFragment extends Fragment {
         return new MyLifeFragment();
     }
 
-
+    private SwipeRefreshLayout swipeRefresh;
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
 
@@ -39,12 +40,42 @@ public class MyLifeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initData();
         View view = inflater.inflate(R.layout.fragment_life, container, false);
+        //下拉刷新
+        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+            @Override
+            public void onRefresh() {
+                refreshLife();
+            }
+        });
+        //滚动内容
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(container.getContext(),1);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new LifeAdapter(mLifeList);
         recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    private void refreshLife(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initData();
+                        adapter.notifyDataSetChanged();
+                        swipeRefresh.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
     }
 
     private void initData(){
@@ -57,8 +88,6 @@ public class MyLifeFragment extends Fragment {
             mLifeList.add(life);
         }
     }
-
-
 
     //悬浮按钮
     /*FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);

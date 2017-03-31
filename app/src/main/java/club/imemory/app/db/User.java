@@ -24,6 +24,8 @@ public class User extends DataSupport implements java.io.Serializable {
 	private Date createtime;
 	private Date updatetime;
 
+	public User(){}
+
 	/** minimal constructor */
 	public User(String name, String password, String phone, Date logintime,
 			Date createtime) {

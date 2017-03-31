@@ -17,6 +17,8 @@ public class Life implements java.io.Serializable {
 	private Date createtime;
 	private Date updatetime;
 
+	public Life(){}
+
 	/** minimal constructor */
 	public Life(Integer userId, String title, Date createtime) {
 		this.userId = userId;

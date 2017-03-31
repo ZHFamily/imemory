@@ -157,7 +157,7 @@
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:gravity="center|bottom"
-        android:text="没有了"
+        android:text="CPPY © 2017-ZhangHang"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="8sp" />
 

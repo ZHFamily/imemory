@@ -26,7 +26,6 @@ import club.imemory.app.R;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
 import club.imemory.app.fragment.NearShareFragment;
-import club.imemory.app.other.zxing;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 import club.imemory.app.util.DataCleanManager;
