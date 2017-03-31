@@ -137,7 +137,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     //显示获取到的头像和昵称
 /*    private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Message msg) {
+        public void handleMessage(Find msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {//获取昵称
                 tvNickName.setText((CharSequence) msg.obj);

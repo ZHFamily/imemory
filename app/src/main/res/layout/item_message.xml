@@ -32,7 +32,7 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
-            tools:text="年青正好" />
+            tools:text="ŪȠֽۃ" />
 
         <TextView
             android:id="@+id/tv_subhead"
@@ -42,7 +42,7 @@
             android:maxLines="2"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="在偏执的道路上越走越远" />
+            tools:text="՚ƫִքր·ʏԽ؟ԽԶ" />
 
         <TextView
             android:id="@+id/tv_create_time"
@@ -51,7 +51,7 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
-            tools:text="创建于：2015-1-1 19:20:15" />
+            tools:text="ԴݨԚú2015-1-1 19:20:15" />
 
     </LinearLayout>
 

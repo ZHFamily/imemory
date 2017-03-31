@@ -25,7 +25,7 @@ import com.google.zxing.integration.android.IntentResult;
 import club.imemory.app.R;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
-import club.imemory.app.fragment.NearShareFragment;
+import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 import club.imemory.app.util.DataCleanManager;
@@ -37,14 +37,14 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MyLifeFragment mMyLifeFragment;
-    private NearShareFragment mNearShareFragment;
+    private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
     /**
      * 记录当前显示的Fragment
      */
     private int currentFragment = 0;
     private static final int SHOW_LIFE = 1;
-    private static final int SHOW_NEARSHARE = 2;
+    private static final int SHOW_FIND = 2;
     private static final int SHOW_MESSAGE = 3;
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().findItem(R.id.nav_my).setChecked(true);
         View headerView = navigationView.getHeaderView(0);
 
         //点击头像
@@ -118,9 +119,9 @@ public class MainActivity extends BaseActivity
                 mToolbar.setTitle("生活");
                 addOrShowFragment(SHOW_LIFE);
                 break;
-            case R.id.nav_share:
-                mToolbar.setTitle("附近分享");
-                addOrShowFragment(SHOW_NEARSHARE);
+            case R.id.nav_find:
+                mToolbar.setTitle("发现");
+                addOrShowFragment(SHOW_FIND);
                 AppManager.showToast("分享会是你最大的快乐");
                 break;
             case R.id.nav_message:
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity
                 break;
             case R.id.nav_recommend:
                 // TODO  上线时请修改
-                DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
+                //DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
                 AppManager.showToast("和朋友一起玩耍吧");
                 break;
         }
@@ -155,8 +156,8 @@ public class MainActivity extends BaseActivity
             case SHOW_LIFE:
                 fragmentTransaction.hide(mMyLifeFragment);
                 break;
-            case SHOW_NEARSHARE:
-                fragmentTransaction.hide(mNearShareFragment);
+            case SHOW_FIND:
+                fragmentTransaction.hide(mFindFragment);
                 break;
             case SHOW_MESSAGE:
                 fragmentTransaction.hide(mMessageFragment);
@@ -172,12 +173,12 @@ public class MainActivity extends BaseActivity
                     fragmentTransaction.show(mMyLifeFragment);
                 }
                 break;
-            case SHOW_NEARSHARE:
-                if (mNearShareFragment == null) {
-                    mNearShareFragment = NearShareFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mNearShareFragment);
+            case SHOW_FIND:
+                if (mFindFragment == null) {
+                    mFindFragment = FindFragment.instanceFragment();
+                    fragmentTransaction.add(R.id.content_frame, mFindFragment);
                 } else {
-                    fragmentTransaction.show(mNearShareFragment);
+                    fragmentTransaction.show(mFindFragment);
                 }
                 break;
             case SHOW_MESSAGE:

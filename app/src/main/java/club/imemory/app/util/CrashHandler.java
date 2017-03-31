@@ -137,6 +137,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void uploadExceptionToServer() {
-        //TODO Upload Exception Message To Your Web Server
+        //TODO Upload Exception Find To Your Web Server
     }
 }

@@ -69,6 +69,7 @@
         <activity
             android:name=".activity.LifeActivity"
             android:theme="@style/StatusTransparentTheme" />
+        <activity android:name=".activity.FindActivity"/>
         <activity android:name=".activity.MapActivity" /><!-- 高德地图 -->
         <activity
             android:name=".activity.FullscreenActivity"
