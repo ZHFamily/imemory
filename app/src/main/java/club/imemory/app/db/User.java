@@ -1,4 +1,6 @@
-package club.imemory.app.bean;
+package club.imemory.app.db;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.Date;
 
@@ -6,7 +8,7 @@ import java.util.Date;
  * User entity. @author MyEclipse Persistence Tools
  */
 
-public class User implements java.io.Serializable {
+public class User extends DataSupport implements java.io.Serializable {
 
 	private Integer id;
 	private String name;
@@ -21,12 +23,6 @@ public class User implements java.io.Serializable {
 	private Date logintime;
 	private Date createtime;
 	private Date updatetime;
-
-	// Constructors
-
-	/** default constructor */
-	public User() {
-	}
 
 	/** minimal constructor */
 	public User(String name, String password, String phone, Date logintime,
@@ -55,8 +51,6 @@ public class User implements java.io.Serializable {
 		this.createtime = createtime;
 		this.updatetime = updatetime;
 	}
-
-	// Property accessors
 
 	@Override
 	public String toString() {

@@ -14,7 +14,7 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.adapter.LifeAdapter;
-import club.imemory.app.bean.Life;
+import club.imemory.app.entity.Life;
 
 /**
  * @Author: 张杭

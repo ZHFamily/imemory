@@ -1,4 +1,4 @@
-package club.imemory.app.other;
+package club.imemory.app.util;
 
 import android.graphics.Bitmap;
 
@@ -8,17 +8,31 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
+ * （个人撰写）
+ * APP常用方法的工具类
+ *
  * @Author: 张杭
- * @Date: 2017/3/24 22:08
+ * @Date: 2017/3/30 22:11
  */
 
-public class zxing {
+public class AppUtils {
+
+    /**
+     * 返回24小时制时间字符串
+     */
+    public static String getDataToString(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
 
     /**
      * 产生二维码（Bitmap）
      */
-    public Bitmap getEncodeBitmap(String str){
+    public static Bitmap getEncodeBitmap(String str){
         Bitmap bitmap = null;
         BitMatrix result;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();

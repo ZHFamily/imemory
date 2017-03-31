@@ -1,16 +1,12 @@
 package club.imemory.app.activity;
 
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,14 +23,16 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
 import club.imemory.app.fragment.NearShareFragment;
 import club.imemory.app.other.zxing;
 import club.imemory.app.util.AppManager;
+import club.imemory.app.util.AppUtils;
+import club.imemory.app.util.DataCleanManager;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
+import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -139,6 +137,8 @@ public class MainActivity extends BaseActivity
                 AppManager.showToast("这里有我的联系方式");
                 break;
             case R.id.nav_recommend:
+                // TODO  上线时请修改
+                DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
                 AppManager.showToast("和朋友一起玩耍吧");
                 break;
         }
@@ -321,7 +321,7 @@ public class MainActivity extends BaseActivity
     private ImageView getQrCodeView() {
         ImageView imgView = new ImageView(this);
         imgView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
-        imgView.setImageBitmap(new zxing().getEncodeBitmap("年青正好"));
+        imgView.setImageBitmap(AppUtils.getEncodeBitmap("年青正好"));
         return imgView;
     }
 

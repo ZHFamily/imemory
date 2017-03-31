@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import club.imemory.app.BuildConfig;
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.NavigatorUtil;
 
@@ -57,7 +55,7 @@ public class AboutActivity extends BaseActivity{
         findViewById(R.id.btn_about_author).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppManager.showToast("作者很低调，张杭很低调");
+                AppManager.showToast("作者很低调 作者就是张杭 欢迎骚扰");
             }
         });
 

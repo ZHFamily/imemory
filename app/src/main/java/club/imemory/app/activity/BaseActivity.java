@@ -1,4 +1,4 @@
-package club.imemory.app.base;
+package club.imemory.app.activity;
 
 import android.content.IntentFilter;
 import android.os.Bundle;

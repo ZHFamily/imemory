@@ -1,28 +1,16 @@
 package club.imemory.app.util;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Process;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-
 /**
+ * 控制log、toast的输出
+ * 管理App中所有的activity
+ *
  * @Author: 张杭
  * @Date: 2017/3/9 20:42
  */

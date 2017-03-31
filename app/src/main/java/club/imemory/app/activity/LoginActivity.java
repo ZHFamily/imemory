@@ -10,13 +10,10 @@ import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,20 +29,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.tencent.connect.UserInfo;
-import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.callback.LoginListener;
-import club.imemory.app.callback.UserInfoListener;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.ApplicationUtil;
 

@@ -12,7 +12,6 @@ import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.util.AppManager;
 
 /**

@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 /**
+ * 打开其他应用
+ *
  * @Author: 张杭
  * @Date: 2017/3/26 22:53
  */

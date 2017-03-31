@@ -1,4 +1,4 @@
-package club.imemory.app.db;
+package club.imemory.app.json;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -6,17 +6,20 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
-import club.imemory.app.json.Weather;
+import club.imemory.app.db.City;
+import club.imemory.app.db.County;
+import club.imemory.app.db.Province;
+import club.imemory.app.entity.Weather;
 import club.imemory.app.util.StringUtils;
 
 /**
- * 将服务器获取的数据进行解析处理
+ * JSON 数据解析
  *
  * @Author: 张杭
  * @Date: 2017/3/27 18:49
  */
 
-public class WeatherDataAnalyze {
+public class JsonAnalyze {
 
     /**
      * 解析并保存服务器返回的省级数据
@@ -30,7 +33,6 @@ public class WeatherDataAnalyze {
         } else {
             List<Province> provinceList = JSON.parseArray(response, Province.class);
             for (Province province : provinceList) {
-                province.setProvinceCode(province.getId());
                 province.save();
             }
             return true;
@@ -41,16 +43,16 @@ public class WeatherDataAnalyze {
      * 解析并保存服务器返回的市级数据
      *
      * @param response
-     * @param provinceId
+     * @param provinceCode
      * @return
      */
-    public static boolean handleCityResponse(String response, int provinceId) {
+    public static boolean handleCityResponse(String response, int provinceCode) {
         if (StringUtils.isEmpty(response)) {
             return false;
         } else {
             List<City> cityList = JSON.parseArray(response, City.class);
             for (City city : cityList) {
-                city.setProvinceId(provinceId);
+                city.setProvinceCode(provinceCode);
                 city.save();
             }
             return true;
@@ -61,16 +63,16 @@ public class WeatherDataAnalyze {
      * 解析并保存服务器返回的县级数据
      *
      * @param response
-     * @param cityId
+     * @param cityCode
      * @return
      */
-    public static boolean handleCountyResponse(String response, int cityId) {
+    public static boolean handleCountyResponse(String response, int cityCode) {
         if (StringUtils.isEmpty(response)) {
             return false;
         } else {
             List<County> CountyList = JSON.parseArray(response, County.class);
             for (County county : CountyList) {
-                county.setCityId(cityId);
+                county.setCityCode(cityCode);
                 county.save();
             }
             return true;

@@ -15,13 +15,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * 异常处理
+ * 当程序崩溃是将异常信息保存到本地文件
+ *
  * @Author: 张杭
  * @Date: 2017/3/19 15:29
  */
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
-    private static final String PATH = Environment.getExternalStorageDirectory().getPath() + "/AMemoryLog/";
+    public static final String CRASH_LOG_PATH = Environment.getExternalStorageDirectory().getPath() + "/imemory/log/";
     private static final String FILE_NAME = "crash";
 
     private static CrashHandler sInstance = new CrashHandler();
@@ -77,17 +80,17 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private void dumpExceptionToSDCard(Throwable ex) throws IOException {
         //如果SD卡不存在或无法使用，则无法把异常信息写入SD卡
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            AppManager.logE("CrashHandler","SD卡不存在或无法使用");
+            AppManager.logE("CrashHandler", "SD卡不存在或无法使用");
             return;
         }
-        File dir = new File(PATH);
+        File dir = new File(CRASH_LOG_PATH);
         if (!dir.exists()) {
             dir.mkdirs();
         }
         long current = System.currentTimeMillis();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(current));
         //以当前时间创建log文件
-        File file = new File(PATH + FILE_NAME + time + ".log");
+        File file = new File(CRASH_LOG_PATH + FILE_NAME + time + ".log");
 
         try {
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
@@ -99,9 +102,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             //导出异常的调用栈信息
             ex.printStackTrace(pw);
             pw.close();
-            AppManager.logI("CrashHandler","存储崩溃保存成功");
+            AppManager.logI("CrashHandler", "存储崩溃保存成功");
         } catch (Exception e) {
-            AppManager.logE("CrashHandler","存储崩溃信息失败");
+            AppManager.logE("CrashHandler", "存储崩溃信息失败");
         }
     }
 

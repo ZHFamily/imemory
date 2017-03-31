@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

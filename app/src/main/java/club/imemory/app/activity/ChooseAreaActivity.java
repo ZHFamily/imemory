@@ -3,12 +3,9 @@ package club.imemory.app.activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.fragment.ChooseAreaFragment;
 
 /**

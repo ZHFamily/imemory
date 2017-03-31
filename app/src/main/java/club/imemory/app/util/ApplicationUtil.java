@@ -1,17 +1,18 @@
 package club.imemory.app.util;
 
-import android.app.Application;
 import android.content.Context;
 
 import org.litepal.LitePal;
+import org.litepal.LitePalApplication;
 
 /**
  * 管理程序内一些全局的状态信息
+ *
  * @Author: 张杭
  * @Date: 2017/3/18 17:47
  */
 
-public class ApplicationUtil extends Application {
+public class ApplicationUtil extends LitePalApplication {
 
     private static Context context;
 
@@ -24,7 +25,7 @@ public class ApplicationUtil extends Application {
         crashHandler.init();
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 }

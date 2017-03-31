@@ -1,4 +1,4 @@
-package club.imemory.app.bean;
+package club.imemory.app.entity;
 
 import java.util.Date;
 
@@ -16,12 +16,6 @@ public class Life implements java.io.Serializable {
 	private Integer top;
 	private Date createtime;
 	private Date updatetime;
-
-	// Constructors
-
-	/** default constructor */
-	public Life() {
-	}
 
 	/** minimal constructor */
 	public Life(Integer userId, String title, Date createtime) {
@@ -41,8 +35,6 @@ public class Life implements java.io.Serializable {
 		this.createtime = createtime;
 		this.updatetime = updatetime;
 	}
-
-	// Property accessors
 
 	@Override
 	public String toString() {

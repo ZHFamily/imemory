@@ -15,21 +15,11 @@ import java.io.Serializable;
 
 public class City extends DataSupport implements Serializable {
 
-    @JSONField(serialize=false)
-    private int id;
     @JSONField(name="name")
     private String cityName;
     @JSONField(name="id")
     private int cityCode;
-    private int provinceId;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    private int provinceCode;
 
     public String getCityName() {
         return cityName;
@@ -47,11 +37,11 @@ public class City extends DataSupport implements Serializable {
         this.cityCode = cityCode;
     }
 
-    public int getProvinceId() {
-        return provinceId;
+    public int getProvinceCode() {
+        return provinceCode;
     }
 
-    public void setProvinceId(int provinceId) {
-        this.provinceId = provinceId;
+    public void setProvinceCode(int provinceCode) {
+        this.provinceCode = provinceCode;
     }
 }

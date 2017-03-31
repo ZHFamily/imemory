@@ -2,7 +2,6 @@ package club.imemory.app.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +13,7 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.adapter.LifeAdapter;
-import club.imemory.app.bean.Life;
+import club.imemory.app.entity.Life;
 
 /**
  * @Author: 张杭

@@ -1,4 +1,4 @@
-package club.imemory.app.json;
+package club.imemory.app.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 

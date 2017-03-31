@@ -39,7 +39,7 @@
         android:id="@+id/btn_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParenttop="true"
+        android:layout_alignParentTop="true"
         android:layout_marginRight="@dimen/margin"
         android:layout_marginTop="@dimen/margin"
         android:layout_toEndOf="@+id/layout_user_info">
@@ -58,8 +58,8 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/textView5"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
             android:text="℃"
             android:textColor="@color/colorWhite"
             android:textSize="20sp" />

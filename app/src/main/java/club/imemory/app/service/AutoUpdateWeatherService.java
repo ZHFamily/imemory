@@ -12,8 +12,8 @@ import android.preference.PreferenceManager;
 import java.io.IOException;
 
 import club.imemory.app.http.HttpManager;
-import club.imemory.app.json.Weather;
-import club.imemory.app.db.WeatherDataAnalyze;
+import club.imemory.app.entity.Weather;
+import club.imemory.app.json.JsonAnalyze;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -56,14 +56,14 @@ public class AutoUpdateWeatherService extends Service {
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
-            Weather weather = WeatherDataAnalyze.handleWeatherResponse(weatherString);
+            Weather weather = JsonAnalyze.handleWeatherResponse(weatherString);
             String weatherId = weather.basic.weatherId;
             String weatherUrl = WEATHER_INFO_URL + weatherId + WEATHER_INFO_KEY;
             HttpManager.sendOKHttpRequest(weatherUrl, new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String responseText = response.body().string();
-                    Weather weather = WeatherDataAnalyze.handleWeatherResponse(responseText);
+                    Weather weather = JsonAnalyze.handleWeatherResponse(responseText);
                     if (weather != null && "ok".equals(weather.status)) {
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(AutoUpdateWeatherService.this).edit();
                         editor.putString("weather", responseText);

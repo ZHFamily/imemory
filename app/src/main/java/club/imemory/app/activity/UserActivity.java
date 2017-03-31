@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 
 /**
  * @Author: 张杭

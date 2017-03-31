@@ -15,20 +15,10 @@ import java.io.Serializable;
 
 public class Province extends DataSupport {
 
-    @JSONField(serialize = false)
-    private int id;
     @JSONField(name = "name")
     private String provinceName;
     @JSONField(name = "id")
     private int provinceCode;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getProvinceName() {
         return provinceName;

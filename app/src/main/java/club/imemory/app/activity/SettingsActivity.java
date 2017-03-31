@@ -8,12 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.util.AppManager;
+import club.imemory.app.util.DataCleanManager;
+
+import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
 
 /**
@@ -49,13 +49,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView(){
-        LinearLayout mNotificationBtn = (LinearLayout) findViewById(R.id.btn_notification);
-        mNotificationBtn.setOnClickListener(this);
-        LinearLayout mOnlyWiFiBtn = (LinearLayout) findViewById(R.id.btn_only_wifi);
-        mOnlyWiFiBtn.setOnClickListener(this);
+        findViewById(R.id.btn_notification).setOnClickListener(this);
+        findViewById(R.id.btn_only_wifi).setOnClickListener(this);
         findViewById(R.id.btn_clear).setOnClickListener(this);
-        LinearLayout mOpenWeatherBtn = (LinearLayout) findViewById(R.id.btn_open_weather);
-        mOpenWeatherBtn.setOnClickListener(this);
+        findViewById(R.id.btn_open_weather).setOnClickListener(this);
         findViewById(R.id.btn_check_update).setOnClickListener(this);
         findViewById(R.id.btn_help_feedback).setOnClickListener(this);
         findViewById(R.id.btn_user_agreement).setOnClickListener(this);
@@ -80,6 +77,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 AppManager.showToast("WiFi");
                 break;
             case R.id.btn_clear:
+                DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
                 AppManager.showToast("缓存已清除");
                 break;
             case R.id.btn_open_weather:

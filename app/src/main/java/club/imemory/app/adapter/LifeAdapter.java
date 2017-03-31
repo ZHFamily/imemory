@@ -14,8 +14,8 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.bean.Life;
-import club.imemory.app.util.TimeUtils;
+import club.imemory.app.entity.Life;
+import club.imemory.app.util.AppUtils;
 
 /**
  * @Author: 张杭
@@ -65,7 +65,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         Life life = mLifeList.get(position);
         holder.mTitleTV.setText(life.getTitle());
         //holder.mSubheadTV.setText(life.getSubhead());
-        holder.mCreateTimeTV.setText(TimeUtils.getDataToString(life.getCreatetime()));
+        holder.mCreateTimeTV.setText(AppUtils.getDataToString(life.getCreatetime()));
         //使用Glide库加载图片
         Glide.with(mContext).load(life.getAvatar()).into(holder.mAvatarView);
     }

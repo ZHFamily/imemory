@@ -27,8 +27,7 @@ import club.imemory.app.db.County;
 import club.imemory.app.db.Province;
 import club.imemory.app.http.HttpManager;
 import club.imemory.app.util.AppManager;
-import club.imemory.app.util.ApplicationUtil;
-import club.imemory.app.db.WeatherDataAnalyze;
+import club.imemory.app.json.JsonAnalyze;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -98,7 +97,7 @@ public class ChooseAreaFragment extends Fragment {
         titleText = (TextView) view.findViewById(R.id.tv_title_area);
         backButton = (Button) view.findViewById(R.id.btn_back_area);
         listView = (ListView) view.findViewById(R.id.list_view_area);
-        adapter = new ArrayAdapter<>(ApplicationUtil.getContext(), R.layout.item_weather_choose_area, dataList);
+        adapter = new ArrayAdapter<>(container.getContext(), R.layout.item_weather_choose_area, dataList);
         listView.setAdapter(adapter);
         return view;
     }
@@ -173,7 +172,7 @@ public class ChooseAreaFragment extends Fragment {
     private void queryCities() {
         titleText.setText(selectedProvince.getProvinceName());
         backButton.setVisibility(View.VISIBLE);
-        cityList = DataSupport.where("provinceid = ?", String.valueOf(selectedProvince.getId())).find(City.class);
+        cityList = DataSupport.where("provinceCode = ?", String.valueOf(selectedProvince.getProvinceCode())).find(City.class);
         if (cityList.size() > 0) {
             dataList.clear();
             for (City city : cityList) {
@@ -183,8 +182,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_CITY;
         } else {
-            int provinceCode = selectedProvince.getProvinceCode();
-            queryFromServer(GET_AREA + provinceCode, "city");
+            queryFromServer(GET_AREA + selectedProvince.getProvinceCode(), "city");
         }
     }
 
@@ -194,7 +192,7 @@ public class ChooseAreaFragment extends Fragment {
     private void queryCounties() {
         titleText.setText(selectedCity.getCityName());
         backButton.setVisibility(View.VISIBLE);
-        countyList = DataSupport.where("cityid = ?", String.valueOf(selectedCity.getId())).find(County.class);
+        countyList = DataSupport.where("cityCode = ?", String.valueOf(selectedCity.getCityCode())).find(County.class);
         if (countyList.size() > 0) {
             dataList.clear();
             for (County county : countyList) {
@@ -204,9 +202,7 @@ public class ChooseAreaFragment extends Fragment {
             listView.setSelection(0);
             currentLevel = LEVEL_COUNTY;
         } else {
-            int provinceCode = selectedProvince.getProvinceCode();
-            int cityCode = selectedCity.getCityCode();
-            queryFromServer(GET_AREA + provinceCode + "/" + cityCode, "county");
+            queryFromServer(GET_AREA + selectedProvince.getProvinceCode() + "/" + selectedCity.getCityCode(), "county");
         }
     }
 
@@ -221,11 +217,11 @@ public class ChooseAreaFragment extends Fragment {
                 String responseText = response.body().string();
                 boolean result = false;
                 if ("province".equals(type)) {
-                    result = WeatherDataAnalyze.handleProvinceResponse(responseText);
+                    result = JsonAnalyze.handleProvinceResponse(responseText);
                 } else if ("city".equals(type)) {
-                    result = WeatherDataAnalyze.handleCityResponse(responseText, selectedProvince.getId());
+                    result = JsonAnalyze.handleCityResponse(responseText, selectedProvince.getProvinceCode());
                 } else if ("county".equals(type)) {
-                    result = WeatherDataAnalyze.handleCountyResponse(responseText, selectedCity.getId());
+                    result = JsonAnalyze.handleCountyResponse(responseText, selectedCity.getCityCode());
                 }
                 if (result) {
                     getActivity().runOnUiThread(new Runnable() {

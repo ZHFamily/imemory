@@ -3,35 +3,27 @@ package club.imemory.app.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 
 import club.imemory.app.R;
-import club.imemory.app.base.BaseActivity;
 import club.imemory.app.http.HttpManager;
-import club.imemory.app.json.Forecast;
-import club.imemory.app.json.Weather;
+import club.imemory.app.entity.Forecast;
+import club.imemory.app.entity.Weather;
 import club.imemory.app.service.AutoUpdateWeatherService;
-import club.imemory.app.db.WeatherDataAnalyze;
+import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -112,7 +104,7 @@ public class WeatherActivity extends BaseActivity {
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
             // 有缓存时直接解析天气数据
-            Weather weather = WeatherDataAnalyze.handleWeatherResponse(weatherString);
+            Weather weather = JsonAnalyze.handleWeatherResponse(weatherString);
             mWeatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
@@ -144,7 +136,7 @@ public class WeatherActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                final Weather weather = WeatherDataAnalyze.handleWeatherResponse(responseText);
+                final Weather weather = JsonAnalyze.handleWeatherResponse(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
