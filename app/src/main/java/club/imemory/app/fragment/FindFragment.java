@@ -16,7 +16,6 @@ import java.util.List;
 import club.imemory.app.R;
 import club.imemory.app.adapter.FindAdapter;
 import club.imemory.app.entity.Find;
-import club.imemory.app.entity.Life;
 
 /**
  * @Author: 张杭
@@ -25,17 +24,21 @@ import club.imemory.app.entity.Life;
 
 public class FindFragment extends Fragment {
 
+    private static FindFragment mFindFragment = null;
+    private SwipeRefreshLayout swipeRefresh;
+    private List<Find> mFindList = new ArrayList<>();
+    private FindAdapter adapter;
+
     /**
      * 实例化NearShareFragment
      * @return
      */
     public static FindFragment instanceFragment(){
-        return new FindFragment();
+        if (mFindFragment==null){
+            mFindFragment = new FindFragment();
+        }
+        return mFindFragment;
     }
-
-    private SwipeRefreshLayout swipeRefresh;
-    private List<Find> mFindList = new ArrayList<>();
-    private FindAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

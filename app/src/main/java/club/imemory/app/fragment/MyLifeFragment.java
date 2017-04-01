@@ -24,17 +24,29 @@ import club.imemory.app.entity.Life;
 
 public class MyLifeFragment extends Fragment {
 
-    /**
-     * 实例化MyLifeFragment
-     * @return
-     */
-    public static MyLifeFragment instanceFragment(){
-        return new MyLifeFragment();
-    }
-
+    private static MyLifeFragment mMyLifeFragment;
     private SwipeRefreshLayout swipeRefresh;
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
+    /**
+     * 当MainActivity发生重建时（如旋转屏幕、退到后台、接到电话）
+     * 保存最后显示的Fragment
+     * google推荐用Fragment保存数据
+     * 而正好MyLifeFragment每次启动都会创建
+     */
+    private int currentFragment;
+
+    /**
+     * 实例化MyLifeFragment
+     *
+     * @return
+     */
+    public static MyLifeFragment instanceFragment() {
+        if (mMyLifeFragment == null) {
+            mMyLifeFragment = new MyLifeFragment();
+        }
+        return mMyLifeFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +54,7 @@ public class MyLifeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_life, container, false);
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshLife();
@@ -50,18 +62,18 @@ public class MyLifeFragment extends Fragment {
         });
         //滚动内容
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(container.getContext(),1);
+        GridLayoutManager layoutManager = new GridLayoutManager(container.getContext(), 1);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new LifeAdapter(mLifeList);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-    private void refreshLife(){
+    private void refreshLife() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -78,12 +90,12 @@ public class MyLifeFragment extends Fragment {
         }).start();
     }
 
-    private void initData(){
+    private void initData() {
         mLifeList.clear();
-        for (int i=1; i<10; i++){
+        for (int i = 1; i < 10; i++) {
             Life life = new Life();
             life.setTitle("无bug行自在");
-            life.setAvatar("http://imemory.club/imemory/image/"+i+".jpg");
+            life.setAvatar("http://imemory.club/imemory/image/" + i + ".jpg");
             life.setCreatetime(new Date());
             mLifeList.add(life);
         }
@@ -99,4 +111,12 @@ public class MyLifeFragment extends Fragment {
                     .setAction("Action", null).show();*//*
         }
     });*/
+
+    public int getCurrentFragment() {
+        return currentFragment;
+    }
+
+    public void setCurrentFragment(int currentFragment) {
+        this.currentFragment = currentFragment;
+    }
 }

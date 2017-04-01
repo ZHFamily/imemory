@@ -1,6 +1,7 @@
 package club.imemory.app.activity;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -23,22 +24,22 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import club.imemory.app.R;
+import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
-import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
-import club.imemory.app.util.DataCleanManager;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
-import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FragmentManager fragmentManager;
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
+
     /**
      * 记录当前显示的Fragment
      */
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppManager.logI("MainActivity", "onCreate");
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("生活");
         setSupportActionBar(mToolbar);
@@ -103,13 +104,39 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        //初始化主显示界面
-        if(currentFragment==0){
-            addOrShowFragment(SHOW_LIFE);
+        fragmentManager = getFragmentManager();
+        // 从savedInstanceState中恢复数据, 如果没有数据需要恢复savedInstanceState为null
+        if (savedInstanceState != null) {
+            restore(savedInstanceState.getInt("current"));
         }else{
-            addOrShowFragment(currentFragment);
+            //没有数据可以还原，初始化主显示界面
+            if (currentFragment == 0) {
+                addOrShowFragment(SHOW_LIFE);
+            } else {
+                addOrShowFragment(currentFragment);
+            }
         }
+    }
 
+    /**
+     * 还原数据
+     */
+    private void restore(int current) {
+        //当Activity发生重建是还原Fragment
+        mMyLifeFragment = (MyLifeFragment) fragmentManager.findFragmentByTag("MyLifeFragment");
+        mFindFragment = (FindFragment) fragmentManager.findFragmentByTag("FindFragment");
+        mMessageFragment = (MessageFragment) fragmentManager.findFragmentByTag("MessageFragment");
+        if(mMessageFragment!=null){
+            fragmentManager.beginTransaction().hide(mMessageFragment).commit();
+        }
+        if (mFindFragment!=null){
+            fragmentManager.beginTransaction().hide(mFindFragment).commit();
+        }
+        if(mMyLifeFragment!=null){
+            //说明Activity发生了重建，设置之前保存的currentFragment
+            fragmentManager.beginTransaction().hide(mMyLifeFragment).commit();
+            addOrShowFragment(current);
+        }
     }
 
     @Override
@@ -147,12 +174,12 @@ public class MainActivity extends BaseActivity
     }
 
     private void addOrShowFragment(int index) {
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        if (currentFragment==index){
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (currentFragment == index) {
             return;
         }
         //将上次显示的fragment隐藏
-        switch (currentFragment){
+        switch (currentFragment) {
             case SHOW_LIFE:
                 fragmentTransaction.hide(mMyLifeFragment);
                 break;
@@ -168,7 +195,7 @@ public class MainActivity extends BaseActivity
             case SHOW_LIFE:
                 if (mMyLifeFragment == null) {
                     mMyLifeFragment = MyLifeFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mMyLifeFragment);
+                    fragmentTransaction.add(R.id.content_frame, mMyLifeFragment,"MyLifeFragment");
                 } else {
                     fragmentTransaction.show(mMyLifeFragment);
                 }
@@ -176,7 +203,7 @@ public class MainActivity extends BaseActivity
             case SHOW_FIND:
                 if (mFindFragment == null) {
                     mFindFragment = FindFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mFindFragment);
+                    fragmentTransaction.add(R.id.content_frame, mFindFragment,"FindFragment");
                 } else {
                     fragmentTransaction.show(mFindFragment);
                 }
@@ -184,7 +211,7 @@ public class MainActivity extends BaseActivity
             case SHOW_MESSAGE:
                 if (mMessageFragment == null) {
                     mMessageFragment = MessageFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mMessageFragment);
+                    fragmentTransaction.add(R.id.content_frame, mMessageFragment,"MessageFragment");
                 } else {
                     fragmentTransaction.show(mMessageFragment);
                 }
@@ -268,7 +295,6 @@ public class MainActivity extends BaseActivity
                 }
             }
         };
-        //dialog参数设置
         AlertDialog.Builder builder = new AlertDialog.Builder(this);  //先得到构造器
         builder.setTitle("提示"); //设置标题
         builder.setMessage(result); //设置内容
@@ -278,44 +304,9 @@ public class MainActivity extends BaseActivity
         builder.create().show();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        AppManager.logI("MainActivity", "onStart");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        AppManager.logI("MainActivity", "onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        AppManager.logI("MainActivity", "onPause");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        AppManager.logI("MainActivity", "onStop");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        AppManager.logI("MainActivity", "onDestroy");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        AppManager.logI("MainActivity", "onRestart");
-    }
-
     /**
      * 返回产生的二维码view
+     *
      * @return
      */
     private ImageView getQrCodeView() {
@@ -323,6 +314,16 @@ public class MainActivity extends BaseActivity
         imgView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
         imgView.setImageBitmap(AppUtils.getEncodeBitmap("年青正好"));
         return imgView;
+    }
+
+
+    /**
+     * 在Activity销毁时保存当前显示的Fragment
+     */
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("current",currentFragment);
+        super.onSaveInstanceState(outState);
     }
 
     /**

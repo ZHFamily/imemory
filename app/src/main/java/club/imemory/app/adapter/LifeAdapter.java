@@ -33,14 +33,11 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         mLifeList = lifeList;
     }
 
-    /**
-     * 内部静态类，初始化item
-     */
     static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         ImageView mAvatarView;
         TextView mTitleTV;
-        //private TextView mSubheadTV;
+        //TextView mSubheadTV;
         TextView mCreateTimeTV;
 
         public ViewHolder(View itemView) {

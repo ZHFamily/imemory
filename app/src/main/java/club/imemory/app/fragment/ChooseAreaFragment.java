@@ -41,17 +41,7 @@ import static club.imemory.app.util.AppManager.GET_AREA;
 
 public class ChooseAreaFragment extends Fragment {
 
-    private static ChooseAreaFragment mChooseAreaFragment;
-    /**
-     * 实例化MessageFragment
-     * @return
-     */
-    public static ChooseAreaFragment instanceFragment(){
-        if (mChooseAreaFragment==null){
-            mChooseAreaFragment = new ChooseAreaFragment();
-        }
-        return mChooseAreaFragment;
-    }
+    private static ChooseAreaFragment mChooseAreaFragment = null;
 
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
@@ -89,6 +79,16 @@ public class ChooseAreaFragment extends Fragment {
      * 当前选中的级别
      */
     private int currentLevel;
+
+    /**
+     * 实例化ChooseAreaFragment
+     */
+    public static ChooseAreaFragment instanceFragment(){
+        if (mChooseAreaFragment==null){
+            mChooseAreaFragment = new ChooseAreaFragment();
+        }
+        return mChooseAreaFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

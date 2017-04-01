@@ -32,7 +32,7 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="16sp"
-            tools:text="ŪȠֽۃ" />
+            tools:text="title" />
 
         <TextView
             android:id="@+id/tv_subhead"
@@ -42,7 +42,7 @@
             android:maxLines="2"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="12sp"
-            tools:text="՚ƫִքր·ʏԽ؟ԽԶ" />
+            tools:text="subhead" />
 
         <TextView
             android:id="@+id/tv_create_time"
@@ -51,7 +51,7 @@
             android:maxLines="1"
             android:textColor="?android:attr/textColorSecondary"
             android:textSize="12sp"
-            tools:text="ԴݨԚú2015-1-1 19:20:15" />
+            tools:text="2015-1-1 19:20:15" />
 
     </LinearLayout>
 
