@@ -1,5 +1,7 @@
 package club.imemory.app.json;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -9,8 +11,8 @@ import java.util.List;
 import club.imemory.app.db.City;
 import club.imemory.app.db.County;
 import club.imemory.app.db.Province;
+import club.imemory.app.db.User;
 import club.imemory.app.entity.Weather;
-import club.imemory.app.util.StringUtils;
 
 /**
  * JSON 数据解析
@@ -28,7 +30,7 @@ public class JsonAnalyze {
      * @return
      */
     public static boolean handleProvinceResponse(String response) {
-        if (StringUtils.isEmpty(response)) {
+        if (TextUtils.isEmpty(response)) {
             return false;
         } else {
             List<Province> provinceList = JSON.parseArray(response, Province.class);
@@ -47,7 +49,7 @@ public class JsonAnalyze {
      * @return
      */
     public static boolean handleCityResponse(String response, int provinceCode) {
-        if (StringUtils.isEmpty(response)) {
+        if (TextUtils.isEmpty(response)) {
             return false;
         } else {
             List<City> cityList = JSON.parseArray(response, City.class);
@@ -67,7 +69,7 @@ public class JsonAnalyze {
      * @return
      */
     public static boolean handleCountyResponse(String response, int cityCode) {
-        if (StringUtils.isEmpty(response)) {
+        if (TextUtils.isEmpty(response)) {
             return false;
         } else {
             List<County> CountyList = JSON.parseArray(response, County.class);
@@ -93,5 +95,18 @@ public class JsonAnalyze {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 将返回的JSON数据解析成User实体类
+     */
+    public static boolean handleUserResponse(String response) {
+        if (TextUtils.isEmpty(response)) {
+            return false;
+        } else {
+            User user = JSON.parseObject(response, User.class);
+            user.save();
+            return true;
+        }
     }
 }

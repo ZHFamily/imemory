@@ -24,11 +24,11 @@ public class AppManager {
     /**
      * QQ登录的APP id
      */
-    public static final String APP_ID = "1106065084";
+    public static final String APP_ID = "101388887";
     /**
      * QQ登录的APP key
      */
-    public static final String APP_KEY = "alLN8RFC6oBoWRsr";
+    public static final String APP_KEY = "8e6df3ab7c7a03bdb88862279160297c";
     /**
      * 获取全国省市数据地址
      */
@@ -100,10 +100,10 @@ public class AppManager {
      * 关闭所有activity，退出程序
      */
     public static void finishAll() {
-        AppManager.logI("AppManager", "程序成功关闭");
         for (Activity activity : activities) {
             activity.finish();
         }
+        AppManager.logI("AppManager", "程序成功关闭");
         activities.clear();
         //Process.killProcess(Process.myPid());
     }

@@ -28,13 +28,6 @@ public class MyLifeFragment extends Fragment {
     private SwipeRefreshLayout swipeRefresh;
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
-    /**
-     * 当MainActivity发生重建时（如旋转屏幕、退到后台、接到电话）
-     * 保存最后显示的Fragment
-     * google推荐用Fragment保存数据
-     * 而正好MyLifeFragment每次启动都会创建
-     */
-    private int currentFragment;
 
     /**
      * 实例化MyLifeFragment
@@ -111,12 +104,4 @@ public class MyLifeFragment extends Fragment {
                     .setAction("Action", null).show();*//*
         }
     });*/
-
-    public int getCurrentFragment() {
-        return currentFragment;
-    }
-
-    public void setCurrentFragment(int currentFragment) {
-        this.currentFragment = currentFragment;
-    }
 }

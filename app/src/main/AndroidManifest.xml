@@ -8,34 +8,32 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <!-- 网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 改变网络状态 -->
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <!-- 访问网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- WiFi -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!--允许程序读写手机状态和身份-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <!-- 危险权限（需要向用户申请） -->
     <!-- 日历 -->
-    <uses-permission android:name="android.permission.READ_CALENDAR" />
-    <!-- 相机 -->
+    <!--<uses-permission android:name="android.permission.READ_CALENDAR" />-->
+    <!-- 相机 0-->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 联系人 -->
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!-- 定位 -->
+    <!-- 联系人 0-->
+    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
+    <!-- 定位 0-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 麦克风 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- 打电话 -->
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+    <!-- 手机 0-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
     <!-- 传感器 -->
-    <uses-permission android:name="android.permission.BODY_SENSORS" />
+    <!--<uses-permission android:name="android.permission.BODY_SENSORS" />-->
     <!-- 短信 -->
-    <uses-permission android:name="android.permission.READ_SMS" />
-    <!-- 外部存储器 -->
+    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
+    <!-- 外部存储器 0-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -52,6 +50,7 @@
             android:value="6309b71d2279d191953c1e39639a3ea4" />
 
         <activity android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/StatusTransparentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,7 +91,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1106065084" />
+                <data android:scheme="tencent101388887" />
             </intent-filter>
         </activity>
         <activity

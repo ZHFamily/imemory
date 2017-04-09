@@ -16,10 +16,8 @@ public class UserActivity extends BaseActivity {
     /**
      * 启动UserActivity
      */
-    public static void actionStart(Context context, String string1, String string2) {
+    public static void actionStart(Context context, String... strings) {
         Intent intent = new Intent(context, UserActivity.class);
-        intent.putExtra("", "");
-        intent.putExtra("", "");
         context.startActivity(intent);
     }
 

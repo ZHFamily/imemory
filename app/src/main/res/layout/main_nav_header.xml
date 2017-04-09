@@ -16,21 +16,22 @@
             android:id="@+id/image_head"
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:src="@drawable/ic_head" />
+            android:src="@drawable/ic_user_head" />
 
         <TextView
+            android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/margin"
-            android:text="@string/user_name"
+            android:text="请登录"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/tv_user_personality"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/user_personality"
             android:textColor="@color/colorWhite"
             android:textSize="14sp" />
     </LinearLayout>

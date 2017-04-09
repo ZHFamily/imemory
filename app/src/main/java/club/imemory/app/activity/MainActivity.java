@@ -1,5 +1,6 @@
 package club.imemory.app.activity;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,8 +8,13 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -19,16 +25,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.litepal.crud.DataSupport;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import club.imemory.app.R;
+import club.imemory.app.db.County;
+import club.imemory.app.db.User;
 import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
 
@@ -39,6 +55,7 @@ public class MainActivity extends BaseActivity
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
+    private User user;
 
     /**
      * 记录当前显示的Fragment
@@ -72,28 +89,46 @@ public class MainActivity extends BaseActivity
         navigationView.getMenu().findItem(R.id.nav_my).setChecked(true);
         View headerView = navigationView.getHeaderView(0);
 
+        user = DataSupport.findLast(User.class);
+        if (user != null){
+            TextView nameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
+            nameTv.setText(user.getName());
+            TextView personalityTv = (TextView) headerView.findViewById(R.id.tv_user_personality);
+            personalityTv.setText(user.getPersonality());
+            CircleImageView headImage = (CircleImageView) headerView.findViewById(R.id.image_head);
+            Glide.with(this).load(user.getHead()).into(headImage);
+        }
+
         //点击头像
         headerView.findViewById(R.id.layout_user_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginActivity.actionStart(MainActivity.this);
+                if (user != null){
+                    UserActivity.actionStart(MainActivity.this);
+                }else{
+                    LoginActivity.actionStart(MainActivity.this);
+                }
             }
         });
         //点击二维码
         headerView.findViewById(R.id.btn_two_dimension_code).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                ImageView imgView = getQrCodeView();
-                builder.setTitle("我的二维码");
-                builder.setView(imgView);
-                final AlertDialog dialog = builder.show();
-                imgView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+                if (user != null){
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    ImageView imgView = getQrCodeView(user.getPhone());
+                    builder.setTitle("我的二维码");
+                    builder.setView(imgView);
+                    final AlertDialog dialog = builder.show();
+                    imgView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                }else{
+                    LoginActivity.actionStart(MainActivity.this);
+                }
             }
         });
         //点击天气
@@ -104,11 +139,14 @@ public class MainActivity extends BaseActivity
             }
         });
 
+        requestsForPermissions();
+        showWeather();
+
         fragmentManager = getFragmentManager();
         // 从savedInstanceState中恢复数据, 如果没有数据需要恢复savedInstanceState为null
         if (savedInstanceState != null) {
             restore(savedInstanceState.getInt("current"));
-        }else{
+        } else {
             //没有数据可以还原，初始化主显示界面
             if (currentFragment == 0) {
                 addOrShowFragment(SHOW_LIFE);
@@ -122,20 +160,74 @@ public class MainActivity extends BaseActivity
      * 还原数据
      */
     private void restore(int current) {
-        //当Activity发生重建是还原Fragment
+        //当Activity发生重建时还原Fragment
         mMyLifeFragment = (MyLifeFragment) fragmentManager.findFragmentByTag("MyLifeFragment");
         mFindFragment = (FindFragment) fragmentManager.findFragmentByTag("FindFragment");
         mMessageFragment = (MessageFragment) fragmentManager.findFragmentByTag("MessageFragment");
-        if(mMessageFragment!=null){
+        if (mMessageFragment != null) {
             fragmentManager.beginTransaction().hide(mMessageFragment).commit();
         }
-        if (mFindFragment!=null){
+        if (mFindFragment != null) {
             fragmentManager.beginTransaction().hide(mFindFragment).commit();
         }
-        if(mMyLifeFragment!=null){
+        if (mMyLifeFragment != null) {
             //说明Activity发生了重建，设置之前保存的currentFragment
             fragmentManager.beginTransaction().hide(mMyLifeFragment).commit();
             addOrShowFragment(current);
+        }
+    }
+
+    /**
+     * 根据定位信息显示天气信息
+     */
+    private void showWeather() {
+
+    }
+
+    /**
+     * 权限申请
+     */
+    private void requestsForPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return;
+        }
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()){
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(MainActivity.this,permissions,1);
+        }else{
+            showWeather();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode==1){
+            if (grantResults.length>0){
+                for (int result:grantResults){
+                    if (result!=PackageManager.PERMISSION_GRANTED){
+                        AppManager.showToast("必须同意所有权限才能正常运行程序");
+                        finish();
+                        return;
+                    }
+                }
+                showWeather();
+            }else{
+                AppManager.showToast("发生未知错误,我感到非常抱歉");
+                finish();
+            }
         }
     }
 
@@ -195,7 +287,7 @@ public class MainActivity extends BaseActivity
             case SHOW_LIFE:
                 if (mMyLifeFragment == null) {
                     mMyLifeFragment = MyLifeFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mMyLifeFragment,"MyLifeFragment");
+                    fragmentTransaction.add(R.id.content_frame, mMyLifeFragment, "MyLifeFragment");
                 } else {
                     fragmentTransaction.show(mMyLifeFragment);
                 }
@@ -203,7 +295,7 @@ public class MainActivity extends BaseActivity
             case SHOW_FIND:
                 if (mFindFragment == null) {
                     mFindFragment = FindFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mFindFragment,"FindFragment");
+                    fragmentTransaction.add(R.id.content_frame, mFindFragment, "FindFragment");
                 } else {
                     fragmentTransaction.show(mFindFragment);
                 }
@@ -211,7 +303,7 @@ public class MainActivity extends BaseActivity
             case SHOW_MESSAGE:
                 if (mMessageFragment == null) {
                     mMessageFragment = MessageFragment.instanceFragment();
-                    fragmentTransaction.add(R.id.content_frame, mMessageFragment,"MessageFragment");
+                    fragmentTransaction.add(R.id.content_frame, mMessageFragment, "MessageFragment");
                 } else {
                     fragmentTransaction.show(mMessageFragment);
                 }
@@ -309,10 +401,10 @@ public class MainActivity extends BaseActivity
      *
      * @return
      */
-    private ImageView getQrCodeView() {
+    private ImageView getQrCodeView(String s) {
         ImageView imgView = new ImageView(this);
         imgView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
-        imgView.setImageBitmap(AppUtils.getEncodeBitmap("年青正好"));
+        imgView.setImageBitmap(AppUtils.getEncodeBitmap(s));
         return imgView;
     }
 
@@ -322,7 +414,7 @@ public class MainActivity extends BaseActivity
      */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("current",currentFragment);
+        outState.putInt("current", currentFragment);
         super.onSaveInstanceState(outState);
     }
 

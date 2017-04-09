@@ -10,6 +10,7 @@ import club.imemory.app.callback.HttpCallbackListener;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 /**
  * @Author: 张杭
@@ -17,6 +18,11 @@ import okhttp3.Request;
  */
 
 public class HttpManager {
+
+    //OkHttpClient为重量级的
+    private static OkHttpClient client = new OkHttpClient();
+    public static final String LOGIN = "http://192.168.0.114:8080/imemory/login-IMEMORY";
+    public static final String REGISTER = "http://192.168.0.114/imemory/register-IMEMORY";
 
     /**
      * 使用HttpURLConnection的GET方式发送HTTP请求
@@ -58,12 +64,22 @@ public class HttpManager {
     }
 
     /**
-     * 使用OKHttp发送HTTP请求
+     * 使用OKHttp发送HTTP请求，获取服务器数据(默认get方式)
      */
     public static void sendOKHttpRequest(String address, Callback callback) {
-        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(address)
+                .build();
+        client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 向服务器提交数据
+     */
+    public static void submitOKHttp(String address, RequestBody requestBody, Callback callback) {
+        Request request = new Request.Builder()
+                .url(address)
+                .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
     }

@@ -3,27 +3,15 @@ package club.imemory.app.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,21 +21,27 @@ import com.tencent.connect.UserInfo;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 import club.imemory.app.R;
 import club.imemory.app.callback.LoginListener;
+import club.imemory.app.http.HttpManager;
+import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.ApplicationUtil;
+import club.imemory.app.util.RegexUtils;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Response;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import static club.imemory.app.http.HttpManager.LOGIN;
 import static club.imemory.app.util.AppManager.APP_ID;
 
 /**
  * 实现手机号与密码登录
  */
-public class LoginActivity extends BaseActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends BaseActivity {
 
     /**
      * 启动LoginActivity
@@ -57,14 +51,6 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         context.startActivity(intent);
     }
 
-    /**
-     * 请求读取联系人标识
-     */
-    private static final int REQUEST_READ_CONTACTS = 1;
-    /**
-     * 记录登录的任务,以确保如果请求,我们可以取消它
-     */
-    private UserLoginTask mAuthTask = null;
     private AutoCompleteTextView mPhoneTV;
     private EditText mPasswordView;
     private View mProgressView;
@@ -95,24 +81,31 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         mForgetBtn = (Button) findViewById(R.id.btn_forget);
         mPhoneTV = (AutoCompleteTextView) findViewById(R.id.tv_phone);
         mPasswordView = (EditText) findViewById(R.id.tv_password);
-        Button mLoginButton = (Button) findViewById(R.id.btn_login);
-
-        populateAutoComplete();
-        //点击软键盘上的回车键时执行
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    return true;
-                }
-                return false;
+            public void onClick(View view) {
+                attemptLogin();
             }
         });
 
-        mLoginButton.setOnClickListener(new OnClickListener() {
+        //响应软件盘上的事件
+        mPhoneTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                AppManager.logI("LoginActivity", "点击登录");
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (RegexUtils.isMobileExact(v.getText().toString())) {
+                    return false;
+                } else {
+                    AppManager.showToast("手机号码不正确");
+                    v.setError("手机号码不正确");
+                    return true;
+                }
+            }
+        });
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                attemptLogin();
+                return false;
             }
         });
 
@@ -153,57 +146,9 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
     }
 
     /**
-     * 自动填写手机号
-     */
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make(mPhoneTV, "需要提供读取联系人权限", Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    });
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * 回调收到权限请求时已经完成。
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-    /**
-     * 尝试登录，对数据进行验证，
+     * 尝试登录，对数据进行验证
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
         // 重置错误
         mPhoneTV.setError(null);
         mPasswordView.setError(null);
@@ -215,7 +160,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         View focusView = null;
 
         //验证密码
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password) && password.length() < 6) {
             mPasswordView.setError("密码错误");
             focusView = mPasswordView;
             cancel = true;
@@ -226,7 +171,7 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
             mPhoneTV.setError("手机号不能为空");
             focusView = mPhoneTV;
             cancel = true;
-        } else if (!isPhoneValid(phone)) {
+        } else if (!RegexUtils.isMobileExact(phone)) {
             mPhoneTV.setError("手机号不正确");
             focusView = mPhoneTV;
             cancel = true;
@@ -238,19 +183,45 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         } else {
             // 显示进度条，记录登录状态
             showProgress(true);
-            mAuthTask = new UserLoginTask(phone, password);
-            mAuthTask.execute((Void) null);
+            UserLogin(phone, password);
         }
     }
 
-    private boolean isPhoneValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
+    private void UserLogin(String phone, String password) {
+        FormBody formBody = new FormBody.Builder()
+                .add("phone", phone)
+                .add("password", password)
+                .build();
+        HttpManager.submitOKHttp(LOGIN, formBody, new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String userJSON = response.body().string();
+                AppManager.logI("LoginActivity",userJSON);
+                if (JsonAnalyze.handleUserResponse(userJSON)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showProgress(false);
+                            AppManager.showToast("登录成功");
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }
+            }
 
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgress(false);
+                        AppManager.showToast("登录失败");
+                    }
+                });
+            }
+        });
     }
 
     /**
@@ -289,111 +260,4 @@ public class LoginActivity extends BaseActivity implements LoaderCallbacks<Curso
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> phones = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            phones.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addPhonesToAutoComplete(phones);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-    }
-
-    private void addPhonesToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mPhoneTV.setAdapter(adapter);
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-    /**
-     * 异步登录
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mPhone;
-        private final String mPassword;
-
-        UserLoginTask(String phone, String password) {
-            mPhone = phone;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-            String[] userArray = new String[]{"13971597910:123456", "admin:123456"};
-            for (String credential : userArray) {
-                String[] pieces = credential.split(":");
-                if (pieces[1].equals(mPhone)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError("密码不正确");
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }
 }
-
