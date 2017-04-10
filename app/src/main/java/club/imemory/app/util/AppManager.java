@@ -22,14 +22,6 @@ public class AppManager {
      */
     public static final String APP_NAME = "IMEMORY";
     /**
-     * QQ登录的APP id
-     */
-    public static final String APP_ID = "101388887";
-    /**
-     * QQ登录的APP key
-     */
-    public static final String APP_KEY = "8e6df3ab7c7a03bdb88862279160297c";
-    /**
      * 获取全国省市数据地址
      */
     public static final String GET_AREA = "http://guolin.tech/api/china/";

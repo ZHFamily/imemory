@@ -1,13 +1,20 @@
 package club.imemory.app.callback;
 
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import android.os.Handler;
+import android.os.Message;
+
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
+
+import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.ApplicationUtil;
 
@@ -19,16 +26,17 @@ import club.imemory.app.util.ApplicationUtil;
 public class LoginListener implements IUiListener {
 
     private Tencent mTencent;
+    private Handler mHandler;
 
-    public LoginListener(Tencent tencent) {
+    public LoginListener(Tencent tencent, Handler handler) {
         mTencent = tencent;
+        mHandler = handler;
     }
 
     @Override
-    public void onComplete(Object value) {
-        AppManager.showToast("QQ登录授权成功");
-        JSONObject json = (JSONObject) value;
-        AppManager.logI("LoginActivity", json.toJSONString());
+    public void onComplete(Object object) {
+        JSONObject json = (JSONObject) object;
+        AppManager.logI("LoginActivity", json.toString());
         //设置openid和token
         try {
             mTencent.setAccessToken(json.getString("access_token"), json.getString("expires_in"));
@@ -50,5 +58,39 @@ public class LoginListener implements IUiListener {
     @Override
     public void onCancel() {
         AppManager.showToast("QQ登录授权取消");
+    }
+
+    private  class UserInfoListener implements IUiListener {
+
+        @Override
+        public void onComplete(Object object) {
+            JSONObject userInfoJson = (JSONObject) object;
+            AppManager.logI("LoginActivity",userInfoJson.toString());
+            try {
+                User user = new User();
+                user.setName(userInfoJson.getString("nickname"));
+                user.setHead(userInfoJson.getString("figureurl_qq_2"));
+                user.setSex(userInfoJson.getString("gender"));
+                user.setAddress(userInfoJson.getString("province")+userInfoJson.getString("city"));
+                user.setLogintime(new Date());
+                user.setCreatetime(new Date());
+                user.save();
+                Message msg = new Message();
+                msg.what = 0;//QQ登录成功
+                mHandler.sendMessage(msg);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onError(UiError uiError) {
+            AppManager.showToast("获取qq用户信息错误");
+        }
+
+        @Override
+        public void onCancel() {
+            AppManager.showToast("获取qq用户信息取消");
+        }
     }
 }

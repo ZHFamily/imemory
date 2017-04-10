@@ -26,34 +26,6 @@ public class User extends DataSupport implements java.io.Serializable {
 
 	public User(){}
 
-	/** minimal constructor */
-	public User(String name, String password, String phone, Date logintime,
-			Date createtime) {
-		this.name = name;
-		this.password = password;
-		this.phone = phone;
-		this.logintime = logintime;
-		this.createtime = createtime;
-	}
-
-	/** full constructor */
-	public User(String name, String password, String phone, String head,
-			String sex, Date birthday, String email, String address,
-			String personality, Date logintime, Date createtime, Date updatetime) {
-		this.name = name;
-		this.password = password;
-		this.phone = phone;
-		this.head = head;
-		this.sex = sex;
-		this.birthday = birthday;
-		this.email = email;
-		this.address = address;
-		this.personality = personality;
-		this.logintime = logintime;
-		this.createtime = createtime;
-		this.updatetime = updatetime;
-	}
-
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", name=" + name + ", password=" + password

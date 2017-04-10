@@ -55,6 +55,9 @@ public class MainActivity extends BaseActivity
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
+    private CircleImageView headImage;
+    private TextView nameTv;
+    private TextView personalityTv;
     private User user;
 
     /**
@@ -83,28 +86,19 @@ public class MainActivity extends BaseActivity
                 this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().findItem(R.id.nav_my).setChecked(true);
         View headerView = navigationView.getHeaderView(0);
-
-        user = DataSupport.findLast(User.class);
-        if (user != null){
-            TextView nameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
-            nameTv.setText(user.getName());
-            TextView personalityTv = (TextView) headerView.findViewById(R.id.tv_user_personality);
-            personalityTv.setText(user.getPersonality());
-            CircleImageView headImage = (CircleImageView) headerView.findViewById(R.id.image_head);
-            Glide.with(this).load(user.getHead()).into(headImage);
-        }
-
+        headImage = (CircleImageView) headerView.findViewById(R.id.image_head);
+        personalityTv = (TextView) headerView.findViewById(R.id.tv_user_personality);
+        nameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
         //点击头像
         headerView.findViewById(R.id.layout_user_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (user != null){
-                    UserActivity.actionStart(MainActivity.this);
+                    UserActivity.actionStart(MainActivity.this,user);
                 }else{
                     LoginActivity.actionStart(MainActivity.this);
                 }
@@ -153,6 +147,17 @@ public class MainActivity extends BaseActivity
             } else {
                 addOrShowFragment(currentFragment);
             }
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        user = DataSupport.findLast(User.class);
+        if (user != null){
+            nameTv.setText(user.getName());
+            personalityTv.setText(user.getPersonality());
+            Glide.with(this).load(user.getHead()).into(headImage);
         }
     }
 

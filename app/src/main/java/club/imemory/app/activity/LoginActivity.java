@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -17,8 +19,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.tencent.connect.UserInfo;
-import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 
 import java.io.IOException;
@@ -28,7 +28,6 @@ import club.imemory.app.callback.LoginListener;
 import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
-import club.imemory.app.util.ApplicationUtil;
 import club.imemory.app.util.RegexUtils;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,7 +35,6 @@ import okhttp3.FormBody;
 import okhttp3.Response;
 
 import static club.imemory.app.http.HttpManager.LOGIN;
-import static club.imemory.app.util.AppManager.APP_ID;
 
 /**
  * 实现手机号与密码登录
@@ -59,9 +57,9 @@ public class LoginActivity extends BaseActivity {
     private Button mForgetBtn;
     //QQ登录
     private Tencent mTencent; //qq主操作对象
-    private IUiListener mLoginListener; //授权登录监听器
-    private IUiListener mUserInfoListener; //获取用户信息监听器
-    private UserInfo mUserInfo; //qq用户信息
+    private LoginListener mLoginListener; //授权登录监听器
+    //用来判断当前是否已经授权登录，若为false，点击登录button时进入授权，否则注销
+    private boolean isLogIned = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,34 +113,47 @@ public class LoginActivity extends BaseActivity {
         mQQloginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTencent = Tencent.createInstance(APP_ID, ApplicationUtil.getContext());
-                mLoginListener = new LoginListener(mTencent);
-                //调用QQ登录，用IUiListener对象作参数
-                if (!mTencent.isSessionValid()) {
-                    mTencent.login(LoginActivity.this, "all", mLoginListener);
-                } else {
-                    mTencent.logout(LoginActivity.this);
-                    AppManager.showToast("已注销");
-                }
+                qqLogin();
             }
         });
     }
-    //显示获取到的头像和昵称
-/*    private Handler mHandler = new Handler() {
+
+    private void qqLogin() {
+        mTencent = Tencent.createInstance("1106090620", LoginActivity.this);
+        mLoginListener = new LoginListener(mTencent, mHandler);
+        if (!isLogIned) {
+            isLogIned = true;
+            //调用QQ登录，用IUiListener对象作参数
+            if (!mTencent.isSessionValid()) {
+                mTencent.login(LoginActivity.this, "all", mLoginListener);
+            }
+        } else {
+            //登出
+            mTencent.logout(LoginActivity.this);
+            isLogIned = false;
+            AppManager.showToast("登录已注销");
+        }
+    }
+
+    /**
+     * QQ登录成功后跳转到主界面
+     */
+    private Handler mHandler = new Handler() {
         @Override
-        public void handleMessage(Find msg) {
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 0) {//获取昵称
-                tvNickName.setText((CharSequence) msg.obj);
-            } else if (msg.what == 1) {//获取头像
-                headerLogo.setImageBitmap((Bitmap) msg.obj);
+            if (msg.what == 0) {
+                AppManager.showToast("QQ登录成功");
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
         }
-    };*/
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mTencent.onActivityResult(requestCode, resultCode, data);
+        mTencent.onActivityResultData(requestCode, resultCode, data, mLoginListener);
     }
 
     /**
@@ -196,7 +207,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String userJSON = response.body().string();
-                AppManager.logI("LoginActivity",userJSON);
+                AppManager.logI("LoginActivity", userJSON);
                 if (JsonAnalyze.handleUserResponse(userJSON)) {
                     runOnUiThread(new Runnable() {
                         @Override
