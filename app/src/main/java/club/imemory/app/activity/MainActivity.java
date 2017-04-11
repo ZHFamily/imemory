@@ -8,9 +8,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -25,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -63,6 +66,7 @@ public class MainActivity extends BaseActivity
     private CircleImageView mHeadImage;
     private TextView mNameTv;
     private TextView mPersonalityTv;
+    private LinearLayout mWeatherBtn;
     private ImageView mDegreeImage;
     private TextView mAreaTv;
     private User user;
@@ -140,7 +144,8 @@ public class MainActivity extends BaseActivity
             }
         });
         //点击天气
-        headerView.findViewById(R.id.btn_weather).setOnClickListener(new View.OnClickListener() {
+        mWeatherBtn = (LinearLayout) headerView.findViewById(R.id.btn_weather);
+        mWeatherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
@@ -174,6 +179,12 @@ public class MainActivity extends BaseActivity
             if (user.getHead() != null) {
                 Glide.with(this).load(user.getHead()).into(mHeadImage);
             }
+        }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("isOpenWeather",true)){
+            mWeatherBtn.setVisibility(View.GONE);
+        }else{
+            mWeatherBtn.setVisibility(View.VISIBLE);
         }
     }
 
@@ -308,8 +319,11 @@ public class MainActivity extends BaseActivity
                 AppManager.showToast("这里有我的联系方式");
                 break;
             case R.id.nav_recommend:
-                // TODO  上线时请修改
-                //DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT,
+                        "展现美好记忆，体验趣味人生。www.imemory.club");
+                startActivity(Intent.createChooser(intent,"将imemory分享到"));
                 AppManager.showToast("和朋友一起玩耍吧");
                 break;
         }

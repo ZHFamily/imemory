@@ -204,13 +204,13 @@
             <View style="@style/DeepLine" />
 
             <TextView
-                android:id="@+id/btn_help_feedback"
+                android:id="@+id/btn_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:padding="16dp"
-                android:text="帮助与反馈"
+                android:text="使用帮助"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
 

@@ -29,7 +29,7 @@ public class ChooseAreaActivity extends BaseActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getString("weather", null) != null) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.clear();
+            editor.remove("weather");
             editor.apply();
         }
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
