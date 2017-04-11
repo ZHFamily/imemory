@@ -73,7 +73,7 @@ public class WeatherActivity extends BaseActivity {
         mBingPicImg = (ImageView) findViewById(R.id.img_bing_pic);
         weatherLayout = (ScrollView) findViewById(R.id.weather_layout);
         mTitleAreaTv = (TextView) findViewById(R.id.tv_topbar_title);
-        //titleUpdateTime = (TextView) findViewById(R.id.title_update_time);
+        mUpdateTimeTv = (TextView) findViewById(R.id.tv_update_time);
         mDegreeTv = (TextView) findViewById(R.id.tv_degree);
         mWeatherInfoTv = (TextView) findViewById(R.id.tv_weather_info);
         forecastLayout = (LinearLayout) findViewById(R.id.forecast_layout);
@@ -221,11 +221,11 @@ public class WeatherActivity extends BaseActivity {
      */
     private void showWeatherInfo(Weather weather) {
         String cityName = weather.basic.cityName;
-        String updateTime = weather.basic.update.updateTime.split(" ")[1];
+        String updateTime = weather.basic.update.updateTime;
         String degree = weather.now.temperature + "℃";
         String weatherInfo = weather.now.more.info;
         mTitleAreaTv.setText(cityName);
-        //titleUpdateTime.setText(updateTime);
+        mUpdateTimeTv.setText("更新于：" + updateTime);
         mDegreeTv.setText(degree);
         mWeatherInfoTv.setText(weatherInfo);
         forecastLayout.removeAllViews();

@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="0.2"
-        android:background="@color/colorTransparent" />
+        android:background="?android:attr/selectableItemBackground" />
 
     <TextView
         android:id="@+id/tv_topbar_title"
@@ -29,5 +29,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_weight="0.2"
-        android:background="@color/colorTransparent" />
+        android:background="?android:attr/selectableItemBackground"/>
 </LinearLayout>

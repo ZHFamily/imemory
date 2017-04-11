@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -48,6 +49,7 @@ import club.imemory.app.fragment.MyLifeFragment;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
 
@@ -100,6 +102,11 @@ public class MainActivity extends BaseActivity
         mNameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
         mDegreeImage = (ImageView) headerView.findViewById(R.id.tv_degree);
         mAreaTv = (TextView) headerView.findViewById(R.id.tv_area);
+        ImageView headerImage = (ImageView) headerView.findViewById(R.id.image_header);
+        Glide.with(this)
+                .load(R.drawable.bg)
+                .bitmapTransform(new BlurTransformation(this, 10))
+                .into(headerImage);
         //点击头像
         headerView.findViewById(R.id.layout_user_info).setOnClickListener(new View.OnClickListener() {
             @Override

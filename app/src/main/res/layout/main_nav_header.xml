@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@drawable/bg_side_nav_bar">
+    android:layout_height="180dp">
 
+    <ImageView
+        android:id="@+id/image_header"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#55000000"/>
     <LinearLayout
         android:id="@+id/layout_user_info"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
         android:gravity="bottom"
         android:orientation="vertical"
         android:padding="@dimen/margin">
@@ -22,8 +34,8 @@
             android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin"
-            android:text="请登录"
+            android:paddingTop="8dp"
+            android:text="点击登录"
             android:textColor="@color/colorWhite"
             android:textSize="16sp" />
 
@@ -40,17 +52,19 @@
         android:id="@+id/btn_weather"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="24dp"
+        android:layout_alignEnd="@+id/btn_two_dimension_code"
         android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/btn_two_dimension_code">
+        android:layout_marginTop="24dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/tv_degree"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_weather"/>
+            android:src="@drawable/ic_weather" />
 
         <TextView
             android:id="@+id/tv_area"
@@ -70,6 +84,6 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/margin"
-        android:background="@color/colorTransparent"
+        android:background="?android:attr/selectableItemBackground"
         android:src="@drawable/ic_two_dimension_code" />
 </RelativeLayout>
