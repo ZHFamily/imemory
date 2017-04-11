@@ -29,9 +29,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static club.imemory.app.util.AppManager.GET_BingPic;
-import static club.imemory.app.util.AppManager.WEATHER_INFO_KEY;
-import static club.imemory.app.util.AppManager.WEATHER_INFO_URL;
+import static club.imemory.app.http.HttpManager.GET_BingPic;
+import static club.imemory.app.http.HttpManager.WEATHER_INFO_KEY;
+import static club.imemory.app.http.HttpManager.WEATHER_INFO_URL;
 
 /**
  * @Author: 张杭
@@ -43,11 +43,12 @@ public class WeatherActivity extends BaseActivity {
     /**
      * 启动WeatherActivity
      */
-    public static void actionStart(Context context, String... strings) {
+    public static void actionStart(Context context) {
         Intent intent = new Intent(context, WeatherActivity.class);
         context.startActivity(intent);
     }
 
+    private static final int REQUEST_CODE = 1;
     public SwipeRefreshLayout swipeRefresh;
     private ScrollView weatherLayout;
     private ImageButton mRestsBtn;
@@ -97,9 +98,17 @@ public class WeatherActivity extends BaseActivity {
         mRestsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseAreaActivity.actionStart(WeatherActivity.this);
+                Intent intent = new Intent(WeatherActivity.this, ChooseAreaActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                requestWeather(mWeatherId);
+            }
+        });
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {
@@ -110,15 +119,15 @@ public class WeatherActivity extends BaseActivity {
         } else {
             // 无缓存时去服务器查询天气
             mWeatherId = getIntent().getStringExtra("weather_id");
-            weatherLayout.setVisibility(View.INVISIBLE);
-            requestWeather(mWeatherId);
-        }
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            if (mWeatherId != null) {
+                weatherLayout.setVisibility(View.INVISIBLE);
                 requestWeather(mWeatherId);
+            } else {
+                Intent intent = new Intent(this, ChooseAreaActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
             }
-        });
+        }
+
         String bingPic = prefs.getString("bing_pic", null);
         if (bingPic != null) {
             Glide.with(this).load(bingPic).into(mBingPicImg);
@@ -127,10 +136,21 @@ public class WeatherActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                mWeatherId = data.getStringExtra("weather_id");
+                requestWeather(mWeatherId);
+            }
+        }
+    }
+
     /**
      * 根据天气id请求城市天气信息。
      */
-    public void requestWeather(final String weatherId) {
+    public void requestWeather(String weatherId) {
         String weatherUrl = WEATHER_INFO_URL + weatherId + WEATHER_INFO_KEY;
         HttpManager.sendOKHttpRequest(weatherUrl, new Callback() {
             @Override

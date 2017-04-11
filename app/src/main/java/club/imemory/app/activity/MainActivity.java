@@ -27,6 +27,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -37,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.db.County;
 import club.imemory.app.db.User;
 import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.fragment.MessageFragment;
@@ -55,9 +58,11 @@ public class MainActivity extends BaseActivity
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
-    private CircleImageView headImage;
-    private TextView nameTv;
-    private TextView personalityTv;
+    private CircleImageView mHeadImage;
+    private TextView mNameTv;
+    private TextView mPersonalityTv;
+    private ImageView mDegreeImage;
+    private TextView mAreaTv;
     private User user;
 
     /**
@@ -90,16 +95,18 @@ public class MainActivity extends BaseActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().findItem(R.id.nav_my).setChecked(true);
         View headerView = navigationView.getHeaderView(0);
-        headImage = (CircleImageView) headerView.findViewById(R.id.image_head);
-        personalityTv = (TextView) headerView.findViewById(R.id.tv_user_personality);
-        nameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
+        mHeadImage = (CircleImageView) headerView.findViewById(R.id.image_head);
+        mPersonalityTv = (TextView) headerView.findViewById(R.id.tv_user_personality);
+        mNameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
+        mDegreeImage = (ImageView) headerView.findViewById(R.id.tv_degree);
+        mAreaTv = (TextView) headerView.findViewById(R.id.tv_area);
         //点击头像
         headerView.findViewById(R.id.layout_user_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user != null){
-                    UserActivity.actionStart(MainActivity.this,user);
-                }else{
+                if (user != null) {
+                    UserActivity.actionStart(MainActivity.this, user);
+                } else {
                     LoginActivity.actionStart(MainActivity.this);
                 }
             }
@@ -108,7 +115,7 @@ public class MainActivity extends BaseActivity
         headerView.findViewById(R.id.btn_two_dimension_code).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user != null){
+                if (user != null) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     ImageView imgView = getQrCodeView(user.getPhone());
                     builder.setTitle("我的二维码");
@@ -120,7 +127,7 @@ public class MainActivity extends BaseActivity
                             dialog.dismiss();
                         }
                     });
-                }else{
+                } else {
                     LoginActivity.actionStart(MainActivity.this);
                 }
             }
@@ -129,12 +136,12 @@ public class MainActivity extends BaseActivity
         headerView.findViewById(R.id.btn_weather).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChooseAreaActivity.actionStart(MainActivity.this);
+                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
+                startActivity(intent);
             }
         });
 
         requestsForPermissions();
-        showWeather();
 
         fragmentManager = getFragmentManager();
         // 从savedInstanceState中恢复数据, 如果没有数据需要恢复savedInstanceState为null
@@ -154,10 +161,12 @@ public class MainActivity extends BaseActivity
     protected void onStart() {
         super.onStart();
         user = DataSupport.findLast(User.class);
-        if (user != null){
-            nameTv.setText(user.getName());
-            personalityTv.setText(user.getPersonality());
-            Glide.with(this).load(user.getHead()).into(headImage);
+        if (user != null) {
+            mNameTv.setText(user.getName());
+            mPersonalityTv.setText(user.getPersonality());
+            if (user.getHead() != null) {
+                Glide.with(this).load(user.getHead()).into(mHeadImage);
+            }
         }
     }
 
@@ -183,10 +192,41 @@ public class MainActivity extends BaseActivity
     }
 
     /**
-     * 根据定位信息显示天气信息
+     * 根据定位信息显示当前地区
      */
     private void showWeather() {
+        //声明定位回调监听器
+        AMapLocationListener mLocationListener = new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        mAreaTv.setText(aMapLocation.getCity());
+                    } else {
+                        AppManager.showToast(aMapLocation.getErrorCode() + ":" + aMapLocation.getErrorInfo());
+                        AppManager.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        };
 
+        //声明AMapLocationClientOption对象
+        AMapLocationClientOption mLocationOption = null;
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Battery_Saving，低功耗模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果
+        mLocationOption.setOnceLocation(true);
+
+        //声明AMapLocationClient类对象  初始化
+        AMapLocationClient mLocationClient = new AMapLocationClient(getApplicationContext());
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //启动定位
+        mLocationClient.startLocation();
     }
 
     /**
@@ -209,27 +249,27 @@ public class MainActivity extends BaseActivity
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (!permissionList.isEmpty()){
+        if (!permissionList.isEmpty()) {
             String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(MainActivity.this,permissions,1);
-        }else{
+            ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
+        } else {
             showWeather();
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode==1){
-            if (grantResults.length>0){
-                for (int result:grantResults){
-                    if (result!=PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1) {
+            if (grantResults.length > 0) {
+                for (int result : grantResults) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
                         AppManager.showToast("必须同意所有权限才能正常运行程序");
                         finish();
                         return;
                     }
                 }
                 showWeather();
-            }else{
+            } else {
                 AppManager.showToast("发生未知错误,我感到非常抱歉");
                 finish();
             }

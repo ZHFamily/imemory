@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ic_screenshot05"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".activity.LoginActivity">
@@ -12,10 +11,9 @@
         android:id="@+id/login_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#10000000"
         android:elevation="@dimen/top_bar_elevation"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="@drawable/ic_arrow_back"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:navigationIcon="@drawable/ic_arrow_back2"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="@string/login" />
 
@@ -45,46 +43,46 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
+                android:elevation="10dp"
                 android:src="@mipmap/logo" />
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/visible"
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/tv_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin">
+                android:layout_margin="8dp"
+                android:hint="手机号码"
+                android:imeOptions="actionNext"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:maxLines="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textSize="16sp"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextColor="?android:attr/textColorSecondary"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_textColor="?android:attr/textColorPrimary"
+                app:met_textColorHint="?android:attr/textColorHint" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_phone"
-                    android:imeOptions="actionNext"
-                    android:inputType="phone"
-                    android:maxLength="11"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/masked"
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/tv_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin"
-                android:layout_marginRight="@dimen/margin">
-
-                <EditText
-                    android:id="@+id/tv_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/login"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1" />
-
-            </android.support.design.widget.TextInputLayout>
+                android:layout_margin="8dp"
+                android:hint="密码"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLength="36"
+                android:maxLines="1"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textSize="16sp"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelTextColor="?android:attr/textColorSecondary"
+                app:met_primaryColor="@color/colorPrimary"
+                app:met_textColor="?android:attr/textColorPrimary"
+                app:met_textColorHint="?android:attr/textColorHint" />
 
             <Button
                 android:id="@+id/btn_login"
@@ -92,45 +90,82 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:background="@color/colorTransparentGray"
+                android:background="@color/colorPrimary"
                 android:text="@string/login"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textColor="@color/colorWhite"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:gravity="center_horizontal">
+                android:layout_height="200dp"
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/btn_QQ"
-                    android:layout_width="83dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginRight="5dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:drawableLeft="@drawable/ic_qq"
-                    android:text="QQ登录"
-                    android:textColor="@color/colorGray"
-                    android:textSize="16sp" />
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="12dp"
-                    android:src="@drawable/ic_vertical_line" />
+                    <Button
+                        android:id="@+id/btn_register"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:text="现在注册"
+                        android:textColor="@color/colorGray"
+                        android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/btn_forget"
-                    android:layout_width="72dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="5dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:text="忘记密码"
-                    android:textColor="@color/colorGray"
-                    android:textSize="16sp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_vertical_line" />
+
+                    <Button
+                        android:id="@+id/btn_forget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:text="忘记密码"
+                        android:textColor="@color/colorGray"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|bottom"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btn_QQ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:drawableLeft="@drawable/ic_qq"
+                        android:text="QQ登录"
+                        android:textColor="@color/colorGray"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="13dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:src="@drawable/ic_vertical_line" />
+
+                    <Button
+                        android:id="@+id/btn_weibo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:drawableLeft="@drawable/ic_weibo"
+                        android:text="微博登录"
+                        android:textColor="@color/colorGray"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

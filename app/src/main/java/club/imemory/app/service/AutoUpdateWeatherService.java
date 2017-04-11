@@ -18,9 +18,9 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static club.imemory.app.util.AppManager.GET_BingPic;
-import static club.imemory.app.util.AppManager.WEATHER_INFO_KEY;
-import static club.imemory.app.util.AppManager.WEATHER_INFO_URL;
+import static club.imemory.app.http.HttpManager.GET_BingPic;
+import static club.imemory.app.http.HttpManager.WEATHER_INFO_KEY;
+import static club.imemory.app.http.HttpManager.WEATHER_INFO_URL;
 
 /**
  * @Author: 张杭

@@ -32,8 +32,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static club.imemory.app.util.AppManager.GET_AREA;
-
 /**
  * @Author: 张杭
  * @Date: 2017/3/28 13:08
@@ -42,7 +40,10 @@ import static club.imemory.app.util.AppManager.GET_AREA;
 public class ChooseAreaFragment extends Fragment {
 
     private static ChooseAreaFragment mChooseAreaFragment = null;
-
+    /**
+     * 获取全国省市数据地址
+     */
+    public static final String GET_AREA = "http://guolin.tech/api/china/";
     public static final int LEVEL_PROVINCE = 0;
     public static final int LEVEL_CITY = 1;
     public static final int LEVEL_COUNTY = 2;
@@ -83,8 +84,8 @@ public class ChooseAreaFragment extends Fragment {
     /**
      * 实例化ChooseAreaFragment
      */
-    public static ChooseAreaFragment instanceFragment(){
-        if (mChooseAreaFragment==null){
+    public static ChooseAreaFragment instanceFragment() {
+        if (mChooseAreaFragment == null) {
             mChooseAreaFragment = new ChooseAreaFragment();
         }
         return mChooseAreaFragment;
@@ -120,10 +121,8 @@ public class ChooseAreaFragment extends Fragment {
                     case LEVEL_COUNTY:
                         String weatherId = countyList.get(position).getWeatherId();
                         if (getActivity() instanceof ChooseAreaActivity) {
-                            Intent intent = new Intent(getActivity(), WeatherActivity.class);
-                            intent.putExtra("weather_id", weatherId);
-                            startActivity(intent);
-                            getActivity().finish();
+                            ChooseAreaActivity activity = (ChooseAreaActivity) getActivity();
+                            activity.gotoWeather(weatherId);
                         } else if (getActivity() instanceof WeatherActivity) {
                             WeatherActivity activity = (WeatherActivity) getActivity();
                             activity.swipeRefresh.setRefreshing(true);

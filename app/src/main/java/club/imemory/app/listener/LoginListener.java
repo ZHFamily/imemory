@@ -1,4 +1,4 @@
-package club.imemory.app.callback;
+package club.imemory.app.listener;
 
 import android.os.Handler;
 import android.os.Message;
@@ -60,18 +60,18 @@ public class LoginListener implements IUiListener {
         AppManager.showToast("QQ登录授权取消");
     }
 
-    private  class UserInfoListener implements IUiListener {
+    private class UserInfoListener implements IUiListener {
 
         @Override
         public void onComplete(Object object) {
             JSONObject userInfoJson = (JSONObject) object;
-            AppManager.logI("LoginActivity",userInfoJson.toString());
+            AppManager.logI("LoginActivity", userInfoJson.toString());
             try {
                 User user = new User();
                 user.setName(userInfoJson.getString("nickname"));
                 user.setHead(userInfoJson.getString("figureurl_qq_2"));
                 user.setSex(userInfoJson.getString("gender"));
-                user.setAddress(userInfoJson.getString("province")+userInfoJson.getString("city"));
+                user.setAddress(userInfoJson.getString("province") + userInfoJson.getString("city"));
                 user.setLogintime(new Date());
                 user.setCreatetime(new Date());
                 user.save();

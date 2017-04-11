@@ -39,6 +39,8 @@ dependencies {
     compile 'com.journeyapps:zxing-android-embedded:3.3.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5785_lite.jar')
     compile files('libs/AMap3DMap5.0.0_Search5.0.0_Location3.3.0.jar')

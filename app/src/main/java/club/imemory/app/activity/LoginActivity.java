@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,27 +15,19 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tencent.tauth.Tencent;
 
-import java.io.IOException;
+import org.litepal.crud.DataSupport;
 
 import club.imemory.app.R;
-import club.imemory.app.callback.LoginListener;
-import club.imemory.app.http.HttpManager;
-import club.imemory.app.json.JsonAnalyze;
+import club.imemory.app.listener.LoginListener;
+import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.RegexUtils;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.Response;
-
-import static club.imemory.app.http.HttpManager.LOGIN;
 
 /**
  * 实现手机号与密码登录
@@ -44,22 +37,19 @@ public class LoginActivity extends BaseActivity {
     /**
      * 启动LoginActivity
      */
-    public static void actionStart(Context context, String... strings) {
+    public static void actionStart(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
     }
 
-    private AutoCompleteTextView mPhoneTV;
-    private EditText mPasswordView;
+    private MaterialEditText mPhoneTV;
+    private MaterialEditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    private Button mQQloginBtn;
-    private Button mForgetBtn;
-    //QQ登录
     private Tencent mTencent; //qq主操作对象
     private LoginListener mLoginListener; //授权登录监听器
     //用来判断当前是否已经授权登录，若为false，点击登录button时进入授权，否则注销
-    private boolean isLogIned = false;
+    private boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,14 +65,16 @@ public class LoginActivity extends BaseActivity {
         });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mQQloginBtn = (Button) findViewById(R.id.btn_QQ);
-        mForgetBtn = (Button) findViewById(R.id.btn_forget);
-        mPhoneTV = (AutoCompleteTextView) findViewById(R.id.tv_phone);
-        mPasswordView = (EditText) findViewById(R.id.tv_password);
+        Button mQQLoginBtn = (Button) findViewById(R.id.btn_QQ);
+        Button mWeiBoLoginBtn = (Button) findViewById(R.id.btn_weibo);
+        Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
+        Button mForgetBtn = (Button) findViewById(R.id.btn_forget);
+        mPhoneTV = (MaterialEditText) findViewById(R.id.tv_phone);
+        mPasswordView = (MaterialEditText) findViewById(R.id.tv_password);
         findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                validateLogin();
             }
         });
 
@@ -90,7 +82,7 @@ public class LoginActivity extends BaseActivity {
         mPhoneTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (RegexUtils.isMobileExact(v.getText().toString())) {
+                if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
                     return false;
                 } else {
                     AppManager.showToast("手机号码不正确");
@@ -102,18 +94,36 @@ public class LoginActivity extends BaseActivity {
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                attemptLogin();
+                validateLogin();
                 return false;
             }
         });
 
-        /**
-         * QQ登录
-         */
-        mQQloginBtn.setOnClickListener(new OnClickListener() {
+        mRegisterBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.actionStart(LoginActivity.this);
+            }
+        });
+
+        mForgetBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterActivity.actionStart(LoginActivity.this);
+            }
+        });
+
+        mQQLoginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 qqLogin();
+            }
+        });
+
+        mWeiBoLoginBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppManager.showToast("该功能没实现");
             }
         });
     }
@@ -121,8 +131,8 @@ public class LoginActivity extends BaseActivity {
     private void qqLogin() {
         mTencent = Tencent.createInstance("1106090620", LoginActivity.this);
         mLoginListener = new LoginListener(mTencent, mHandler);
-        if (!isLogIned) {
-            isLogIned = true;
+        if (!isLogin) {
+            isLogin = true;
             //调用QQ登录，用IUiListener对象作参数
             if (!mTencent.isSessionValid()) {
                 mTencent.login(LoginActivity.this, "all", mLoginListener);
@@ -130,7 +140,7 @@ public class LoginActivity extends BaseActivity {
         } else {
             //登出
             mTencent.logout(LoginActivity.this);
-            isLogIned = false;
+            isLogin = false;
             AppManager.showToast("登录已注销");
         }
     }
@@ -143,8 +153,9 @@ public class LoginActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 0) {
-                AppManager.showToast("QQ登录成功");
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                AppManager.showToast("QQ授权成功");
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("QQ", "QQ");
                 startActivity(intent);
                 finish();
             }
@@ -159,13 +170,13 @@ public class LoginActivity extends BaseActivity {
     /**
      * 尝试登录，对数据进行验证
      */
-    private void attemptLogin() {
+    private void validateLogin() {
         // 重置错误
         mPhoneTV.setError(null);
         mPasswordView.setError(null);
 
-        String phone = mPhoneTV.getText().toString();
-        String password = mPasswordView.getText().toString();
+        String phone = mPhoneTV.getText().toString().trim();
+        String password = mPasswordView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
@@ -192,47 +203,57 @@ public class LoginActivity extends BaseActivity {
             //有错误，停止登录
             focusView.requestFocus();
         } else {
-            // 显示进度条，记录登录状态
-            showProgress(true);
-            UserLogin(phone, password);
+            showProgress(true); // 显示进度条
+            new UserLoginTask().execute(phone, password);
         }
     }
 
-    private void UserLogin(String phone, String password) {
-        FormBody formBody = new FormBody.Builder()
-                .add("phone", phone)
-                .add("password", password)
-                .build();
-        HttpManager.submitOKHttp(LOGIN, formBody, new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String userJSON = response.body().string();
-                AppManager.logI("LoginActivity", userJSON);
-                if (JsonAnalyze.handleUserResponse(userJSON)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showProgress(false);
-                            AppManager.showToast("登录成功");
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-                }
-            }
+    public class UserLoginTask extends AsyncTask<String, Integer, Integer> {
 
-            @Override
-            public void onFailure(Call call, IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showProgress(false);
-                        AppManager.showToast("登录失败");
-                    }
-                });
+        @Override
+        protected Integer doInBackground(String... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return 0;
             }
-        });
+            User user = DataSupport.findLast(User.class);
+            if (user == null) {
+                return 0;
+            } else if (params[0].equals(user.getPhone()) && params[1].equals(user.getPassword())) {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            showProgress(false);
+
+            switch (result) {
+                case 0:
+                    AppManager.showToast("账号不存在请先注册");
+                    break;
+                case 1:
+                    AppManager.showToast("登录成功");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+                case 2:
+                    AppManager.showToast("账号或密码错误");
+                    mPasswordView.setError("");
+                    mPhoneTV.setError("");
+                    mPhoneTV.requestFocus();
+                    break;
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            showProgress(false);
+        }
     }
 
     /**
@@ -240,9 +261,6 @@ public class LoginActivity extends BaseActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
@@ -264,8 +282,6 @@ public class LoginActivity extends BaseActivity {
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }

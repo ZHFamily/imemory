@@ -21,22 +21,6 @@ public class AppManager {
      * App常量定义
      */
     public static final String APP_NAME = "IMEMORY";
-    /**
-     * 获取全国省市数据地址
-     */
-    public static final String GET_AREA = "http://guolin.tech/api/china/";
-    /**
-     * 获取对应城市天气的URL
-     */
-    public static final String WEATHER_INFO_URL = "http://guolin.tech/api/weather?cityid=";
-    /**
-     * 获取对应城市天气所需要的key
-     */
-    public static final String WEATHER_INFO_KEY = "&key=bc0418b57b2d4918819d3974ac1285d9";
-    /**
-     * 获取必应每天更新的主页图片
-     */
-    public static final String GET_BingPic = "http://guolin.tech/api/bing_pic";
     //控制Log打印
     private static boolean debug = true;
     //关于Toast

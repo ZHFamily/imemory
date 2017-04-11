@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import club.imemory.app.callback.HttpCallbackListener;
+import club.imemory.app.listener.HttpCallbackListener;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -21,9 +21,10 @@ public class HttpManager {
 
     //OkHttpClient为重量级的
     private static OkHttpClient client = new OkHttpClient();
-    public static final String LOGIN = "http://192.168.0.114:8080/imemory/login-IMEMORY";
-    public static final String REGISTER = "http://192.168.0.114/imemory/register-IMEMORY";
-
+    public static final String WEATHER_INFO_URL = "http://guolin.tech/api/weather?cityid=";
+    public static final String WEATHER_INFO_KEY = "&key=bc0418b57b2d4918819d3974ac1285d9";
+    public static final String GET_BingPic = "http://guolin.tech/api/bing_pic";
+    
     /**
      * 使用HttpURLConnection的GET方式发送HTTP请求
      */

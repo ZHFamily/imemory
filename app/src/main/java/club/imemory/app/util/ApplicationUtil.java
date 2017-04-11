@@ -21,8 +21,8 @@ public class ApplicationUtil extends LitePalApplication {
         context = getApplicationContext();
         LitePal.initialize(context);
         //在这里为应用设置异常处理程序，将捕获的异常信息保存到文件
-        CrashHandler crashHandler = CrashHandler.getInstance();
-        crashHandler.init();
+        //CrashHandler crashHandler = CrashHandler.getInstance();
+        //crashHandler.init();
     }
 
     public static Context getContext() {
