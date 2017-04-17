@@ -15,6 +15,7 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.entity.Message;
+import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 
 /**
@@ -61,6 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Message Message = mMessageList.get(position);
+                AppManager.showToast("什么都没有");
                 //MessageActivity.actionStart(mContext,Message.getAvatar(),Message.getTitle());
             }
         });
@@ -74,7 +76,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.mSubheadTV.setText(Message.getSubhead());
         holder.mCreateTimeTV.setText(AppUtils.getDataToString(Message.getCreatetime()));
         //使用Glide库加载图片
-        Glide.with(mContext).load(Message.getAvatar()).into(holder.mAvatarView);
+        //Glide.with(mContext).load(Message.getAvatar()).into(holder.mAvatarView);
     }
 
     @Override

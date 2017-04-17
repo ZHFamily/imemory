@@ -63,8 +63,8 @@ public class MessageFragment extends Fragment {
     public void initData(){
         for (int i=0;i<20;i++){
             Message message = new Message();
-            message.setTitle("");
-            message.setSubhead("");
+            message.setTitle("年青正好");
+            message.setSubhead("在偏执的道路上越陷越深");
             message.setAvatar("");
             message.setCreatetime(new Date());
             mMessageList.add(message);

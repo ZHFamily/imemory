@@ -1,9 +1,13 @@
 package club.imemory.app.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import club.imemory.app.R;
+import club.imemory.app.activity.CreateLifeActivity;
 import club.imemory.app.adapter.LifeAdapter;
 import club.imemory.app.entity.Life;
 
@@ -45,6 +50,15 @@ public class MyLifeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initData();
         View view = inflater.inflate(R.layout.fragment_life, container, false);
+        //悬浮按钮
+        FloatingActionButton fabCreateLife = (FloatingActionButton) view.findViewById(R.id.fab_create_life);
+        fabCreateLife.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),CreateLifeActivity.class);
+                startActivity(intent);
+            }
+        });
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -55,7 +69,7 @@ public class MyLifeFragment extends Fragment {
         });
         //滚动内容
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(container.getContext(), 1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new LifeAdapter(mLifeList);
         recyclerView.setAdapter(adapter);
@@ -88,20 +102,10 @@ public class MyLifeFragment extends Fragment {
         for (int i = 1; i < 10; i++) {
             Life life = new Life();
             life.setTitle("无bug行自在");
+            life.setLocation("武汉");
             life.setAvatar("http://imemory.club/imemory/image/" + i + ".jpg");
             life.setCreatetime(new Date());
             mLifeList.add(life);
         }
     }
-
-    //悬浮按钮
-    /*FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
-    fabCreateLife.hide();
-    fabCreateLife.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            *//*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();*//*
-        }
-    });*/
 }

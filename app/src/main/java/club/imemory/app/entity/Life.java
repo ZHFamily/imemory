@@ -13,41 +13,13 @@ public class Life implements java.io.Serializable {
 	private String title;
 	private String subhead;
 	private String avatar;
+	private String location;
 	private Integer top;
 	private Date createtime;
 	private Date updatetime;
 
-	public Life(){}
-
-	/** minimal constructor */
-	public Life(Integer userId, String title, Date createtime) {
-		this.userId = userId;
-		this.title = title;
-		this.createtime = createtime;
-	}
-
-	/** full constructor */
-	public Life(Integer userId, String title, String subhead, String avatar,
-			Integer top, Date createtime, Date updatetime) {
-		this.userId = userId;
-		this.title = title;
-		this.subhead = subhead;
-		this.avatar = avatar;
-		this.top = top;
-		this.createtime = createtime;
-		this.updatetime = updatetime;
-	}
-
-	@Override
-	public String toString() {
-		return "Life [id=" + id + ", userId=" + userId + ", title=" + title
-				+ ", subhead=" + subhead + ", avatar=" + avatar + ", top="
-				+ top + ", createtime=" + createtime + ", updatetime="
-				+ updatetime + "]";
-	}
-
 	public Integer getId() {
-		return this.id;
+		return id;
 	}
 
 	public void setId(Integer id) {
@@ -55,7 +27,7 @@ public class Life implements java.io.Serializable {
 	}
 
 	public Integer getUserId() {
-		return this.userId;
+		return userId;
 	}
 
 	public void setUserId(Integer userId) {
@@ -63,7 +35,7 @@ public class Life implements java.io.Serializable {
 	}
 
 	public String getTitle() {
-		return this.title;
+		return title;
 	}
 
 	public void setTitle(String title) {
@@ -71,7 +43,7 @@ public class Life implements java.io.Serializable {
 	}
 
 	public String getSubhead() {
-		return this.subhead;
+		return subhead;
 	}
 
 	public void setSubhead(String subhead) {
@@ -79,15 +51,23 @@ public class Life implements java.io.Serializable {
 	}
 
 	public String getAvatar() {
-		return this.avatar;
+		return avatar;
 	}
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
 	public Integer getTop() {
-		return this.top;
+		return top;
 	}
 
 	public void setTop(Integer top) {
@@ -95,7 +75,7 @@ public class Life implements java.io.Serializable {
 	}
 
 	public Date getCreatetime() {
-		return this.createtime;
+		return createtime;
 	}
 
 	public void setCreatetime(Date createtime) {
@@ -103,11 +83,10 @@ public class Life implements java.io.Serializable {
 	}
 
 	public Date getUpdatetime() {
-		return this.updatetime;
+		return updatetime;
 	}
 
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
 	}
-
 }

@@ -10,8 +10,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
+
+import com.bumptech.glide.Glide;
+
+import org.litepal.crud.DataSupport;
 
 import club.imemory.app.R;
+import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.DataCleanManager;
 
@@ -65,6 +71,12 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         findViewById(R.id.btn_check_update).setOnClickListener(this);
         findViewById(R.id.btn_help).setOnClickListener(this);
         findViewById(R.id.btn_user_agreement).setOnClickListener(this);
+        findViewById(R.id.btn_logout).setOnClickListener(this);
+        LinearLayout logoutBtn = (LinearLayout) findViewById(R.id.logout);
+        User user = DataSupport.findLast(User.class);
+        if (user == null) {
+            logoutBtn.setVisibility(View.GONE);
+        }
 
         switchNotification = (SwitchCompat) findViewById(R.id.switch_notification);
         switchNotification.setChecked(isNotification);
@@ -104,6 +116,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.btn_user_agreement:
                 AppManager.showToast("遵纪守法就好啦");
+                break;
+            case R.id.btn_logout:
+                AppManager.showToast("注销成功");
+                DataSupport.deleteAll(User.class);
+                finish();
                 break;
             default:
                 break;

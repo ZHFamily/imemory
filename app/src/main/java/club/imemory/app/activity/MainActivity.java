@@ -179,6 +179,9 @@ public class MainActivity extends BaseActivity
             if (user.getHead() != null) {
                 Glide.with(this).load(user.getHead()).into(mHeadImage);
             }
+        }else{
+            mNameTv.setText("点击登录");
+            mPersonalityTv.setText("在偏执道路上狂奔吧");
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("isOpenWeather",true)){

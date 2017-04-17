@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +19,7 @@ import club.imemory.app.R;
 import club.imemory.app.activity.LifeActivity;
 import club.imemory.app.entity.Life;
 import club.imemory.app.util.AppUtils;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * @Author: 张杭
@@ -34,18 +36,18 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
+        LinearLayout Layout;
         ImageView mAvatarView;
         TextView mTitleTV;
-        //TextView mSubheadTV;
+        TextView mLocationTV;
         TextView mCreateTimeTV;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView;
+            Layout = (LinearLayout) itemView;
             mAvatarView = (ImageView) itemView.findViewById(R.id.image_avatar);
             mTitleTV = (TextView) itemView.findViewById(R.id.tv_title);
-            //mSubheadTV = (TextView) itemView.findViewById(R.id.tv_subhead);
+            mLocationTV = (TextView) itemView.findViewById(R.id.tv_location);
             mCreateTimeTV = (TextView) itemView.findViewById(R.id.tv_create_time);
         }
     }
@@ -58,7 +60,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_life, parent, false);
 
         final ViewHolder holder = new ViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        holder.Layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -73,10 +75,12 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         Life life = mLifeList.get(position);
         holder.mTitleTV.setText(life.getTitle());
-        //holder.mSubheadTV.setText(life.getSubhead());
-        holder.mCreateTimeTV.setText(AppUtils.getDataToString(life.getCreatetime()));
+        holder.mLocationTV.setText(life.getLocation());
+        holder.mCreateTimeTV.setText("创建于"+AppUtils.getDataToString(life.getCreatetime()));
         //使用Glide库加载图片
-        Glide.with(mContext).load(life.getAvatar()).into(holder.mAvatarView);
+        Glide.with(mContext).load(life.getAvatar())
+                .thumbnail(0.1f)
+                .into(holder.mAvatarView);
     }
 
     @Override

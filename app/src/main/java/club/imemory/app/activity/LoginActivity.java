@@ -16,16 +16,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.tencent.tauth.Tencent;
 
 import org.litepal.crud.DataSupport;
 
 import club.imemory.app.R;
-import club.imemory.app.listener.LoginListener;
 import club.imemory.app.db.User;
+import club.imemory.app.listener.LoginListener;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.RegexUtils;
 
@@ -42,14 +42,12 @@ public class LoginActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    private MaterialEditText mPhoneTV;
-    private MaterialEditText mPasswordView;
+    private EditText mPhoneTV;
+    private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     private Tencent mTencent; //qq主操作对象
     private LoginListener mLoginListener; //授权登录监听器
-    //用来判断当前是否已经授权登录，若为false，点击登录button时进入授权，否则注销
-    private boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +67,8 @@ public class LoginActivity extends BaseActivity {
         Button mWeiBoLoginBtn = (Button) findViewById(R.id.btn_weibo);
         Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
         Button mForgetBtn = (Button) findViewById(R.id.btn_forget);
-        mPhoneTV = (MaterialEditText) findViewById(R.id.tv_phone);
-        mPasswordView = (MaterialEditText) findViewById(R.id.tv_password);
+        mPhoneTV = (EditText) findViewById(R.id.tv_phone);
+        mPasswordView = (EditText) findViewById(R.id.tv_password);
         findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +108,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 RegisterActivity.actionStart(LoginActivity.this);
+                AppManager.showToast("忘记密码就重新注册一个吧");
             }
         });
 
@@ -123,7 +122,7 @@ public class LoginActivity extends BaseActivity {
         mWeiBoLoginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppManager.showToast("该功能没实现");
+                AppManager.showToast("该功能没实现,试试QQ登录");
             }
         });
     }
@@ -131,17 +130,9 @@ public class LoginActivity extends BaseActivity {
     private void qqLogin() {
         mTencent = Tencent.createInstance("1106090620", LoginActivity.this);
         mLoginListener = new LoginListener(mTencent, mHandler);
-        if (!isLogin) {
-            isLogin = true;
-            //调用QQ登录，用IUiListener对象作参数
-            if (!mTencent.isSessionValid()) {
-                mTencent.login(LoginActivity.this, "all", mLoginListener);
-            }
-        } else {
-            //登出
-            mTencent.logout(LoginActivity.this);
-            isLogin = false;
-            AppManager.showToast("登录已注销");
+        //调用QQ登录，用IUiListener对象作参数
+        if (!mTencent.isSessionValid()) {
+            mTencent.login(LoginActivity.this, "all", mLoginListener);
         }
     }
 

@@ -21,18 +21,6 @@ public class Find {
     private Date createtime;
     private Date updatetime;
 
-    public Find(){}
-
-    public Find(String userName, String userHead, String title, String subhead, String avatar, int hits, Date createtime) {
-        this.userName = userName;
-        this.userHead = userHead;
-        this.title = title;
-        this.subhead = subhead;
-        this.avatar = avatar;
-        this.hits = hits;
-        this.createtime = createtime;
-    }
-
     public int getId() {
         return id;
     }

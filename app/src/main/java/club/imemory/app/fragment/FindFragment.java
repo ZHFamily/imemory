@@ -85,7 +85,14 @@ public class FindFragment extends Fragment {
     private void initData(){
         mFindList.clear();
         for (int i=1; i<10; i++){
-            Find find = new Find("123","123","123","123","123",123456,new Date());
+            Find find = new Find();
+            find.setTitle("大电池加快充，手机重度用户告别用电荒什么什么的");
+            find.setSubhead("要问智能手机用户最头疼的是什么，没有WiFi和电池不够用什么什么的");
+            find.setAvatar("");
+            find.setUserHead("");
+            find.setUserName("年青正好");
+            find.setCreatetime(new Date());
+            find.setHits(25684);
             mFindList.add(find);
         }
     }

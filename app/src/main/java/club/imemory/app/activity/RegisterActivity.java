@@ -1,10 +1,15 @@
 package club.imemory.app.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -24,6 +29,8 @@ import club.imemory.app.R;
 import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.RegexUtils;
+
+import static club.imemory.app.util.AppManager.APP_NAME;
 
 /**
  * @Author: 张杭
@@ -194,6 +201,34 @@ public class RegisterActivity extends BaseActivity {
         protected void onCancelled() {
             closeProgressDialog();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        isDialog("注册未完成，确定要退出么？");
+    }
+
+    /**
+     * 弹框确认是否退出注册
+     */
+    private void isDialog(String result) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);  //先得到构造器
+        builder.setTitle("提示"); //设置标题
+        builder.setMessage(result); //设置内容
+        builder.setCancelable(false);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                DataSupport.deleteAll(User.class);
+                finish();
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.create().show();
     }
 
     /**

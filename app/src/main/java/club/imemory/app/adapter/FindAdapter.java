@@ -84,8 +84,8 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.ViewHolder> {
         holder.mCreateTimeTV.setText(AppUtils.getDataToString(find.getCreatetime()));
         holder.mHitsTV.setText(String.valueOf(find.getHits()));
         //使用Glide库加载图片
-        Glide.with(mContext).load(find.getAvatar()).into(holder.mAvatarImg);
-        Glide.with(mContext).load(find.getUserHead()).into(holder.mUserHeadImg);
+        Glide.with(mContext).load(R.drawable.bg_imemory).into(holder.mAvatarImg);
+        Glide.with(mContext).load(R.drawable.bg_imemory).into(holder.mUserHeadImg);
     }
 
     @Override

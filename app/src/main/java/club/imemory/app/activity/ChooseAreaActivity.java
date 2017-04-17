@@ -26,17 +26,19 @@ public class ChooseAreaActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_area);
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.choose_area__frame, ChooseAreaFragment.instanceFragment()).commit();
+    }
+
+    public void gotoWeather(String weatherId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getString("weather", null) != null) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove("weather");
             editor.apply();
         }
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.choose_area__frame, ChooseAreaFragment.instanceFragment()).commit();
-    }
 
-    public void gotoWeather(String weatherId) {
         Intent intent = new Intent();
         intent.putExtra("weather_id", weatherId);
         setResult(RESULT_OK, intent);
