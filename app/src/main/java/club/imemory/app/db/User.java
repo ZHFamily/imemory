@@ -5,7 +5,8 @@ import org.litepal.crud.DataSupport;
 import java.util.Date;
 
 /**
- * User entity. @author MyEclipse Persistence Tools
+ * @Author: 张杭
+ * @Date: 2017/3/28 13:08
  */
 
 public class User extends DataSupport implements java.io.Serializable {

@@ -1,8 +1,6 @@
 package club.imemory.app.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +15,8 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.activity.LifeActivity;
-import club.imemory.app.entity.Life;
+import club.imemory.app.db.Life;
 import club.imemory.app.util.AppUtils;
-import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
  * @Author: 张杭

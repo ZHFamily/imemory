@@ -4,9 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +18,7 @@ import java.util.List;
 import club.imemory.app.R;
 import club.imemory.app.activity.CreateLifeActivity;
 import club.imemory.app.adapter.LifeAdapter;
-import club.imemory.app.entity.Life;
+import club.imemory.app.db.Life;
 
 /**
  * @Author: 张杭

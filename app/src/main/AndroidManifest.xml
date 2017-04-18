@@ -50,14 +50,19 @@
             android:value="6309b71d2279d191953c1e39639a3ea4" />
 
         <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/StatusTransparentTheme">
+            android:name=".activity.LaunchActivity"
+            android:theme="@style/AppThemeLaunch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/StatusTransparentTheme">
+        </activity>
+        <activity android:name=".activity.AppIntroActivity"/>
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.FindActivity" />
         <activity android:name=".activity.SettingsActivity" />

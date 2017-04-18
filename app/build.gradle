@@ -25,12 +25,12 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'com.android.support:cardview-v7:25.2.0'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:cardview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     compile 'com.alibaba:fastjson:1.1.56.android'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'org.litepal.android:core:1.5.0'
@@ -40,6 +40,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'jp.wasabeef:glide-transformations:2.0.2'
+    compile 'com.github.paolorotolo:appintro:4.1.0'
     compile files('libs/mta-sdk-1.6.2.jar')
     compile files('libs/open_sdk_r5785_lite.jar')
     compile files('libs/AMap3DMap5.0.0_Search5.0.0_Location3.3.0.jar')

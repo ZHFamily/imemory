@@ -88,6 +88,8 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        isFirstStart();
+
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("生活");
         setSupportActionBar(mToolbar);
@@ -503,5 +505,25 @@ public class MainActivity extends BaseActivity
                 super.onBackPressed();
             }
         }
+    }
+
+    /**
+     * 判断是否第一次启动程序
+     */
+    private void isFirstStart(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences getPrefs = PreferenceManager
+                        .getDefaultSharedPreferences(getBaseContext());
+                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+                if (isFirstStart) {
+                    SharedPreferences.Editor edit = getPrefs.edit();
+                    edit.putBoolean("firstStart", false);
+                    edit.apply();
+                    startActivity(new Intent(MainActivity.this, AppIntroActivity.class));
+                }
+            }
+        }).start();
     }
 }

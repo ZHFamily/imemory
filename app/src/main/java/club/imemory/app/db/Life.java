@@ -1,12 +1,15 @@
-package club.imemory.app.entity;
+package club.imemory.app.db;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.Date;
 
 /**
- * Life entity. @author MyEclipse Persistence Tools
+ * @Author: 张杭
+ * @Date: 2017/3/28 13:08
  */
 
-public class Life implements java.io.Serializable {
+public class Life extends DataSupport implements java.io.Serializable {
 
 	private Integer id;
 	private Integer userId;
