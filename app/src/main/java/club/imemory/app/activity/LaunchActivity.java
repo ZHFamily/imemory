@@ -15,7 +15,7 @@ public class LaunchActivity extends BaseActivity implements Runnable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         Handler handler = new Handler(Looper.getMainLooper());
-        handler.postDelayed(this, 800);
+        handler.postDelayed(this, 500);
     }
 
     @Override

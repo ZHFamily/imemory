@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,13 +21,14 @@ import club.imemory.app.R;
 import club.imemory.app.activity.CreateLifeActivity;
 import club.imemory.app.adapter.LifeAdapter;
 import club.imemory.app.db.Life;
+import club.imemory.app.util.AppManager;
 
 /**
  * @Author: 张杭
  * @Date: 2017/3/29 12:06
  */
 
-public class MyLifeFragment extends Fragment {
+public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private static MyLifeFragment mMyLifeFragment;
     private SwipeRefreshLayout swipeRefresh;
@@ -46,49 +49,46 @@ public class MyLifeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        initData();
         View view = inflater.inflate(R.layout.fragment_life, container, false);
         //悬浮按钮
         FloatingActionButton fabCreateLife = (FloatingActionButton) view.findViewById(R.id.fab_create_life);
         fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),CreateLifeActivity.class);
+                Intent intent = new Intent(getActivity(), CreateLifeActivity.class);
                 startActivity(intent);
             }
         });
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshLife();
-            }
-        });
+        swipeRefresh.setOnRefreshListener(this);
         //滚动内容
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         recyclerView.setLayoutManager(layoutManager);
+        initData();
         adapter = new LifeAdapter(mLifeList);
         recyclerView.setAdapter(adapter);
         return view;
     }
 
-    private void refreshLife() {
+    @Override
+    public void onRefresh() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                initData();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initData();
                         adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
+                        AppManager.showToast("刷新成功");
                     }
                 });
             }
@@ -97,13 +97,9 @@ public class MyLifeFragment extends Fragment {
 
     private void initData() {
         mLifeList.clear();
-        for (int i = 1; i < 10; i++) {
-            Life life = new Life();
-            life.setTitle("无bug行自在");
-            life.setLocation("武汉");
-            life.setAvatar("http://imemory.club/imemory/image/" + i + ".jpg");
-            life.setCreatetime(new Date());
-            mLifeList.add(life);
+        List<Life> list = DataSupport.findAll(Life.class);
+        for (int i = list.size() - 1; i >= 0; i--) {
+            mLifeList.add(list.get(i));
         }
     }
 }

@@ -16,7 +16,7 @@ public class AppIntroActivity extends AppIntro {
         super.onCreate(savedInstanceState);
 
         addSlide(AppIntroFragment.newInstance("简洁界面",
-                "完全按照google的Material Design规范设计开发",
+                "完全按照google的Material Design规范设计开发\n还有NB的转场动画",
                 R.drawable.screenshot_imemory1, Color.parseColor("#00bcd4")));
         addSlide(AppIntroFragment.newInstance("路径记录",
                 "将每次出行的路径保留\n回忆起来更立体",

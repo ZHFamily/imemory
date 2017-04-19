@@ -16,6 +16,7 @@ public class Life extends DataSupport implements java.io.Serializable {
 	private String title;
 	private String subhead;
 	private String avatar;
+	private String photo;
 	private String location;
 	private Integer top;
 	private Date createtime;
@@ -59,6 +60,14 @@ public class Life extends DataSupport implements java.io.Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	public String getLocation() {
