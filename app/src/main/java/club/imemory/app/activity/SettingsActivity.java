@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -20,6 +21,7 @@ import club.imemory.app.R;
 import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.DataCleanManager;
+import club.imemory.app.util.SnackbarUtil;
 
 import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
@@ -36,6 +38,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         context.startActivity(intent);
     }
 
+    private CoordinatorLayout coordinator;
     private SwitchCompat switchNotification;
     private SwitchCompat switchOnlyWiFi;
     private SwitchCompat switchOpenWeather;
@@ -64,6 +67,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initView(){
+        coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         findViewById(R.id.btn_notification).setOnClickListener(this);
         findViewById(R.id.btn_only_wifi).setOnClickListener(this);
         findViewById(R.id.btn_clear).setOnClickListener(this);
@@ -109,13 +113,16 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 AppManager.showToast("操作成功");
                 break;
             case R.id.btn_check_update:
+                SnackbarUtil.ShortSnackbar(coordinator,"自己慢慢摸索把",SnackbarUtil.Info).show();
                 AppManager.showToast("最近应该不会更新");
                 break;
             case R.id.btn_help:
                 AppManager.showToast("自己慢慢摸索把");
+                SnackbarUtil.ShortSnackbar(coordinator,"自己慢慢摸索把",SnackbarUtil.Info).show();
                 break;
             case R.id.btn_user_agreement:
-                AppManager.showToast("遵纪守法就好啦");
+                //AppManager.showToast("遵纪守法就好啦");
+                SnackbarUtil.ShortSnackbar(coordinator,"遵纪守法就好啦",SnackbarUtil.Info).show();
                 break;
             case R.id.btn_logout:
                 AppManager.showToast("注销成功");

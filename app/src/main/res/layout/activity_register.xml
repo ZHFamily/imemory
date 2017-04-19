@@ -1,9 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:id="@+id/coordinator">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,6 +15,7 @@
         app:title="注册" />
 
     <ScrollView
+        android:layout_marginTop="?actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -30,7 +30,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="15dp"
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
                 android:src="@mipmap/logo" />
@@ -38,63 +38,78 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="欢迎加入我们"
-                android:textSize="35sp"
+                android:text="Welcome"
+                android:textStyle="bold"
+                android:textSize="40sp"
+                android:textColor="@color/colorPrimary"
                 android:layout_gravity="center"/>
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/tv_phone"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="手机号码"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxLength="11"
-                android:maxLines="1"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:textSize="16sp"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelTextColor="?android:attr/textColorSecondary"
-                app:met_primaryColor="@color/colorPrimary"
-                app:met_textColor="?android:attr/textColorPrimary"
-                app:met_textColorHint="?android:attr/textColorHint" />
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="8dp">
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/tv_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="密码（至少6位）"
-                android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:maxLength="30"
-                android:maxLines="1"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:textSize="16sp"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelTextColor="?android:attr/textColorSecondary"
-                app:met_primaryColor="@color/colorPrimary"
-                app:met_textColor="?android:attr/textColorPrimary"
-                app:met_textColorHint="?android:attr/textColorHint" />
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="手机号码"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:maxLines="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="16sp" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/tv_name"
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="昵称"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLength="25"
-                android:maxLines="1"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:textSize="16sp"
-                app:met_floatingLabel="highlight"
-                app:met_floatingLabelTextColor="?android:attr/textColorSecondary"
-                app:met_primaryColor="@color/colorPrimary"
-                app:met_textColor="?android:attr/textColorPrimary"
-                app:met_textColorHint="?android:attr/textColorHint" />
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="密码（至少6位）"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLength="36"
+                    android:maxLines="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp">
+
+                <EditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="昵称"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/btn_register"
                 style="?android:textAppearanceSmall"
@@ -106,6 +121,9 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="130dp"/>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

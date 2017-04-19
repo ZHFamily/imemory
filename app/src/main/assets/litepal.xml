@@ -6,5 +6,6 @@
         <mapping class="club.imemory.app.db.City"/>
         <mapping class="club.imemory.app.db.County"/>
         <mapping class="club.imemory.app.db.User"/>
+        <mapping class="club.imemory.app.db.Life"/>
     </list>
 </litepal>

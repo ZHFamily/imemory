@@ -1,14 +1,13 @@
 package club.imemory.app.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -29,8 +28,7 @@ import club.imemory.app.R;
 import club.imemory.app.db.User;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.RegexUtils;
-
-import static club.imemory.app.util.AppManager.APP_NAME;
+import club.imemory.app.util.SnackbarUtil;
 
 /**
  * @Author: 张杭
@@ -47,9 +45,10 @@ public class RegisterActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    private MaterialEditText mPhoneTV;
-    private MaterialEditText mPasswordTv;
-    private MaterialEditText mNameTv;
+    private CoordinatorLayout coordinator;
+    private TextInputLayout mPhoneText;
+    private TextInputLayout mPasswordText;
+    private TextInputLayout mNameText;
     private Button mRegisterBtn;
     private ProgressDialog progressDialog;
     private User user = new User();
@@ -66,44 +65,78 @@ public class RegisterActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         mRegisterBtn = (Button) findViewById(R.id.btn_register);
-        mPhoneTV = (MaterialEditText) findViewById(R.id.tv_phone);
-        mPasswordTv = (MaterialEditText) findViewById(R.id.tv_password);
-        mNameTv = (MaterialEditText) findViewById(R.id.tv_name);
+        mPhoneText = (TextInputLayout) findViewById(R.id.text_input_layout_phone);
+        mPasswordText = (TextInputLayout) findViewById(R.id.text_input_layout_password);
+        mNameText = (TextInputLayout) findViewById(R.id.text_input_layout_name);
         ImageView headImage = (ImageView) findViewById(R.id.image_head);
-
+        mPhoneText.setHint("手机号码");
+        mPasswordText.setHint("密码");
+        mNameText.setHint("昵称");
         Intent intent = getIntent();
         if(intent.getStringExtra("QQ")!=null&&intent.getStringExtra("QQ").equals("QQ")){
             user = DataSupport.findLast(User.class);
-            mNameTv.setText(user.getName());
+            mNameText.getEditText().setText(user.getName());
             Glide.with(this).load(user.getHead()).into(headImage);
         }
 
+        // 焦点处理
+        mPhoneText.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if (RegexUtils.isMobileExact(((TextView)v).getText().toString().trim())) {
+                        mPhoneText.setError(null);
+                    } else {
+                        SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                        mPhoneText.setError("手机号码不正确");
+                    }
+                }
+            }
+        });
+        mPasswordText.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if (((TextView)v).getText().toString().trim().length()>=6) {
+                        mPasswordText.setError(null);
+                    } else {
+                        SnackbarUtil.ShortSnackbar(coordinator,"密码长度至少6位",SnackbarUtil.Alert).show();
+                        mPasswordText.setError("密码长度至少6位");
+                    }
+                }
+            }
+        });
+
         //响应软件盘上的事件
-        mPhoneTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPhoneText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
+                    mPhoneText.setError(null);
                     return false;
                 } else {
-                    AppManager.showToast("手机号码不正确");
-                    v.setError("手机号码不正确");
+                    SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                    mPhoneText.setError("手机号码不正确");
                     return true;
                 }
             }
         });
-        mPasswordTv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (v.getText().toString().trim().length()>=6) {
+                    mPasswordText.setError(null);
                     return false;
                 } else {
-                    v.setError("密码长度至少6位");
+                    SnackbarUtil.ShortSnackbar(coordinator,"密码长度至少6位",SnackbarUtil.Alert).show();
+                    mPasswordText.setError("密码长度至少6位");
                     return true;
                 }
             }
         });
-        mNameTv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mNameText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 validateRegister();
@@ -124,38 +157,38 @@ public class RegisterActivity extends BaseActivity {
      */
     private void validateRegister() {
         // 重置错误
-        mNameTv.setError(null);
-        mPhoneTV.setError(null);
-        mPasswordTv.setError(null);
+        mNameText.setError(null);
+        mPhoneText.setError(null);
+        mPasswordText.setError(null);
 
-        String name = mNameTv.getText().toString().trim();
-        String phone = mPhoneTV.getText().toString().trim();
-        String password = mPasswordTv.getText().toString().trim();
+        String name = mNameText.getEditText().getText().toString().trim();
+        String phone = mPhoneText.getEditText().getText().toString().trim();
+        String password = mPasswordText.getEditText().getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
 
         if (TextUtils.isEmpty(name)){
-            mNameTv.setError("昵称不能为空");
-            focusView = mNameTv;
+            mNameText.setError("昵称不能为空");
+            focusView = mNameText;
             cancel = true;
         }
 
         //验证密码
         if (TextUtils.isEmpty(password) && password.length() < 6) {
-            mPasswordTv.setError("密码错误");
-            focusView = mPasswordTv;
+            mPasswordText.setError("密码错误");
+            focusView = mPasswordText;
             cancel = true;
         }
 
         // 验证手机号
         if (TextUtils.isEmpty(phone)) {
-            mPhoneTV.setError("手机号不能为空");
-            focusView = mPhoneTV;
+            mPhoneText.setError("手机号不能为空");
+            focusView = mPhoneText;
             cancel = true;
         } else if (!RegexUtils.isMobileExact(phone)) {
-            mPhoneTV.setError("手机号不正确");
-            focusView = mPhoneTV;
+            mPhoneText.setError("手机号不正确");
+            focusView = mPhoneText;
             cancel = true;
         }
 
@@ -193,7 +226,7 @@ public class RegisterActivity extends BaseActivity {
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
             }else{
-                AppManager.showToast("未知错误，请清除数据后重试");
+                SnackbarUtil.ShortSnackbar(coordinator,"未知错误，请清除数据后重试",SnackbarUtil.Alert).show();
             }
         }
 

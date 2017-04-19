@@ -10,6 +10,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -28,6 +30,7 @@ import club.imemory.app.db.User;
 import club.imemory.app.listener.LoginListener;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.RegexUtils;
+import club.imemory.app.util.SnackbarUtil;
 
 /**
  * 实现手机号与密码登录
@@ -42,8 +45,9 @@ public class LoginActivity extends BaseActivity {
         context.startActivity(intent);
     }
 
-    private EditText mPhoneTV;
-    private EditText mPasswordView;
+    private CoordinatorLayout coordinator;
+    private TextInputLayout mPhoneText;
+    private TextInputLayout mPasswordText;
     private View mProgressView;
     private View mLoginFormView;
     private Tencent mTencent; //qq主操作对象
@@ -61,14 +65,19 @@ public class LoginActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         Button mQQLoginBtn = (Button) findViewById(R.id.btn_QQ);
         Button mWeiBoLoginBtn = (Button) findViewById(R.id.btn_weibo);
         Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
         Button mForgetBtn = (Button) findViewById(R.id.btn_forget);
-        mPhoneTV = (EditText) findViewById(R.id.tv_phone);
-        mPasswordView = (EditText) findViewById(R.id.tv_password);
+        EditText phoneET = (EditText)findViewById(R.id.et_phone);
+        EditText passwordET = (EditText)findViewById(R.id.et_password);
+        mPhoneText = (TextInputLayout) findViewById(R.id.text_input_layout_phone);
+        mPasswordText = (TextInputLayout) findViewById(R.id.text_input_layout_password);
+        mPhoneText.setHint("手机号码");
+        mPasswordText.setHint("密码");
         findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,20 +85,36 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
+        phoneET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    // 此处为失去焦点时的处理内容
+                    if (RegexUtils.isMobileExact(((TextView)v).getText().toString().trim())) {
+                        mPhoneText.setError(null);
+                    } else {
+                        SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                        mPhoneText.setError("手机号码不正确");
+                    }
+                }
+            }
+        });
+
         //响应软件盘上的事件
-        mPhoneTV.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        phoneET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
+                    mPhoneText.setError(null);
                     return false;
                 } else {
-                    AppManager.showToast("手机号码不正确");
-                    v.setError("手机号码不正确");
+                    SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                    mPhoneText.setError("手机号码不正确");
                     return true;
                 }
             }
         });
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        passwordET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 validateLogin();
@@ -108,7 +133,8 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 RegisterActivity.actionStart(LoginActivity.this);
-                AppManager.showToast("忘记密码就重新注册一个吧");
+                AppManager.showToast("忘记密码就重新注册一个呗");
+                SnackbarUtil.ShortSnackbar(coordinator,"忘记密码就重新注册一个呗",0).show();
             }
         });
 
@@ -123,6 +149,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 AppManager.showToast("该功能没实现,试试QQ登录");
+                SnackbarUtil.ShortSnackbar(coordinator,"该功能没实现,试试QQ登录",0).show();
             }
         });
     }
@@ -163,30 +190,33 @@ public class LoginActivity extends BaseActivity {
      */
     private void validateLogin() {
         // 重置错误
-        mPhoneTV.setError(null);
-        mPasswordView.setError(null);
+        mPhoneText.setError(null);
+        mPasswordText.setError(null);
 
-        String phone = mPhoneTV.getText().toString().trim();
-        String password = mPasswordView.getText().toString().trim();
+        String phone = mPhoneText.getEditText().getText().toString().trim();
+        String password = mPasswordText.getEditText().getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
 
         //验证密码
         if (TextUtils.isEmpty(password) && password.length() < 6) {
-            mPasswordView.setError("密码错误");
-            focusView = mPasswordView;
+            mPasswordText.setError("密码错误");
+            SnackbarUtil.ShortSnackbar(coordinator,"密码错误",SnackbarUtil.Alert).show();
+            focusView = mPasswordText;
             cancel = true;
         }
 
         // 验证手机号
         if (TextUtils.isEmpty(phone)) {
-            mPhoneTV.setError("手机号不能为空");
-            focusView = mPhoneTV;
+            mPhoneText.setError("手机号不能为空");
+            SnackbarUtil.ShortSnackbar(coordinator,"手机号不能为空",SnackbarUtil.Alert).show();
+            focusView = mPhoneText;
             cancel = true;
         } else if (!RegexUtils.isMobileExact(phone)) {
-            mPhoneTV.setError("手机号不正确");
-            focusView = mPhoneTV;
+            mPhoneText.setError("手机号不正确");
+            SnackbarUtil.ShortSnackbar(coordinator,"手机号不正确",SnackbarUtil.Alert).show();
+            focusView = mPhoneText;
             cancel = true;
         }
 
@@ -224,7 +254,7 @@ public class LoginActivity extends BaseActivity {
 
             switch (result) {
                 case 0:
-                    AppManager.showToast("账号不存在请先注册");
+                    SnackbarUtil.ShortSnackbar(coordinator,"账号不存在请先注册",SnackbarUtil.Alert).show();
                     break;
                 case 1:
                     AppManager.showToast("登录成功");
@@ -233,10 +263,8 @@ public class LoginActivity extends BaseActivity {
                     finish();
                     break;
                 case 2:
-                    AppManager.showToast("账号或密码错误");
-                    mPasswordView.setError("");
-                    mPhoneTV.setError("");
-                    mPhoneTV.requestFocus();
+                    SnackbarUtil.ShortSnackbar(coordinator,"账号或密码错误",SnackbarUtil.Alert).show();
+                    mPhoneText.requestFocus();
                     break;
             }
         }
