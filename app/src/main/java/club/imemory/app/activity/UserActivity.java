@@ -1,5 +1,7 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,7 +37,7 @@ public class UserActivity extends BaseActivity {
     public static void actionStart(Context context, User user) {
         Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra("user", user);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private User user;
@@ -51,6 +54,8 @@ public class UserActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().setEnterTransition(new Explode().setDuration(500));
+        getWindow().setExitTransition(new Explode().setDuration(500));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         Intent intent = getIntent();

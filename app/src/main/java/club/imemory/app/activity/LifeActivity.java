@@ -1,11 +1,14 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,11 +32,13 @@ public class LifeActivity extends BaseActivity {
         Intent intent = new Intent(context, LifeActivity.class);
         intent.putExtra("avatar",strings[0]);
         intent.putExtra("title",strings[1]);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().setEnterTransition(new Explode().setDuration(500));
+        getWindow().setExitTransition(new Explode().setDuration(500));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_life);
         Intent intent = getIntent();
