@@ -4,6 +4,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Explode;
 
 import club.imemory.app.broadcast.ForceOfflineReceiver;
 import club.imemory.app.broadcast.NetworkChangeReceiver;
@@ -28,6 +29,8 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getWindow().setEnterTransition(new Explode().setDuration(500));
+        getWindow().setExitTransition(new Explode().setDuration(500));
         super.onCreate(savedInstanceState);
         AppManager.logI("BaseActivity", getClass().getSimpleName() + "创建");
         AppManager.addActivity(this);

@@ -3,6 +3,8 @@ package club.imemory.app.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,6 +16,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +49,7 @@ public class LoginActivity extends BaseActivity {
      */
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private CoordinatorLayout coordinator;
@@ -138,7 +141,6 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 RegisterActivity.actionStart(LoginActivity.this);
                 AppManager.showToast("忘记密码就重新注册一个呗");
-                SnackbarUtil.ShortSnackbar(coordinator, "忘记密码就重新注册一个呗", 0).show();
             }
         });
 
@@ -176,10 +178,8 @@ public class LoginActivity extends BaseActivity {
             super.handleMessage(msg);
             if (msg.what == 0) {
                 AppManager.showToast("QQ授权成功");
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra("QQ", "QQ");
-                startActivity(intent);
-                finish();
+                RegisterActivity.actionStart(LoginActivity.this);
+                //finish();
             }
         }
     };

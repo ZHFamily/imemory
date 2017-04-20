@@ -1,11 +1,14 @@
 package club.imemory.app.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +65,14 @@ import static club.imemory.app.util.AppManager.APP_NAME;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    /**
+     * 启动MainActivity
+     */
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+    }
 
     private FragmentManager fragmentManager;
     private MyLifeFragment mMyLifeFragment;
@@ -154,8 +165,7 @@ public class MainActivity extends BaseActivity
         mWeatherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
-                startActivity(intent);
+                WeatherActivity.actionStart(MainActivity.this);
             }
         });
 
@@ -525,7 +535,7 @@ public class MainActivity extends BaseActivity
                     SharedPreferences.Editor edit = getPrefs.edit();
                     edit.putBoolean("firstStart", false);
                     edit.apply();
-                    startActivity(new Intent(MainActivity.this, AppIntroActivity.class));
+                    AppIntroActivity.actionStart(MainActivity.this);
                 }
             }
         }).start();

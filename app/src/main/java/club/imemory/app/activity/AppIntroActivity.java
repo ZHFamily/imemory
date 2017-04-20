@@ -1,5 +1,9 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +20,15 @@ import club.imemory.app.R;
  */
 
 public class AppIntroActivity extends AppIntro {
+
+    /**
+     * 启动AppIntroActivity
+     */
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, AppIntroActivity.class);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

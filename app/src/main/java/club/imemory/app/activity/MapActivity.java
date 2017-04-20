@@ -1,5 +1,7 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,9 +29,9 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 启动MapActivity
      */
-    public static void actionStart(Context context, String... strings) {
+    public static void actionStart(Context context) {
         Intent intent = new Intent(context, MapActivity.class);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private MapView mMapView = null;

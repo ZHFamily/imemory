@@ -1,5 +1,7 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,7 +47,7 @@ public class WeatherActivity extends BaseActivity {
      */
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, WeatherActivity.class);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private static final int REQUEST_CODE = 1;

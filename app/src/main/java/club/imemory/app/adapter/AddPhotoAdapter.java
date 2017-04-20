@@ -1,12 +1,6 @@
 package club.imemory.app.adapter;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,13 +21,13 @@ import club.imemory.app.util.AppManager;
  * @Date: 2017/3/23 20:41
  */
 
-public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> {
+public class AddPhotoAdapter extends RecyclerView.Adapter<AddPhotoAdapter.ViewHolder> {
 
     private Context mContext;
 
     private List<String> mList;
 
-    public PhotoAdapter(List<String> list) {
+    public AddPhotoAdapter(List<String> list) {
         mList = list;
     }
 

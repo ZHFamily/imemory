@@ -1,4 +1,6 @@
-package club.imemory.app.entity;
+package club.imemory.app.db;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
  * @Date: 2017/3/31 21:52
  */
 
-public class Find {
+public class Find extends DataSupport implements java.io.Serializable {
 
     private int id;
     private int userId;

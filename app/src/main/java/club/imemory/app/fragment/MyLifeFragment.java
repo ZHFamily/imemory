@@ -56,7 +56,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mImageAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), CreateLifeActivity.class));
+                CreateLifeActivity.actionStart(getActivity());
             }
         });
         //悬浮按钮
@@ -64,7 +64,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), CreateLifeActivity.class));
+                CreateLifeActivity.actionStart(getActivity());
             }
         });
         //下拉刷新

@@ -1,7 +1,9 @@
 package club.imemory.app.listener;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 
 import com.tencent.connect.UserInfo;
 import com.tencent.connect.auth.QQToken;
@@ -66,7 +68,15 @@ public class LoginListener implements IUiListener {
         public void onComplete(Object object) {
             JSONObject userInfoJson = (JSONObject) object;
             AppManager.logI("LoginActivity", userInfoJson.toString());
-            try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationUtil.getContext());
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("userInfoJson",userInfoJson.toString());
+            editor.apply();
+            Message msg = new Message();
+            msg.what = 0;
+            mHandler.sendMessage(msg);
+
+            /*try {
                 User user = new User();
                 user.setName(userInfoJson.getString("nickname"));
                 user.setHead(userInfoJson.getString("figureurl_qq_2"));
@@ -75,12 +85,9 @@ public class LoginListener implements IUiListener {
                 user.setLogintime(new Date());
                 user.setCreatetime(new Date());
                 user.save();
-                Message msg = new Message();
-                msg.what = 0;//QQ登录成功
-                mHandler.sendMessage(msg);
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         @Override

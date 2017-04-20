@@ -6,20 +6,23 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.transition.Explode;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 
 import org.litepal.crud.DataSupport;
@@ -57,8 +60,6 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setEnterTransition(new Explode().setDuration(500));
-        getWindow().setExitTransition(new Explode().setDuration(500));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,9 +79,14 @@ public class RegisterActivity extends BaseActivity {
         mPhoneText.setHint("手机号码");
         mPasswordText.setHint("密码");
         mNameText.setHint("昵称");
-        Intent intent = getIntent();
-        if (intent.getStringExtra("QQ") != null && intent.getStringExtra("QQ").equals("QQ")) {
-            user = DataSupport.findLast(User.class);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String userInfo = prefs.getString("userInfoJson", null);
+        if (userInfo != null) {
+            JSONObject userInfoJson = JSON.parseObject(userInfo);
+            user.setName(userInfoJson.getString("nickname"));
+            user.setHead(userInfoJson.getString("figureurl_qq_2"));
+            user.setSex(userInfoJson.getString("gender"));
+            user.setAddress(userInfoJson.getString("province") + userInfoJson.getString("city"));
             mNameText.getEditText().setText(user.getName());
             Glide.with(this).load(user.getHead()).into(headImage);
         }
@@ -210,7 +216,7 @@ public class RegisterActivity extends BaseActivity {
         @Override
         protected Boolean doInBackground(String... params) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -227,8 +233,7 @@ public class RegisterActivity extends BaseActivity {
             closeProgressDialog();
             if (result) {
                 AppManager.showToast("注册成功");
-                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(intent);
+                MainActivity.actionStart(RegisterActivity.this);
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "未知错误，请清除数据后重试", SnackbarUtil.Alert).show();
             }
@@ -238,11 +243,6 @@ public class RegisterActivity extends BaseActivity {
         protected void onCancelled() {
             closeProgressDialog();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        isDialog("注册未完成，确定要退出么？");
     }
 
     /**
@@ -257,7 +257,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DataSupport.deleteAll(User.class);
-                finish();
+                LoginActivity.actionStart(RegisterActivity.this);
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {

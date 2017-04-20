@@ -1,5 +1,7 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -22,11 +24,11 @@ import club.imemory.app.util.NavigatorUtil;
 public class AboutActivity extends BaseActivity {
 
     /**
-     * 启动SettingsActivity
+     * 启动AboutActivity
      */
-    public static void actionStart(Context context, String... strings) {
+    public static void actionStart(Context context) {
         Intent intent = new Intent(context, AboutActivity.class);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     @Override

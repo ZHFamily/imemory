@@ -1,5 +1,7 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import club.imemory.app.R;
-import club.imemory.app.entity.Find;
+import club.imemory.app.db.Find;
 
 /**
  * @Author: 张杭
@@ -26,9 +28,8 @@ public class FindActivity extends BaseActivity {
      */
     public static void actionStart(Context context, Find find) {
         Intent intent = new Intent(context, FindActivity.class);
-        intent.putExtra("title", find.getTitle());
-        intent.putExtra("avatar", find.getAvatar());
-        context.startActivity(intent);
+        intent.putExtra("find", find);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     @Override
@@ -36,8 +37,7 @@ public class FindActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_life);
         Intent intent = getIntent();
-        String avatar = intent.getStringExtra("avatar");
-        String title = intent.getStringExtra("title");
+        Find find = (Find) intent.getSerializableExtra("find");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView lifeAvatarImg = (ImageView) findViewById(R.id.image_avatar);
@@ -48,7 +48,7 @@ public class FindActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        collapsingToolbar.setTitle(title);
-        Glide.with(this).load(avatar).into(lifeAvatarImg);
+        collapsingToolbar.setTitle(find.getTitle());
+        Glide.with(this).load(find.getAvatar()).into(lifeAvatarImg);
     }
 }

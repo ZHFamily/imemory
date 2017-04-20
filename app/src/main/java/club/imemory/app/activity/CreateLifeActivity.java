@@ -2,6 +2,7 @@ package club.imemory.app.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,24 +25,17 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import club.imemory.app.R;
-import club.imemory.app.adapter.PhotoAdapter;
+import club.imemory.app.adapter.AddPhotoAdapter;
 import club.imemory.app.db.Life;
 import club.imemory.app.util.AppManager;
-import club.imemory.app.util.DataCleanManager;
 import club.imemory.app.util.SnackbarUtil;
-
-import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
 /**
  * @Author: 张杭
@@ -51,10 +44,18 @@ import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
 public class CreateLifeActivity extends BaseActivity {
 
+    /**
+     * 启动CreateLifeActivity
+     */
+    public static void actionStart(Context context) {
+        Intent intent = new Intent(context, CreateLifeActivity.class);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+    }
+
     private static final int CHOOSE_PHOTO = 2;
     private List<String> mList = new ArrayList<>();
     private List<String> temp = new ArrayList<>();
-    private PhotoAdapter adapter;
+    private AddPhotoAdapter adapter;
     private CoordinatorLayout coordinator;
     private TextInputLayout mTitleText;
     private TextView mContentText;
@@ -79,7 +80,7 @@ public class CreateLifeActivity extends BaseActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new PhotoAdapter(mList);
+        adapter = new AddPhotoAdapter(mList);
         recyclerView.setAdapter(adapter);
 
         getSendData();
@@ -121,13 +122,13 @@ public class CreateLifeActivity extends BaseActivity {
             StringBuffer pathBuffer = new StringBuffer();
             for (String path : mList) {
                 pathBuffer.append(path);
-                pathBuffer.append("|*imemory#cppy|");
+                pathBuffer.append("#cppy#");
             }
             life.setPhoto(pathBuffer.toString());
             life.setLocation("武汉");
             life.setCreatetime(new Date());
             if (life.save()) {
-                finish();
+                MainActivity.actionStart(this);
                 AppManager.showToast("保存成功");
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "保存失败", SnackbarUtil.Alert).show();
@@ -196,16 +197,16 @@ public class CreateLifeActivity extends BaseActivity {
         } else {
             Intent intent = new Intent("android.intent.action.GET_CONTENT");
             intent.setType("image/*");
-            startActivityForResult(intent,CHOOSE_PHOTO);
+            startActivityForResult(intent, CHOOSE_PHOTO);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==1){
-            if (grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openAlbum();
-            }else{
+            } else {
                 Snackbar snackbar = Snackbar.make(coordinator, "需要授权才能继续操作", Snackbar.LENGTH_LONG);
                 snackbar.setAction("确定", new View.OnClickListener() {
                     @Override
@@ -220,7 +221,7 @@ public class CreateLifeActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==CHOOSE_PHOTO){
+        if (requestCode == CHOOSE_PHOTO) {
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 temp.add(UriToFilePath(uri));

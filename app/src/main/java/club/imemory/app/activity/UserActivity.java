@@ -49,8 +49,6 @@ public class UserActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().setEnterTransition(new Explode().setDuration(500));
-        getWindow().setExitTransition(new Explode().setDuration(500));
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         Intent intent = getIntent();

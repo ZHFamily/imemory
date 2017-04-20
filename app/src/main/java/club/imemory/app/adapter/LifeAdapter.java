@@ -63,7 +63,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Life life = mLifeList.get(position);
-                LifeActivity.actionStart(mContext, life.getAvatar(), life.getTitle());
+                LifeActivity.actionStart(mContext, life);
             }
         });
         return holder;

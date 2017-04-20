@@ -15,7 +15,7 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.adapter.FindAdapter;
-import club.imemory.app.entity.Find;
+import club.imemory.app.db.Find;
 
 /**
  * @Author: 张杭

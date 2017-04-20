@@ -1,6 +1,9 @@
 package club.imemory.app.activity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -50,8 +53,7 @@ public class ChooseAreaActivity extends BaseActivity {
             AppManager.showToast("再按一次将回到主页");
             firstBackPressedTime = secondBackPressedTime;
         } else {
-            Intent intent = new Intent(ChooseAreaActivity.this, MainActivity.class);
-            startActivity(intent);
+            MainActivity.actionStart(this);
         }
     }
 }

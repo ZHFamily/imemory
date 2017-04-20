@@ -1,6 +1,8 @@
 package club.imemory.app.activity;
 
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +40,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      */
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, SettingsActivity.class);
-        context.startActivity(intent);
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private CoordinatorLayout coordinator;
