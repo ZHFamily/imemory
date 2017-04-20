@@ -16,6 +16,13 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <ImageView
+        android:id="@+id/image_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_fiber_new"/>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create_life"
         android:layout_width="wrap_content"

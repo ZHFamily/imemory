@@ -10,10 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import club.imemory.app.R;
@@ -33,6 +35,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private SwipeRefreshLayout swipeRefresh;
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
+    private ImageView mImageAdd;
 
     /**
      * 实例化MyLifeFragment
@@ -49,13 +52,19 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_life, container, false);
+        mImageAdd = (ImageView) view.findViewById(R.id.image_add);
+        mImageAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), CreateLifeActivity.class));
+            }
+        });
         //悬浮按钮
         FloatingActionButton fabCreateLife = (FloatingActionButton) view.findViewById(R.id.fab_create_life);
         fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), CreateLifeActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(getActivity(), CreateLifeActivity.class));
             }
         });
         //下拉刷新
@@ -66,6 +75,9 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         recyclerView.setLayoutManager(layoutManager);
         initData();
+        if (mLifeList.size() > 0) {
+            mImageAdd.setVisibility(View.GONE);
+        }
         adapter = new LifeAdapter(mLifeList);
         recyclerView.setAdapter(adapter);
         return view;
@@ -85,6 +97,9 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (mLifeList.size() > 0) {
+                            mImageAdd.setVisibility(View.GONE);
+                        }
                         adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                         AppManager.showToast("刷新成功");
@@ -100,5 +115,6 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         for (int i = list.size() - 1; i >= 0; i--) {
             mLifeList.add(list.get(i));
         }
+
     }
 }

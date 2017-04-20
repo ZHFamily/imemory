@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import org.litepal.crud.DataSupport;
@@ -105,8 +107,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 AppManager.showToast("其实这个功能也没实现");
                 break;
             case R.id.btn_clear:
-                DataCleanManager.cleanApplicationData(this, CRASH_LOG_PATH);
-                AppManager.showToast("缓存已清除，请重启应用");
+                clear();
                 break;
             case R.id.btn_open_weather:
                 isOpenWeather = isOpenWeather ? false : true;
@@ -133,6 +134,23 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    private void clear() {
+        Snackbar snackbar = Snackbar.make(coordinator, "确定要清除所有数据么！！！", Snackbar.LENGTH_LONG);
+        View view = snackbar.getView();
+        if (view != null) {
+            view.setBackgroundColor(0xfff44336);
+            ((Button) view.findViewById(R.id.snackbar_action)).setTextColor(0xffffffff);
+        }
+        snackbar.setAction("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataCleanManager.cleanApplicationData(SettingsActivity.this, CRASH_LOG_PATH);
+                AppManager.showToast("缓存已清除，请重启应用");
+            }
+        }).show();
+
     }
 
     @Override
