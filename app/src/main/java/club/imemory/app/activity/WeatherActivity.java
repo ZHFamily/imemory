@@ -1,13 +1,11 @@
 package club.imemory.app.activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,17 +16,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import org.litepal.crud.DataSupport;
-
 import java.io.IOException;
 
 import club.imemory.app.R;
-import club.imemory.app.db.User;
-import club.imemory.app.http.HttpManager;
 import club.imemory.app.entity.Forecast;
 import club.imemory.app.entity.Weather;
-import club.imemory.app.service.AutoUpdateWeatherService;
+import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
+import club.imemory.app.service.AutoUpdateWeatherService;
 import club.imemory.app.util.AppManager;
 import okhttp3.Call;
 import okhttp3.Callback;

@@ -28,6 +28,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
     private Context mContext;
 
     private List<Life> mLifeList;
+
     public LifeAdapter(List<Life> lifeList) {
         mLifeList = lifeList;
     }
@@ -51,7 +52,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mContext==null){
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_life, parent, false);
@@ -62,7 +63,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Life life = mLifeList.get(position);
-                LifeActivity.actionStart(mContext,life.getAvatar(),life.getTitle());
+                LifeActivity.actionStart(mContext, life.getAvatar(), life.getTitle());
             }
         });
         return holder;
@@ -73,7 +74,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         Life life = mLifeList.get(position);
         holder.mTitleTV.setText(life.getTitle());
         holder.mLocationTV.setText(life.getLocation());
-        holder.mCreateTimeTV.setText("创建于"+AppUtils.getDataToString(life.getCreatetime()));
+        holder.mCreateTimeTV.setText("创建于" + AppUtils.getDataToString(life.getCreatetime()));
         //使用Glide库加载图片
         Glide.with(mContext).load(life.getAvatar())
                 .thumbnail(0.1f)

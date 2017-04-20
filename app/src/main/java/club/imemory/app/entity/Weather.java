@@ -22,7 +22,7 @@ public class Weather implements Serializable {
 
     public Suggestion suggestion;
 
-    @JSONField(name="daily_forecast")
+    @JSONField(name = "daily_forecast")
     public List<Forecast> forecastList;
 
 }

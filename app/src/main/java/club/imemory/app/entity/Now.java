@@ -13,15 +13,15 @@ import java.io.Serializable;
 
 public class Now implements Serializable {
 
-    @JSONField(name="tmp")
+    @JSONField(name = "tmp")
     public String temperature;
 
-    @JSONField(name="cond")
+    @JSONField(name = "cond")
     public More more;
 
     public class More {
 
-        @JSONField(name="txt")
+        @JSONField(name = "txt")
         public String info;
 
     }

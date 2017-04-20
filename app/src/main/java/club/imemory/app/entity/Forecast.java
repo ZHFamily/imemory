@@ -15,10 +15,10 @@ public class Forecast implements Serializable {
 
     public String date;
 
-    @JSONField(name="tmp")
+    @JSONField(name = "tmp")
     public Temperature temperature;
 
-    @JSONField(name="cond")
+    @JSONField(name = "cond")
     public More more;
 
     public class Temperature {
@@ -31,7 +31,7 @@ public class Forecast implements Serializable {
 
     public class More {
 
-        @JSONField(name="txt_d")
+        @JSONField(name = "txt_d")
         public String info;
 
     }

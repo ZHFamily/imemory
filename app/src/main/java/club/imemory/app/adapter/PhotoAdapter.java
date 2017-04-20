@@ -7,18 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.activity.LifeActivity;
-import club.imemory.app.db.Life;
 import club.imemory.app.util.AppManager;
-import club.imemory.app.util.AppUtils;
 
 /**
  * @Author: 张杭
@@ -30,6 +25,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     private Context mContext;
 
     private List<String> mList;
+
     public PhotoAdapter(List<String> list) {
         mList = list;
     }
@@ -47,7 +43,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mContext==null){
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_photo, parent, false);

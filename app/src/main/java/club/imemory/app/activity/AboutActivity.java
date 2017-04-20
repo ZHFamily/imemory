@@ -19,7 +19,7 @@ import club.imemory.app.util.NavigatorUtil;
  * @Date: 2017/3/26 22:11
  */
 
-public class AboutActivity extends BaseActivity{
+public class AboutActivity extends BaseActivity {
 
     /**
      * 启动SettingsActivity
@@ -43,12 +43,12 @@ public class AboutActivity extends BaseActivity{
         });
 
         TextView tvVersion = (TextView) findViewById(R.id.tv_version);
-        tvVersion.setText(BuildConfig.VERSION_NAME+"-build-"+BuildConfig.VERSION_CODE);
+        tvVersion.setText(BuildConfig.VERSION_NAME + "-build-" + BuildConfig.VERSION_CODE);
 
         findViewById(R.id.btn_open_source_url).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavigatorUtil.openInBrowser(AboutActivity.this,getString(R.string.open_source_url));
+                NavigatorUtil.openInBrowser(AboutActivity.this, getString(R.string.open_source_url));
             }
         });
 

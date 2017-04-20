@@ -2,7 +2,6 @@ package club.imemory.app.fragment;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +25,8 @@ import club.imemory.app.db.City;
 import club.imemory.app.db.County;
 import club.imemory.app.db.Province;
 import club.imemory.app.http.HttpManager;
-import club.imemory.app.util.AppManager;
 import club.imemory.app.json.JsonAnalyze;
+import club.imemory.app.util.AppManager;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;

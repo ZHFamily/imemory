@@ -79,7 +79,7 @@ public class RegisterActivity extends BaseActivity {
         mPasswordText.setHint("密码");
         mNameText.setHint("昵称");
         Intent intent = getIntent();
-        if(intent.getStringExtra("QQ")!=null&&intent.getStringExtra("QQ").equals("QQ")){
+        if (intent.getStringExtra("QQ") != null && intent.getStringExtra("QQ").equals("QQ")) {
             user = DataSupport.findLast(User.class);
             mNameText.getEditText().setText(user.getName());
             Glide.with(this).load(user.getHead()).into(headImage);
@@ -89,11 +89,11 @@ public class RegisterActivity extends BaseActivity {
         mPhoneText.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                    if (RegexUtils.isMobileExact(((TextView)v).getText().toString().trim())) {
+                if (!hasFocus) {
+                    if (RegexUtils.isMobileExact(((TextView) v).getText().toString().trim())) {
                         mPhoneText.setError(null);
                     } else {
-                        SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                        SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                         mPhoneText.setError("手机号码不正确");
                     }
                 }
@@ -102,11 +102,11 @@ public class RegisterActivity extends BaseActivity {
         mPasswordText.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus) {
-                    if (((TextView)v).getText().toString().trim().length()>=6) {
+                if (!hasFocus) {
+                    if (((TextView) v).getText().toString().trim().length() >= 6) {
                         mPasswordText.setError(null);
                     } else {
-                        SnackbarUtil.ShortSnackbar(coordinator,"密码长度至少6位",SnackbarUtil.Alert).show();
+                        SnackbarUtil.ShortSnackbar(coordinator, "密码长度至少6位", SnackbarUtil.Alert).show();
                         mPasswordText.setError("密码长度至少6位");
                     }
                 }
@@ -121,7 +121,7 @@ public class RegisterActivity extends BaseActivity {
                     mPhoneText.setError(null);
                     return false;
                 } else {
-                    SnackbarUtil.ShortSnackbar(coordinator,"手机号码不正确",SnackbarUtil.Alert).show();
+                    SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                     mPhoneText.setError("手机号码不正确");
                     return true;
                 }
@@ -130,11 +130,11 @@ public class RegisterActivity extends BaseActivity {
         mPasswordText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (v.getText().toString().trim().length()>=6) {
+                if (v.getText().toString().trim().length() >= 6) {
                     mPasswordText.setError(null);
                     return false;
                 } else {
-                    SnackbarUtil.ShortSnackbar(coordinator,"密码长度至少6位",SnackbarUtil.Alert).show();
+                    SnackbarUtil.ShortSnackbar(coordinator, "密码长度至少6位", SnackbarUtil.Alert).show();
                     mPasswordText.setError("密码长度至少6位");
                     return true;
                 }
@@ -172,7 +172,7 @@ public class RegisterActivity extends BaseActivity {
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(name)){
+        if (TextUtils.isEmpty(name)) {
             mNameText.setError("昵称不能为空");
             focusView = mNameText;
             cancel = true;
@@ -201,7 +201,7 @@ public class RegisterActivity extends BaseActivity {
             focusView.requestFocus();
         } else {
             showProgressDialog(); // 显示进度条
-            new UserRegisterTask().execute(name,phone,password);
+            new UserRegisterTask().execute(name, phone, password);
         }
     }
 
@@ -225,12 +225,12 @@ public class RegisterActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean result) {
             closeProgressDialog();
-            if (result){
+            if (result) {
                 AppManager.showToast("注册成功");
                 Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                 startActivity(intent);
-            }else{
-                SnackbarUtil.ShortSnackbar(coordinator,"未知错误，请清除数据后重试",SnackbarUtil.Alert).show();
+            } else {
+                SnackbarUtil.ShortSnackbar(coordinator, "未知错误，请清除数据后重试", SnackbarUtil.Alert).show();
             }
         }
 
@@ -253,14 +253,14 @@ public class RegisterActivity extends BaseActivity {
         builder.setTitle("提示"); //设置标题
         builder.setMessage(result); //设置内容
         builder.setCancelable(false);
-        builder.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DataSupport.deleteAll(User.class);
                 finish();
             }
         });
-        builder.setNegativeButton("取消", new DialogInterface.OnClickListener(){
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }

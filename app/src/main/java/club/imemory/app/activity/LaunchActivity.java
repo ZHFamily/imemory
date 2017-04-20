@@ -8,6 +8,11 @@ import android.os.Looper;
 
 import club.imemory.app.R;
 
+/**
+ * @Author: 张杭
+ * @Date: 2017/4/18 20:10
+ */
+
 public class LaunchActivity extends BaseActivity implements Runnable {
 
     @Override

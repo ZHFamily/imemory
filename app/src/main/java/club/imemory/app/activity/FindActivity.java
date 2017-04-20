@@ -26,8 +26,8 @@ public class FindActivity extends BaseActivity {
      */
     public static void actionStart(Context context, Find find) {
         Intent intent = new Intent(context, FindActivity.class);
-        intent.putExtra("title",find.getTitle());
-        intent.putExtra("avatar",find.getAvatar());
+        intent.putExtra("title", find.getTitle());
+        intent.putExtra("avatar", find.getAvatar());
         context.startActivity(intent);
     }
 
@@ -36,7 +36,7 @@ public class FindActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_life);
         Intent intent = getIntent();
-        String avatar= intent.getStringExtra("avatar");
+        String avatar = intent.getStringExtra("avatar");
         String title = intent.getStringExtra("title");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);

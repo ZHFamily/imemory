@@ -22,7 +22,7 @@ import club.imemory.app.util.AppManager;
  * @Date: 2017/3/26 12:47
  */
 
-public class MapActivity extends BaseActivity implements View.OnClickListener{
+public class MapActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * 启动MapActivity
@@ -76,19 +76,19 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
         mUiSettings.setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示
         //mUiSettings.setScaleControlsEnabled(true);//比例尺控件
 
-         //自定义按钮
+        //自定义按钮
         mLocationBtn = (ImageButton) findViewById(R.id.btn_location);
         mLocationBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_location:// 显示实时交通状况
-                if(traffic){
+                if (traffic) {
                     aMap.setTrafficEnabled(false);
                     traffic = false;
-                }else{
+                } else {
                     aMap.setTrafficEnabled(true);
                     traffic = true;
                 }
@@ -145,13 +145,13 @@ public class MapActivity extends BaseActivity implements View.OnClickListener{
      */
     @Override
     public void onBackPressed() {
-            long secondBackPressedTime = System.currentTimeMillis();
-            if (secondBackPressedTime - firstBackPressedTime > 2000) {
-                AppManager.showToast("再按一次退出地图");
-                firstBackPressedTime = secondBackPressedTime;
-            } else {
-                super.onBackPressed();
-            }
+        long secondBackPressedTime = System.currentTimeMillis();
+        if (secondBackPressedTime - firstBackPressedTime > 2000) {
+            AppManager.showToast("再按一次退出地图");
+            firstBackPressedTime = secondBackPressedTime;
+        } else {
+            super.onBackPressed();
+        }
     }
 
     /**

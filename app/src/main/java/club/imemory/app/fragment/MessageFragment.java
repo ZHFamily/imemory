@@ -31,10 +31,11 @@ public class MessageFragment extends Fragment {
 
     /**
      * 实例化MessageFragment
+     *
      * @return
      */
-    public static MessageFragment instanceFragment(){
-        if (mMessageFragment==null){
+    public static MessageFragment instanceFragment() {
+        if (mMessageFragment == null) {
             mMessageFragment = new MessageFragment();
         }
         return mMessageFragment;
@@ -46,7 +47,7 @@ public class MessageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshMessage();
@@ -60,8 +61,8 @@ public class MessageFragment extends Fragment {
         return view;
     }
 
-    public void initData(){
-        for (int i=0;i<20;i++){
+    public void initData() {
+        for (int i = 0; i < 20; i++) {
             Message message = new Message();
             message.setTitle("年青正好");
             message.setSubhead("在偏执的道路上越陷越深");
@@ -71,11 +72,11 @@ public class MessageFragment extends Fragment {
         }
     }
 
-    private void refreshMessage(){
+    private void refreshMessage() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

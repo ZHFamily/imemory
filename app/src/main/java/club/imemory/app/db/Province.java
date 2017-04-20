@@ -4,8 +4,6 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.Serializable;
-
 /**
  * 省
  *

@@ -10,6 +10,11 @@ import com.github.paolorotolo.appintro.AppIntroFragment;
 
 import club.imemory.app.R;
 
+/**
+ * @Author: 张杭
+ * @Date: 2017/4/18 22:10
+ */
+
 public class AppIntroActivity extends AppIntro {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -15,9 +15,9 @@ import java.io.Serializable;
 
 public class County extends DataSupport implements Serializable {
 
-    @JSONField(name="name")
+    @JSONField(name = "name")
     private String countyName;
-    @JSONField(name="weather_id")
+    @JSONField(name = "weather_id")
     private String weatherId;
     private int cityCode;
 

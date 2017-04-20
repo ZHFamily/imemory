@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import club.imemory.app.R;

@@ -24,7 +24,7 @@ public class HttpManager {
     public static final String WEATHER_INFO_URL = "http://guolin.tech/api/weather?cityid=";
     public static final String WEATHER_INFO_KEY = "&key=bc0418b57b2d4918819d3974ac1285d9";
     public static final String GET_BingPic = "http://guolin.tech/api/bing_pic";
-    
+
     /**
      * 使用HttpURLConnection的GET方式发送HTTP请求
      */

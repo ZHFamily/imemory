@@ -11,8 +11,8 @@ import android.preference.PreferenceManager;
 
 import java.io.IOException;
 
-import club.imemory.app.http.HttpManager;
 import club.imemory.app.entity.Weather;
+import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -51,7 +51,7 @@ public class AutoUpdateWeatherService extends Service {
     /**
      * 更新天气信息。
      */
-    private void updateWeather(){
+    private void updateWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String weatherString = prefs.getString("weather", null);
         if (weatherString != null) {

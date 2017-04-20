@@ -11,94 +11,94 @@ import java.util.Date;
 
 public class Life extends DataSupport implements java.io.Serializable {
 
-	private Integer id;
-	private Integer userId;
-	private String title;
-	private String subhead;
-	private String avatar;
-	private String photo;
-	private String location;
-	private Integer top;
-	private Date createtime;
-	private Date updatetime;
+    private Integer id;
+    private Integer userId;
+    private String title;
+    private String subhead;
+    private String avatar;
+    private String photo;
+    private String location;
+    private Integer top;
+    private Date createtime;
+    private Date updatetime;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getSubhead() {
-		return subhead;
-	}
+    public String getSubhead() {
+        return subhead;
+    }
 
-	public void setSubhead(String subhead) {
-		this.subhead = subhead;
-	}
+    public void setSubhead(String subhead) {
+        this.subhead = subhead;
+    }
 
-	public String getAvatar() {
-		return avatar;
-	}
+    public String getAvatar() {
+        return avatar;
+    }
 
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
-	public String getPhoto() {
-		return photo;
-	}
+    public String getPhoto() {
+        return photo;
+    }
 
-	public void setPhoto(String photo) {
-		this.photo = photo;
-	}
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public void setLocation(String location) {
-		this.location = location;
-	}
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	public Integer getTop() {
-		return top;
-	}
+    public Integer getTop() {
+        return top;
+    }
 
-	public void setTop(Integer top) {
-		this.top = top;
-	}
+    public void setTop(Integer top) {
+        this.top = top;
+    }
 
-	public Date getCreatetime() {
-		return createtime;
-	}
+    public Date getCreatetime() {
+        return createtime;
+    }
 
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
 
-	public Date getUpdatetime() {
-		return updatetime;
-	}
+    public Date getUpdatetime() {
+        return updatetime;
+    }
 
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
-	}
+    public void setUpdatetime(Date updatetime) {
+        this.updatetime = updatetime;
+    }
 }

@@ -13,17 +13,17 @@ import java.io.Serializable;
 
 public class Basic implements Serializable {
 
-    @JSONField(name="city")
+    @JSONField(name = "city")
     public String cityName;
 
-    @JSONField(name="id")
+    @JSONField(name = "id")
     public String weatherId;
 
     public Update update;
 
     public class Update {
 
-        @JSONField(name="loc")
+        @JSONField(name = "loc")
         public String updateTime;
 
     }

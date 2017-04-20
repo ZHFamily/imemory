@@ -31,10 +31,11 @@ public class FindFragment extends Fragment {
 
     /**
      * 实例化NearShareFragment
+     *
      * @return
      */
-    public static FindFragment instanceFragment(){
-        if (mFindFragment==null){
+    public static FindFragment instanceFragment() {
+        if (mFindFragment == null) {
             mFindFragment = new FindFragment();
         }
         return mFindFragment;
@@ -46,7 +47,7 @@ public class FindFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_find, container, false);
         //下拉刷新
         swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshFind();
@@ -61,11 +62,11 @@ public class FindFragment extends Fragment {
         return view;
     }
 
-    private void refreshFind(){
+    private void refreshFind() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -82,9 +83,9 @@ public class FindFragment extends Fragment {
         }).start();
     }
 
-    private void initData(){
+    private void initData() {
         mFindList.clear();
-        for (int i=1; i<10; i++){
+        for (int i = 1; i < 10; i++) {
             Find find = new Find();
             find.setTitle("大电池加快充，手机重度用户告别用电荒什么什么的");
             find.setSubhead("要问智能手机用户最头疼的是什么，没有WiFi和电池不够用什么什么的");

@@ -12,9 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * （个人撰写）
- * APP常用方法的工具类
- *
  * @Author: 张杭
  * @Date: 2017/3/30 22:11
  */
@@ -32,18 +29,18 @@ public class AppUtils {
     /**
      * 产生二维码（Bitmap）
      */
-    public static Bitmap getEncodeBitmap(String str){
+    public static Bitmap getEncodeBitmap(String str) {
         Bitmap bitmap = null;
         BitMatrix result;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            result = multiFormatWriter.encode(str, BarcodeFormat.QR_CODE, 800,800);
+            result = multiFormatWriter.encode(str, BarcodeFormat.QR_CODE, 800, 800);
             // 使用 ZXing Android Embedded 要写的代码
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(result);
-        } catch (WriterException e){
+        } catch (WriterException e) {
             e.printStackTrace();
-        } catch (IllegalArgumentException iae){
+        } catch (IllegalArgumentException iae) {
             iae.printStackTrace();
             return null;
         }

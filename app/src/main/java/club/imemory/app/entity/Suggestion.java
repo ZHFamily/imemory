@@ -13,31 +13,31 @@ import java.io.Serializable;
 
 public class Suggestion implements Serializable {
 
-    @JSONField(name="comf")
+    @JSONField(name = "comf")
     public Comfort comfort;
 
-    @JSONField(name="cw")
+    @JSONField(name = "cw")
     public CarWash carWash;
 
     public Sport sport;
 
     public class Comfort {
 
-        @JSONField(name="txt")
+        @JSONField(name = "txt")
         public String info;
 
     }
 
     public class CarWash {
 
-        @JSONField(name="txt")
+        @JSONField(name = "txt")
         public String info;
 
     }
 
     public class Sport {
 
-        @JSONField(name="txt")
+        @JSONField(name = "txt")
         public String info;
 
     }

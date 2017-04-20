@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,6 +18,7 @@ import club.imemory.app.R;
 
 /**
  * 显示记录的详细信息
+ *
  * @Author: 张杭
  * @Date: 2017/3/31 15:34
  */
@@ -30,8 +30,8 @@ public class LifeActivity extends BaseActivity {
      */
     public static void actionStart(Context context, String... strings) {
         Intent intent = new Intent(context, LifeActivity.class);
-        intent.putExtra("avatar",strings[0]);
-        intent.putExtra("title",strings[1]);
+        intent.putExtra("avatar", strings[0]);
+        intent.putExtra("title", strings[1]);
         context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
@@ -42,7 +42,7 @@ public class LifeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_life);
         Intent intent = getIntent();
-        String avatar= intent.getStringExtra("avatar");
+        String avatar = intent.getStringExtra("avatar");
         String title = intent.getStringExtra("title");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);

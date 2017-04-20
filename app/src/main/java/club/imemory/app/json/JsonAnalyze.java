@@ -89,7 +89,7 @@ public class JsonAnalyze {
             JSONObject jsonObject = JSON.parseObject(response);
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
             String string = jsonArray.get(0).toString();
-            Weather weather = JSON.parseObject(string,Weather.class);
+            Weather weather = JSON.parseObject(string, Weather.class);
             return weather;
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,8 +6,6 @@ import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 /**
- * 管理程序内一些全局的状态信息
- *
  * @Author: 张杭
  * @Date: 2017/3/18 17:47
  */

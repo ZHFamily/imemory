@@ -23,6 +23,7 @@ public class FullscreenActivity extends BaseActivity {
         Intent intent = new Intent(context, FullscreenActivity.class);
         context.startActivity(intent);
     }
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.

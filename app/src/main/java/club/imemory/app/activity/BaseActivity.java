@@ -14,7 +14,6 @@ import club.imemory.app.util.AppManager;
  * @Date: 2017/3/11 14:09
  */
 
-
 public class BaseActivity extends AppCompatActivity {
 
     /**

@@ -101,16 +101,16 @@ public class CreateLifeActivity extends BaseActivity {
             life.setTitle(title);
             life.setAvatar(mList.get(0));
             StringBuffer pathBuffer = new StringBuffer();
-            for (String path : mList){
+            for (String path : mList) {
                 pathBuffer.append(path);
                 pathBuffer.append("|*imemory#cppy|");
             }
             life.setPhoto(pathBuffer.toString());
             life.setLocation("武汉");
             life.setCreatetime(new Date());
-            if(life.save()) {
+            if (life.save()) {
                 SnackbarUtil.ShortSnackbar(coordinator, "保存成功", SnackbarUtil.Confirm).show();
-            }else{
+            } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "保存失败", SnackbarUtil.Alert).show();
             }
         }

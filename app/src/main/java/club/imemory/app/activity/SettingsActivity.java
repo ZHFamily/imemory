@@ -13,8 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-
 import org.litepal.crud.DataSupport;
 
 import club.imemory.app.R;
@@ -25,11 +23,14 @@ import club.imemory.app.util.SnackbarUtil;
 
 import static club.imemory.app.util.CrashHandler.CRASH_LOG_PATH;
 
-
 /**
  * APP设置中心
+ *
+ * @Author: 张杭
+ * @Date: 2017/3/25 12:12
  */
-public class SettingsActivity extends BaseActivity implements View.OnClickListener{
+
+public class SettingsActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 启动SettingsActivity
      */
@@ -60,13 +61,13 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             }
         });
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        isNotification = prefs.getBoolean("isNotification",true);
-        isOnlyWiFi = prefs.getBoolean("isOnlyWiFi",true);
-        isOpenWeather = prefs.getBoolean("isOpenWeather",true);
+        isNotification = prefs.getBoolean("isNotification", true);
+        isOnlyWiFi = prefs.getBoolean("isOnlyWiFi", true);
+        isOpenWeather = prefs.getBoolean("isOpenWeather", true);
         initView();
     }
 
-    private void initView(){
+    private void initView() {
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         findViewById(R.id.btn_notification).setOnClickListener(this);
         findViewById(R.id.btn_only_wifi).setOnClickListener(this);
@@ -92,37 +93,37 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_notification:
-                isNotification = isNotification?false:true;
+                isNotification = isNotification ? false : true;
                 switchNotification.setChecked(isNotification);
                 AppManager.showToast("说了没这个功能，点了也没用");
                 break;
             case R.id.btn_only_wifi:
-                isOnlyWiFi = isOnlyWiFi?false:true;
+                isOnlyWiFi = isOnlyWiFi ? false : true;
                 switchOnlyWiFi.setChecked(isOnlyWiFi);
                 AppManager.showToast("其实这个功能也没实现");
                 break;
             case R.id.btn_clear:
-                DataCleanManager.cleanApplicationData(this,CRASH_LOG_PATH);
+                DataCleanManager.cleanApplicationData(this, CRASH_LOG_PATH);
                 AppManager.showToast("缓存已清除，请重启应用");
                 break;
             case R.id.btn_open_weather:
-                isOpenWeather = isOpenWeather?false:true;
+                isOpenWeather = isOpenWeather ? false : true;
                 switchOpenWeather.setChecked(isOpenWeather);
                 AppManager.showToast("操作成功");
                 break;
             case R.id.btn_check_update:
-                SnackbarUtil.ShortSnackbar(coordinator,"自己慢慢摸索把",SnackbarUtil.Info).show();
+                SnackbarUtil.ShortSnackbar(coordinator, "自己慢慢摸索把", SnackbarUtil.Info).show();
                 AppManager.showToast("最近应该不会更新");
                 break;
             case R.id.btn_help:
                 AppManager.showToast("自己慢慢摸索把");
-                SnackbarUtil.ShortSnackbar(coordinator,"自己慢慢摸索把",SnackbarUtil.Info).show();
+                SnackbarUtil.ShortSnackbar(coordinator, "自己慢慢摸索把", SnackbarUtil.Info).show();
                 break;
             case R.id.btn_user_agreement:
                 //AppManager.showToast("遵纪守法就好啦");
-                SnackbarUtil.ShortSnackbar(coordinator,"遵纪守法就好啦",SnackbarUtil.Info).show();
+                SnackbarUtil.ShortSnackbar(coordinator, "遵纪守法就好啦", SnackbarUtil.Info).show();
                 break;
             case R.id.btn_logout:
                 AppManager.showToast("注销成功");
@@ -138,9 +139,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putBoolean("isNotification",isNotification);
-        editor.putBoolean("isOnlyWiFi",isOnlyWiFi);
-        editor.putBoolean("isOpenWeather",isOpenWeather);
+        editor.putBoolean("isNotification", isNotification);
+        editor.putBoolean("isOnlyWiFi", isOnlyWiFi);
+        editor.putBoolean("isOpenWeather", isOpenWeather);
         editor.apply();
     }
 }

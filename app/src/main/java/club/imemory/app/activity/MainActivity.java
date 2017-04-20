@@ -28,7 +28,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -55,6 +54,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 import static club.imemory.app.util.AppManager.APP_NAME;
+
+/**
+ * @Author: 张杭
+ * @Date: 2017/3/25 12:12
+ */
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -181,14 +185,14 @@ public class MainActivity extends BaseActivity
             if (user.getHead() != null) {
                 Glide.with(this).load(user.getHead()).into(mHeadImage);
             }
-        }else{
+        } else {
             mNameTv.setText("点击登录");
             mPersonalityTv.setText("在偏执道路上狂奔吧");
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("isOpenWeather",true)){
+        if (!prefs.getBoolean("isOpenWeather", true)) {
             mWeatherBtn.setVisibility(View.GONE);
-        }else{
+        } else {
             mWeatherBtn.setVisibility(View.VISIBLE);
         }
     }
@@ -226,7 +230,7 @@ public class MainActivity extends BaseActivity
                     if (aMapLocation.getErrorCode() == 0) {
                         mAreaTv.setText(aMapLocation.getCity());
                     } else {
-                        AppManager.showToast(aMapLocation.getErrorCode() + ":" + aMapLocation.getErrorInfo());
+                        AppManager.showToast("定位失败");
                         AppManager.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
                     }
                 }
@@ -328,7 +332,7 @@ public class MainActivity extends BaseActivity
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_TEXT,
                         "展现美好记忆，体验趣味人生。www.imemory.club");
-                startActivity(Intent.createChooser(intent,"将imemory分享到"));
+                startActivity(Intent.createChooser(intent, "将imemory分享到"));
                 AppManager.showToast("和朋友一起玩耍吧");
                 break;
         }
@@ -510,7 +514,7 @@ public class MainActivity extends BaseActivity
     /**
      * 判断是否第一次启动程序
      */
-    private void isFirstStart(){
+    private void isFirstStart() {
         new Thread(new Runnable() {
             @Override
             public void run() {

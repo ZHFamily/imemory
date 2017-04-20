@@ -9,8 +9,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
 import club.imemory.app.R;
@@ -28,6 +26,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private Context mContext;
 
     private List<Message> mMessageList;
+
     public MessageAdapter(List<Message> messageList) {
         mMessageList = messageList;
     }
@@ -51,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public MessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (mContext==null){
+        if (mContext == null) {
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false);

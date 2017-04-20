@@ -15,9 +15,9 @@ import java.io.Serializable;
 
 public class City extends DataSupport implements Serializable {
 
-    @JSONField(name="name")
+    @JSONField(name = "name")
     private String cityName;
-    @JSONField(name="id")
+    @JSONField(name = "id")
     private int cityCode;
     private int provinceCode;
 
