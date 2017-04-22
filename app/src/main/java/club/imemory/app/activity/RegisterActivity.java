@@ -234,7 +234,7 @@ public class RegisterActivity extends BaseActivity {
             closeProgressDialog();
             if (result) {
                 AppManager.showToast("注册成功");
-                MainActivity.actionStart(RegisterActivity.this);
+                finish();
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "未知错误，请清除数据后重试", SnackbarUtil.Alert).show();
             }

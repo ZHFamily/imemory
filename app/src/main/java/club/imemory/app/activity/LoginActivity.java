@@ -75,12 +75,6 @@ public class LoginActivity extends BaseActivity {
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        Button mQQLoginBtn = (Button) findViewById(R.id.btn_QQ);
-        Button mWeiBoLoginBtn = (Button) findViewById(R.id.btn_weibo);
-        Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
-        Button mForgetBtn = (Button) findViewById(R.id.btn_forget);
-        EditText phoneET = (EditText) findViewById(R.id.et_phone);
-        EditText passwordET = (EditText) findViewById(R.id.et_password);
         mPhoneText = (TextInputLayout) findViewById(R.id.text_input_layout_phone);
         mPasswordText = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         mPhoneText.setHint("手机号码");
@@ -92,7 +86,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        phoneET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mPhoneText.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
@@ -108,7 +102,7 @@ public class LoginActivity extends BaseActivity {
         });
 
         //响应软件盘上的事件
-        phoneET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPhoneText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
@@ -121,7 +115,7 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         });
-        passwordET.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 validateLogin();
@@ -129,7 +123,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mRegisterBtn.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegisterActivity.actionStart(LoginActivity.this,
@@ -137,7 +131,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mForgetBtn.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.btn_forget).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 RegisterActivity.actionStart(LoginActivity.this,
@@ -146,20 +140,40 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        mQQLoginBtn.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.btn_QQ).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 qqLogin();
             }
         });
 
-        mWeiBoLoginBtn.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.btn_weibo).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppManager.showToast("该功能没实现,试试QQ登录");
                 SnackbarUtil.ShortSnackbar(coordinator, "该功能没实现,试试QQ登录", 0).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final User user = DataSupport.findLast(User.class);
+                if (user!=null){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mPhoneText.getEditText().setText(user.getPhone());
+                            mPasswordText.getEditText().setText(user.getPassword());
+                        }
+                    });
+                }
+            }
+        }).start();
     }
 
     private void qqLogin() {
@@ -181,7 +195,6 @@ public class LoginActivity extends BaseActivity {
             if (msg.what == 0) {
                 AppManager.showToast("QQ授权成功");
                 RegisterActivity.actionStart(LoginActivity.this);
-                //finish();
             }
         }
     };
@@ -264,8 +277,6 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case 1:
                     AppManager.showToast("登录成功");
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
                     finish();
                     break;
                 case 2:

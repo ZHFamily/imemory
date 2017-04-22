@@ -130,7 +130,12 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.btn_logout:
                 AppManager.showToast("注销成功");
-                DataSupport.deleteAll(User.class);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DataSupport.deleteAll(User.class);
+                    }
+                }).start();
                 finish();
                 break;
             default:
@@ -148,8 +153,18 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         snackbar.setAction("确定", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DataCleanManager.cleanApplicationData(SettingsActivity.this, CRASH_LOG_PATH);
-                AppManager.showToast("缓存已清除，请重启应用");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DataCleanManager.cleanApplicationData(SettingsActivity.this, CRASH_LOG_PATH);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                AppManager.showToast("缓存已清除");
+                            }
+                        });
+                    }
+                }).start();
             }
         }).show();
 

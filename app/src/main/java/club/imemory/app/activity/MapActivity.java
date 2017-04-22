@@ -1,9 +1,6 @@
 package club.imemory.app.activity;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,8 +27,9 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
      * 启动MapActivity
      */
     public static void actionStart(Context context) {
-        Intent intent = new Intent(context, MapActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        AppManager.showToast("该功能还处于开发阶段");
+        //Intent intent = new Intent(context, MapActivity.class);
+        //context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     private MapView mMapView = null;
@@ -155,52 +153,4 @@ public class MapActivity extends BaseActivity implements View.OnClickListener {
             super.onBackPressed();
         }
     }
-
-    /**
-     * 对地图进行截屏
-     */
-        /*aMap.getMapScreenShot(new AMap.OnMapScreenShotListener() {
-        @Override
-        public void onMapScreenShot(Bitmap bitmap) {
-        }
-
-        @Override
-        public void onMapScreenShot(Bitmap bitmap, int status) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            if(null == bitmap){
-                return;
-            }
-            try {
-                FileOutputStream fos = new FileOutputStream(
-                        Environment.getExternalStorageDirectory() + "/test_"
-                                + sdf.format(new Date()) + ".png");
-                boolean b = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-                try {
-                    fos.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                StringBuffer buffer = new StringBuffer();
-                if (b)
-                    buffer.append("截屏成功 ");
-                else {
-                    buffer.append("截屏失败 ");
-                }
-                if (status != 0)
-                    buffer.append("地图渲染完成，截屏无网格");
-                else {
-                    buffer.append( "地图未渲染完成，截屏有网格");
-                }
-                AppManager.showToast(buffer.toString());
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-    });*/
 }

@@ -65,15 +65,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         initData();
         View view = inflater.inflate(R.layout.fragment_message, container, false);
         mSendMsg = (EditText) view.findViewById(R.id.et_send_msg);
-        mSendMsg.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    AppManager.logI("ssssss",mMessageList.size()+"");
-                    mRecyclerView.scrollToPosition(mMessageList.size()-1);
-                }
-            }
-        });
         mSendBtn = (Button) view.findViewById(R.id.btn_send);
         mSendBtn.setOnClickListener(this);
         mEmoticonBtn = (ImageView) view.findViewById(R.id.btn_emoticon);
@@ -94,7 +85,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                 mMessageList.clear();
                 List<Message> list = DataSupport.limit(20).find(Message.class);
                 mMessageList.addAll(list);
-                mMessageList.add(new Message(100000,"我是小黑，来撩我吧"));
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -180,9 +170,5 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                 });
             }
         });
-    }
-    private void MoveToPosition(LinearLayoutManager manager, int n) {
-        manager.scrollToPositionWithOffset(n, 0);
-        manager.setStackFromEnd(true);
     }
 }

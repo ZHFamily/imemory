@@ -75,19 +75,6 @@ public class LoginListener implements IUiListener {
             Message msg = new Message();
             msg.what = 0;
             mHandler.sendMessage(msg);
-
-            /*try {
-                User user = new User();
-                user.setName(userInfoJson.getString("nickname"));
-                user.setHead(userInfoJson.getString("figureurl_qq_2"));
-                user.setSex(userInfoJson.getString("gender"));
-                user.setAddress(userInfoJson.getString("province") + userInfoJson.getString("city"));
-                user.setLogintime(new Date());
-                user.setCreatetime(new Date());
-                user.save();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }*/
         }
 
         @Override

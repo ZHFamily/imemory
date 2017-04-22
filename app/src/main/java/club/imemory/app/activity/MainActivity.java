@@ -67,14 +67,6 @@ import static club.imemory.app.util.AppManager.APP_NAME;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    /**
-     * 启动MainActivity
-     */
-    public static void actionStart(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
-    }
-
     private FragmentManager fragmentManager;
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
@@ -105,7 +97,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        AppManager.logI("MainActivity","onCreate");
         isFirstStart();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -191,25 +183,36 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        user = DataSupport.findLast(User.class);
-        if (user != null) {
-            mNameTv.setText(user.getName());
-            mPersonalityTv.setText(user.getPersonality());
-            if (user.getHead() != null) {
-                Glide.with(this).load(user.getHead()).into(mHeadImage);
+    protected void onResume() {
+        super.onResume();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                user = DataSupport.findLast(User.class);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                final Boolean isOpenWeather = prefs.getBoolean("isOpenWeather", true);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (user != null) {
+                            mNameTv.setText(user.getName());
+                            mPersonalityTv.setText(user.getPersonality());
+                            if (user.getHead() != null) {
+                                Glide.with(MainActivity.this).load(user.getHead()).into(mHeadImage);
+                            }
+                        } else {
+                            mNameTv.setText("点击登录");
+                            mPersonalityTv.setText("在偏执道路上狂奔吧");
+                        }
+                        if (!isOpenWeather) {
+                            mWeatherBtn.setVisibility(View.GONE);
+                        } else {
+                            mWeatherBtn.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
             }
-        } else {
-            mNameTv.setText("点击登录");
-            mPersonalityTv.setText("在偏执道路上狂奔吧");
-        }
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("isOpenWeather", true)) {
-            mWeatherBtn.setVisibility(View.GONE);
-        } else {
-            mWeatherBtn.setVisibility(View.VISIBLE);
-        }
+        }).start();
     }
 
     /**
@@ -344,24 +347,20 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_life:
-                AppManager.showToast("记录生活从点滴开始");
+            case R.id.item_imemory:
+                AppManager.showToast("该功能还处于开发阶段");
+                break;
+            case R.id.item_map:
                 MapActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_enjoy:
-                AppManager.showToast("不一样的美");
                 FullscreenActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_scan:
-                AppManager.showToast("扫描开始，请做好准备");
                 new IntentIntegrator(this)
                         .setCaptureActivity(ScanActivity.class)
                         .setOrientationLocked(false)
                         .initiateScan(); // 初始化扫描
-                break;
-            case R.id.item_settings:
-                AppManager.showToast("设置让你与众不同");
-                SettingsActivity.actionStart(MainActivity.this);
                 break;
             case R.id.item_close:
                 AppManager.showToast("欢迎下次光临");
@@ -561,4 +560,5 @@ public class MainActivity extends BaseActivity
             }
         }).start();
     }
+
 }

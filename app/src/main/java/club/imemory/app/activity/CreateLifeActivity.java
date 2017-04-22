@@ -128,7 +128,7 @@ public class CreateLifeActivity extends BaseActivity {
             life.setLocation("武汉");
             life.setCreatetime(new Date());
             if (life.save()) {
-                MainActivity.actionStart(this);
+                finish();
                 AppManager.showToast("保存成功");
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "保存失败", SnackbarUtil.Alert).show();
