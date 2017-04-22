@@ -29,16 +29,10 @@
         <item name="android:background">@drawable/gap_shadow</item>
     </style>
 
-    <!-- 阴影分割线 -->
-    <style name="ItemShadowGap" parent="Theme.AppCompat.Light">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">4dp</item>
-        <item name="android:background">@drawable/gap_shadow</item>
-    </style>
-
     <!--透明状态栏-->
     <style name="StatusTransparentTheme" parent="AppTheme">
         <item name="android:statusBarColor">@color/colorTransparent</item>
+        <item name="android:listDivider">@drawable/gap_item</item>
     </style>
 
     <!--其他样式-->

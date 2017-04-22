@@ -1,6 +1,7 @@
 package club.imemory.app.http;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,6 +12,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * @Author: 张杭
@@ -83,5 +85,24 @@ public class HttpManager {
                 .post(requestBody)
                 .build();
         client.newCall(request).enqueue(callback);
+    }
+
+    /**
+     * 使用OKHttp发送HTTP请求，获取服务器数据(默认get方式)
+     * 没有进行调
+     */
+    public static String sendOKHttpRequest(String address) {
+        Request request = new Request.Builder()
+                .url(address)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                return response.body().string();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

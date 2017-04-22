@@ -33,7 +33,8 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:src="@drawable/ic_user_head" />
+                android:src="@drawable/ic_user_head"
+                android:transitionName="logo" />
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"

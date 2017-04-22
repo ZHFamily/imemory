@@ -16,7 +16,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.transition.Explode;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,9 +47,9 @@ public class LoginActivity extends BaseActivity {
     /**
      * 启动LoginActivity
      */
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, View view) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, view, "logo").toBundle());
     }
 
     private CoordinatorLayout coordinator;
@@ -132,14 +132,16 @@ public class LoginActivity extends BaseActivity {
         mRegisterBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterActivity.actionStart(LoginActivity.this);
+                RegisterActivity.actionStart(LoginActivity.this,
+                        Pair.create(findViewById(R.id.image_logo), "logo"), Pair.create(findViewById(R.id.btn_login),"btn_logo_register") );
             }
         });
 
         mForgetBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterActivity.actionStart(LoginActivity.this);
+                RegisterActivity.actionStart(LoginActivity.this,
+                        Pair.create(findViewById(R.id.image_logo), "logo"), Pair.create(findViewById(R.id.btn_login),"btn_logo_register"));
                 AppManager.showToast("忘记密码就重新注册一个呗");
             }
         });
@@ -238,7 +240,7 @@ public class LoginActivity extends BaseActivity {
         @Override
         protected Integer doInBackground(String... params) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 return 0;
             }

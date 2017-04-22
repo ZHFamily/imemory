@@ -36,13 +36,15 @@
             android:padding="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_logo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:elevation="10dp"
-                android:src="@mipmap/logo" />
+                android:src="@mipmap/logo"
+                android:transitionName="logo" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/text_input_layout_phone"
@@ -101,7 +103,8 @@
                 android:background="@color/colorPrimary"
                 android:text="@string/login"
                 android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:transitionName="btn_logo_register" />
 
             <LinearLayout
                 android:layout_width="match_parent"

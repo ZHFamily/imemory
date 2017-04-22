@@ -27,7 +27,7 @@ public class LaunchActivity extends BaseActivity implements Runnable {
     public void run() {
         Boolean isAlive = this != null && !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 && this.isDestroyed()) && !this.isFinishing();
         if (isAlive) {
-            MainActivity.actionStart(this);
+            startActivity(new Intent(this,MainActivity.class));
             finish();
         }
     }

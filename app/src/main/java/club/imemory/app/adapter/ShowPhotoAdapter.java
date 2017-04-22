@@ -47,30 +47,40 @@ public class ShowPhotoAdapter extends RecyclerView.Adapter<ShowPhotoAdapter.View
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_show_photo, parent, false);
-
-        final ViewHolder holder = new ViewHolder(view);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                String path = mList.get(position);
-                AppManager.showToast(path);
-
-            }
-        });
+        ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         String path = mList.get(position);
         Glide.with(mContext).load(path)
                 .thumbnail(0.1f)
                 .into(holder.imageView);
+
+        if (mOnItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+
+        }
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
     }
 }

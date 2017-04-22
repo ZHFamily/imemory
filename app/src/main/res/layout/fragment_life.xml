@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
+        <club.imemory.app.ui.SideslipRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:scaleType="center"
-        android:src="@drawable/ic_fiber_new"/>
+        android:src="@drawable/ic_fiber_new" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create_life"
@@ -30,11 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin"
-        android:src="@drawable/ic_create"
-        app:backgroundTint="@color/colorAccent"
-        app:elevation="10dp"
+        android:src="@drawable/ic_add_xml"
         app:layout_behavior="club.imemory.app.ui.ScrollAwareViewBehavior"
-        app:pressedTranslationZ="20dp"
-        app:rippleColor="#555560" />
+        app:rippleColor="#ababb1" />
 
 </android.support.design.widget.CoordinatorLayout>

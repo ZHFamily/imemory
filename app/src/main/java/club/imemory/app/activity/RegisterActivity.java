@@ -15,6 +15,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -45,9 +46,9 @@ public class RegisterActivity extends BaseActivity {
     /**
      * 启动RegisterActivity
      */
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context,Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,sharedElements).toBundle());
     }
 
     private CoordinatorLayout coordinator;
@@ -257,7 +258,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DataSupport.deleteAll(User.class);
-                LoginActivity.actionStart(RegisterActivity.this);
+                LoginActivity.actionStart(RegisterActivity.this,findViewById(R.id.image_head));
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {

@@ -22,7 +22,7 @@ public class AppManager {
      */
     public static final String APP_NAME = "IMEMORY";
     //控制Log打印
-    private static boolean debug = false;
+    private static boolean debug = true;
     //关于Toast
     private static Toast toast;
     //关于Activity管理

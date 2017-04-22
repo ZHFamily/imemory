@@ -23,6 +23,7 @@ import java.util.List;
 import club.imemory.app.R;
 import club.imemory.app.adapter.ShowPhotoAdapter;
 import club.imemory.app.db.Life;
+import club.imemory.app.ui.PhotoRecyclerView;
 
 /**
  * 显示记录的详细信息
@@ -44,6 +45,7 @@ public class LifeActivity extends BaseActivity {
 
     private List<String> mList = new ArrayList<>();
     private ShowPhotoAdapter adapter;
+    private ImageView mlifeAvatarImg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +55,7 @@ public class LifeActivity extends BaseActivity {
         Life life = (Life) intent.getSerializableExtra("life");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        ImageView lifeAvatarImg = (ImageView) findViewById(R.id.image_avatar);
+        mlifeAvatarImg = (ImageView) findViewById(R.id.image_avatar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,18 +64,33 @@ public class LifeActivity extends BaseActivity {
             }
         });
         collapsingToolbar.setTitle(life.getTitle());
-        Glide.with(this).load(life.getAvatar()).into(lifeAvatarImg);
+        Glide.with(this).load(life.getAvatar()).into(mlifeAvatarImg);
         ((TextView)findViewById(R.id.tv_subhead)).setText(life.getSubhead());
         mList.clear();
         String[] path = life.getPhoto().split("#cppy#");
         for (int i=0;i<path.length-1;i++){
             mList.add(path[i]);
         }
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        PhotoRecyclerView recyclerView = (PhotoRecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         layoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ShowPhotoAdapter(mList);
         recyclerView.setAdapter(adapter);
+
+        recyclerView.setOnItemScrollChangeListener(new PhotoRecyclerView.OnItemScrollChangeListener() {
+            @Override
+            public void onChange(View view, int position) {
+                Glide.with(LifeActivity.this).load(mList.get(position+1)).into(mlifeAvatarImg);
+            }
+        });
+        adapter.setOnItemClickListener(new ShowPhotoAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Glide.with(LifeActivity.this).load(mList.get(position)).into(mlifeAvatarImg);
+            }
+        });
+
     }
 }

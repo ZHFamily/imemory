@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
@@ -12,7 +13,9 @@ import club.imemory.app.db.City;
 import club.imemory.app.db.County;
 import club.imemory.app.db.Province;
 import club.imemory.app.db.User;
+import club.imemory.app.entity.Meizi;
 import club.imemory.app.entity.Weather;
+import club.imemory.app.util.AppManager;
 
 /**
  * JSON 数据解析
@@ -108,5 +111,28 @@ public class JsonAnalyze {
             user.save();
             return true;
         }
+    }
+
+    /**
+     * 将返回的JSON数据解析成User实体类
+     */
+    public static List<Meizi> handleMeiziResponse(String response) {
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        } else {
+            try {
+                JSONObject jsonObject = JSON.parseObject(response);
+                if (!jsonObject.getBoolean("error")) {
+                    response = jsonObject.getString("results");
+                    List<Meizi> meiziList = JSON.parseArray(response, Meizi.class);
+                    return meiziList;
+                } else {
+                    return null;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

@@ -26,7 +26,7 @@ public class AppIntroActivity extends AppIntro {
      */
     public static void actionStart(Context context) {
         Intent intent = new Intent(context, AppIntroActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent);
     }
 
     @Override

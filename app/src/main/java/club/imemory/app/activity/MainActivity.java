@@ -51,6 +51,7 @@ import club.imemory.app.db.User;
 import club.imemory.app.fragment.FindFragment;
 import club.imemory.app.fragment.MessageFragment;
 import club.imemory.app.fragment.MyLifeFragment;
+import club.imemory.app.fragment.RelaxationFragment;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -78,6 +79,7 @@ public class MainActivity extends BaseActivity
     private MyLifeFragment mMyLifeFragment;
     private FindFragment mFindFragment;
     private MessageFragment mMessageFragment;
+    private RelaxationFragment mRelaxationFragment;
     private CircleImageView mHeadImage;
     private TextView mNameTv;
     private TextView mPersonalityTv;
@@ -93,6 +95,7 @@ public class MainActivity extends BaseActivity
     private static final int SHOW_LIFE = 1;
     private static final int SHOW_FIND = 2;
     private static final int SHOW_MESSAGE = 3;
+    private static final int SHOW_RELAXATION = 4;
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     // 首次按下返回键时间戳
@@ -133,9 +136,10 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 if (user != null) {
-                    UserActivity.actionStart(MainActivity.this, user);
+                    mDrawer.closeDrawer(GravityCompat.START);
+                    UserActivity.actionStart(MainActivity.this, user, mHeadImage);
                 } else {
-                    LoginActivity.actionStart(MainActivity.this);
+                    LoginActivity.actionStart(MainActivity.this, mHeadImage);
                 }
             }
         });
@@ -156,7 +160,8 @@ public class MainActivity extends BaseActivity
                         }
                     });
                 } else {
-                    LoginActivity.actionStart(MainActivity.this);
+                    mDrawer.closeDrawer(GravityCompat.START);
+                    LoginActivity.actionStart(MainActivity.this, mHeadImage);
                 }
             }
         });
@@ -215,101 +220,20 @@ public class MainActivity extends BaseActivity
         mMyLifeFragment = (MyLifeFragment) fragmentManager.findFragmentByTag("MyLifeFragment");
         mFindFragment = (FindFragment) fragmentManager.findFragmentByTag("FindFragment");
         mMessageFragment = (MessageFragment) fragmentManager.findFragmentByTag("MessageFragment");
+        mRelaxationFragment = (RelaxationFragment) fragmentManager.findFragmentByTag("RelaxationFragment");
         if (mMessageFragment != null) {
             fragmentManager.beginTransaction().hide(mMessageFragment).commit();
         }
         if (mFindFragment != null) {
             fragmentManager.beginTransaction().hide(mFindFragment).commit();
         }
+        if (mRelaxationFragment != null) {
+            fragmentManager.beginTransaction().hide(mRelaxationFragment).commit();
+        }
         if (mMyLifeFragment != null) {
             //说明Activity发生了重建，设置之前保存的currentFragment
             fragmentManager.beginTransaction().hide(mMyLifeFragment).commit();
             addOrShowFragment(current);
-        }
-    }
-
-    /**
-     * 根据定位信息显示当前地区
-     */
-    private void showWeather() {
-        //声明定位回调监听器
-        AMapLocationListener mLocationListener = new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        mAreaTv.setText(aMapLocation.getCity());
-                    } else {
-                        AppManager.showToast("定位失败");
-                        AppManager.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
-                    }
-                }
-            }
-        };
-
-        //声明AMapLocationClientOption对象
-        AMapLocationClientOption mLocationOption = null;
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-        //设置定位模式为AMapLocationMode.Battery_Saving，低功耗模式
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
-        //获取一次定位结果
-        mLocationOption.setOnceLocation(true);
-
-        //声明AMapLocationClient类对象  初始化
-        AMapLocationClient mLocationClient = new AMapLocationClient(getApplicationContext());
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-        //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
-        //启动定位
-        mLocationClient.startLocation();
-    }
-
-    /**
-     * 权限申请
-     */
-    private void requestsForPermissions() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return;
-        }
-        List<String> permissionList = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.READ_PHONE_STATE);
-        }
-        if (ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-        if (!permissionList.isEmpty()) {
-            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
-            ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
-        } else {
-            showWeather();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1) {
-            if (grantResults.length > 0) {
-                for (int result : grantResults) {
-                    if (result != PackageManager.PERMISSION_GRANTED) {
-                        AppManager.showToast("必须同意所有权限才能正常运行程序");
-                        finish();
-                        return;
-                    }
-                }
-                showWeather();
-            } else {
-                AppManager.showToast("发生未知错误,我感到非常抱歉");
-                finish();
-            }
         }
     }
 
@@ -329,6 +253,11 @@ public class MainActivity extends BaseActivity
                 mToolbar.setTitle("消息");
                 addOrShowFragment(SHOW_MESSAGE);
                 AppManager.showToast("沟通才能有机会");
+                break;
+            case R.id.nav_relaxation:
+                mToolbar.setTitle("休闲美图");
+                addOrShowFragment(SHOW_RELAXATION);
+                AppManager.showToast("休闲一下");
                 break;
             case R.id.nav_setting:
                 SettingsActivity.actionStart(MainActivity.this);
@@ -366,6 +295,9 @@ public class MainActivity extends BaseActivity
             case SHOW_MESSAGE:
                 fragmentTransaction.hide(mMessageFragment);
                 break;
+            case SHOW_RELAXATION:
+                fragmentTransaction.hide(mRelaxationFragment);
+                break;
         }
         //显示选择的fragment
         switch (index) {
@@ -391,6 +323,14 @@ public class MainActivity extends BaseActivity
                     fragmentTransaction.add(R.id.content_frame, mMessageFragment, "MessageFragment");
                 } else {
                     fragmentTransaction.show(mMessageFragment);
+                }
+                break;
+            case SHOW_RELAXATION:
+                if (mRelaxationFragment == null) {
+                    mRelaxationFragment = RelaxationFragment.instanceFragment();
+                    fragmentTransaction.add(R.id.content_frame, mRelaxationFragment, "RelaxationFragment");
+                } else {
+                    fragmentTransaction.show(mRelaxationFragment);
                 }
                 break;
         }
@@ -493,6 +433,90 @@ public class MainActivity extends BaseActivity
         return imgView;
     }
 
+    /**
+     * 根据定位信息显示当前地区
+     */
+    private void showWeather() {
+        //声明定位回调监听器
+        AMapLocationListener mLocationListener = new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        mAreaTv.setText(aMapLocation.getCity());
+                    } else {
+                        AppManager.showToast("定位失败");
+                        AppManager.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
+                    }
+                }
+            }
+        };
+
+        //声明AMapLocationClientOption对象
+        AMapLocationClientOption mLocationOption = null;
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Battery_Saving，低功耗模式
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        //获取一次定位结果
+        mLocationOption.setOnceLocation(true);
+
+        //声明AMapLocationClient类对象  初始化
+        AMapLocationClient mLocationClient = new AMapLocationClient(getApplicationContext());
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //设置定位回调监听
+        mLocationClient.setLocationListener(mLocationListener);
+        //启动定位
+        mLocationClient.startLocation();
+    }
+
+    /**
+     * 权限申请
+     */
+    private void requestsForPermissions() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return;
+        }
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissionList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!permissionList.isEmpty()) {
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(MainActivity.this, permissions, 1);
+        } else {
+            showWeather();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults.length > 0) {
+                for (int result : grantResults) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        AppManager.showToast("必须同意所有权限才能正常运行程序");
+                        finish();
+                        return;
+                    }
+                }
+                showWeather();
+            } else {
+                AppManager.showToast("发生未知错误,我感到非常抱歉");
+                finish();
+            }
+        }
+    }
 
     /**
      * 在Activity销毁时保存当前显示的Fragment

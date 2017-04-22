@@ -16,6 +16,7 @@ import java.util.List;
 import club.imemory.app.R;
 import club.imemory.app.activity.LifeActivity;
 import club.imemory.app.db.Life;
+import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 
 /**
@@ -33,8 +34,8 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         mLifeList = lifeList;
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        LinearLayout Layout;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public View mView;
         ImageView mAvatarView;
         TextView mTitleTV;
         TextView mLocationTV;
@@ -42,7 +43,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            Layout = (LinearLayout) itemView;
+            mView = itemView;
             mAvatarView = (ImageView) itemView.findViewById(R.id.image_avatar);
             mTitleTV = (TextView) itemView.findViewById(R.id.tv_title);
             mLocationTV = (TextView) itemView.findViewById(R.id.tv_location);
@@ -58,7 +59,7 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_life, parent, false);
 
         final ViewHolder holder = new ViewHolder(view);
-        holder.Layout.setOnClickListener(new View.OnClickListener() {
+        holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
@@ -84,5 +85,13 @@ public class LifeAdapter extends RecyclerView.Adapter<LifeAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return mLifeList.size();
+    }
+
+    public void removeRecycle(int position) {
+        mLifeList.remove(position);
+        notifyDataSetChanged();
+        if (mLifeList.size() == 0) {
+            AppManager.showToast("数据以为空");
+        }
     }
 }

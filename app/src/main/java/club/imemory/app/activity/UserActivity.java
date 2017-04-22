@@ -10,6 +10,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -29,10 +30,10 @@ public class UserActivity extends BaseActivity {
     /**
      * 启动UserActivity
      */
-    public static void actionStart(Context context, User user) {
+    public static void actionStart(Context context, User user ,View view) {
         Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra("user", user);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,view,"logo").toBundle());
     }
 
     private User user;

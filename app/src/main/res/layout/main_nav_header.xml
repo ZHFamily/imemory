@@ -28,6 +28,7 @@
             android:id="@+id/image_head"
             android:layout_width="72dp"
             android:layout_height="72dp"
+            android:transitionName="logo"
             android:src="@drawable/ic_user_head" />
 
         <TextView
