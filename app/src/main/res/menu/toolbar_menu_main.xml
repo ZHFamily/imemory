@@ -6,7 +6,7 @@
         android:id="@+id/item_imemory"
         android:icon="@drawable/ic_assignment"
         android:title="imemory"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/item_enjoy"

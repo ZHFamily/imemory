@@ -21,7 +21,7 @@
         android:id="@+id/dbv_scan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:zxing_scanner_layout="@layout/scanner_custom"></com.journeyapps.barcodescanner.DecoratedBarcodeView>
+        app:zxing_scanner_layout="@layout/scanner_custom"/>
 
     <Button
         android:id="@+id/btn_switch_light"

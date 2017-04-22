@@ -20,14 +20,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="#f5f5f5"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
         <EditText
             android:id="@+id/et_send_msg"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:textColor="@color/colorBlack"
