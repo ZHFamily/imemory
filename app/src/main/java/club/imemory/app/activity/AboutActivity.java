@@ -57,7 +57,7 @@ public class AboutActivity extends BaseActivity {
         findViewById(R.id.btn_about_author).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppManager.showToast("作者很低调 作者就是张杭 欢迎骚扰");
+                AppManager.showToast("I am ZhangHang 欢迎骚扰");
             }
         });
 
@@ -76,6 +76,13 @@ public class AboutActivity extends BaseActivity {
                         "来自 imemory" + BuildConfig.VERSION_NAME + "-build-" + BuildConfig.VERSION_CODE + " 的客户端反馈",
                         "设备信息：Android " + Build.VERSION.RELEASE + " - " + Build.MANUFACTURER + " - " + Build.MODEL + "\n\n"
                 );
+            }
+        });
+
+        findViewById(R.id.btn_thank).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ThankActivity.actionStart(AboutActivity.this);
             }
         });
 

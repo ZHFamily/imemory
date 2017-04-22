@@ -117,16 +117,16 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 AppManager.showToast("操作成功");
                 break;
             case R.id.btn_check_update:
-                SnackbarUtil.ShortSnackbar(coordinator, "自己慢慢摸索把", SnackbarUtil.Info).show();
-                AppManager.showToast("最近应该不会更新");
+                SnackbarUtil.ShortSnackbar(coordinator, "最近应该不会更新", 0).show();
+                //AppManager.showToast("最近应该不会更新");
                 break;
             case R.id.btn_help:
-                AppManager.showToast("自己慢慢摸索把");
-                SnackbarUtil.ShortSnackbar(coordinator, "自己慢慢摸索把", SnackbarUtil.Info).show();
+                //AppManager.showToast("自己慢慢摸索把");
+                SnackbarUtil.ShortSnackbar(coordinator, "自己慢慢摸索吧", 0).show();
                 break;
             case R.id.btn_user_agreement:
                 //AppManager.showToast("遵纪守法就好啦");
-                SnackbarUtil.ShortSnackbar(coordinator, "遵纪守法就好啦", SnackbarUtil.Info).show();
+                SnackbarUtil.ShortSnackbar(coordinator, "遵纪守法就好啦", 0).show();
                 break;
             case R.id.btn_logout:
                 AppManager.showToast("注销成功");

@@ -60,13 +60,14 @@
         <activity
             android:name=".activity.MainActivity"
             android:launchMode="singleTask"
-            android:theme="@style/StatusTransparentTheme"/>
+            android:theme="@style/StatusTransparentTheme" />
         <activity android:name=".activity.AppIntroActivity" />
         <activity android:name=".activity.FindActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity android:name=".activity.ScanActivity" />
         <activity android:name=".activity.ChooseAreaActivity" />
         <activity android:name=".activity.WeatherActivity" />
+        <activity android:name=".activity.ThankActivity" />
         <activity android:name=".activity.MapActivity" /><!-- 高德地图 -->
         <activity
             android:name=".activity.RegisterActivity"
@@ -132,7 +133,7 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="behind"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

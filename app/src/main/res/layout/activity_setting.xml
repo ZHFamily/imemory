@@ -2,10 +2,10 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/coordinator"
     tools:context=".activity.SettingsActivity">
 
     <android.support.v7.widget.Toolbar
@@ -63,7 +63,7 @@
                     android:layout_below="@+id/textView"
                     android:layout_marginTop="4dp"
                     android:layout_toStartOf="@+id/switch_notification"
-                    android:text="开启也没有，这功能压根就没做"
+                    android:text="开启也没用，这功能压根就没做"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="13sp" />
 
@@ -164,20 +164,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/switch_open_weather"
-                    android:text="开启天气信息"
+                    android:text="显示天气信息"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView3"
-                    android:layout_marginTop="4dp"
-                    android:layout_toStartOf="@+id/switch_open_weather"
-                    android:text="将根据当前地理位置显示天气信息"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="13sp" />
 
                 <android.support.v7.widget.SwitchCompat
                     android:id="@+id/switch_open_weather"
@@ -244,8 +233,8 @@
                     android:layout_height="wrap_content"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:padding="16dp"
                     android:gravity="center"
+                    android:padding="16dp"
                     android:text="注销"
                     android:textColor="#ff0000"
                     android:textSize="16sp" />
@@ -256,7 +245,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp" />
         </LinearLayout>
     </ScrollView>
 </android.support.design.widget.CoordinatorLayout>

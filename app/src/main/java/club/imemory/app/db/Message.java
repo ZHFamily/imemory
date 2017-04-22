@@ -1,4 +1,6 @@
-package club.imemory.app.entity;
+package club.imemory.app.db;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.Date;
 
@@ -7,16 +9,22 @@ import java.util.Date;
  * @Date: 2017/4/1 13:06
  */
 
-public class Message {
+public class Message extends DataSupport implements java.io.Serializable{
 
     private int id;
-    private String title;
-    private String subhead;
+    private int code;
+    private String text;
     private String avatar;
-    private int top;
-    private int hits;
     private Date createtime;
     private Date updatetime;
+
+    public Message() {
+    }
+
+    public Message(int code, String text) {
+        this.code = code;
+        this.text = text;
+    }
 
     public int getId() {
         return id;
@@ -26,20 +34,20 @@ public class Message {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public int getCode() {
+        return code;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public String getSubhead() {
-        return subhead;
+    public String getText() {
+        return text;
     }
 
-    public void setSubhead(String subhead) {
-        this.subhead = subhead;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getAvatar() {
@@ -48,22 +56,6 @@ public class Message {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public int getTop() {
-        return top;
-    }
-
-    public void setTop(int top) {
-        this.top = top;
-    }
-
-    public int getHits() {
-        return hits;
-    }
-
-    public void setHits(int hits) {
-        this.hits = hits;
     }
 
     public Date getCreatetime() {

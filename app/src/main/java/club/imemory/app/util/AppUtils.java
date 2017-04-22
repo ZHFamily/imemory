@@ -1,6 +1,9 @@
 package club.imemory.app.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
+import android.support.annotation.RawRes;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -8,6 +11,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,5 +52,18 @@ public class AppUtils {
             return null;
         }
         return bitmap;
+    }
+
+    public static String getRawString(@NonNull Context context, @RawRes int rawId) throws IOException {
+        InputStream is = context.getResources().openRawResource(rawId);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line).append("\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        reader.close();
+        return sb.toString();
     }
 }

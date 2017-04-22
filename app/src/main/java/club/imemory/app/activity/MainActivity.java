@@ -247,24 +247,21 @@ public class MainActivity extends BaseActivity
             case R.id.nav_find:
                 mToolbar.setTitle("发现");
                 addOrShowFragment(SHOW_FIND);
-                AppManager.showToast("分享会是你最大的快乐");
                 break;
             case R.id.nav_message:
-                mToolbar.setTitle("消息");
+                mToolbar.setTitle("智能小黑");
                 addOrShowFragment(SHOW_MESSAGE);
-                AppManager.showToast("沟通才能有机会");
+                AppManager.showToast("懂你才是真道理");
                 break;
             case R.id.nav_relaxation:
                 mToolbar.setTitle("休闲美图");
                 addOrShowFragment(SHOW_RELAXATION);
-                AppManager.showToast("休闲一下");
                 break;
             case R.id.nav_setting:
                 SettingsActivity.actionStart(MainActivity.this);
                 break;
             case R.id.nav_about:
                 AboutActivity.actionStart(MainActivity.this);
-                AppManager.showToast("这里有我的联系方式");
                 break;
             case R.id.nav_recommend:
                 Intent intent = new Intent(Intent.ACTION_SEND);

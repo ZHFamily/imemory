@@ -7,10 +7,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 import club.imemory.app.db.City;
 import club.imemory.app.db.County;
+import club.imemory.app.db.Message;
 import club.imemory.app.db.Province;
 import club.imemory.app.db.User;
 import club.imemory.app.entity.Meizi;
@@ -134,5 +136,20 @@ public class JsonAnalyze {
             }
         }
         return null;
+    }
+
+    /**
+     * 将返回的JSON数据解析成User实体类
+     */
+    public static Message handleMessageResponse(String response) {
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        } else {
+            Message message = JSON.parseObject(response, Message.class);
+            message.setCreatetime(new Date());
+            message.setUpdatetime(new Date());
+            message.save();
+            return message;
+        }
     }
 }

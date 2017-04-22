@@ -6,13 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.entity.Message;
+import club.imemory.app.db.Message;
 import club.imemory.app.util.AppManager;
 import club.imemory.app.util.AppUtils;
 
@@ -32,19 +35,25 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout layout;
-        ImageView mAvatarView;
-        TextView mTitleTV;
-        TextView mSubheadTV;
-        TextView mCreateTimeTV;
+        View itemView;
+        LinearLayout leftMsgLayout;
+        ImageView leftAvatarImage;
+        TextView leftText;
+        LinearLayout rightMsgLayout;
+        ImageView rightAvatarImage;
+        TextView rightText;
+        View view;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            layout = (RelativeLayout) itemView;
-            mAvatarView = (ImageView) itemView.findViewById(R.id.image_avatar);
-            mTitleTV = (TextView) itemView.findViewById(R.id.tv_title);
-            mSubheadTV = (TextView) itemView.findViewById(R.id.tv_subhead);
-            mCreateTimeTV = (TextView) itemView.findViewById(R.id.tv_create_time);
+            itemView = itemView;
+            leftMsgLayout = (LinearLayout) itemView.findViewById(R.id.layout_msg_left);
+            leftAvatarImage = (ImageView) itemView.findViewById(R.id.image_left);
+            leftText = (TextView) itemView.findViewById(R.id.tv_msg_left);
+            rightMsgLayout = (LinearLayout) itemView.findViewById(R.id.layout_msg_right);
+            rightAvatarImage = (ImageView) itemView.findViewById(R.id.image_right);
+            rightText = (TextView) itemView.findViewById(R.id.tv_msg_right);
+            view = itemView.findViewById(R.id.view);
         }
     }
 
@@ -54,28 +63,26 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             mContext = parent.getContext();
         }
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_message, parent, false);
-
-        final ViewHolder holder = new MessageAdapter.ViewHolder(view);
-        holder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = holder.getAdapterPosition();
-                Message Message = mMessageList.get(position);
-                AppManager.showToast("什么都没有");
-                //MessageActivity.actionStart(mContext,Message.getAvatar(),Message.getTitle());
-            }
-        });
+        ViewHolder holder = new MessageAdapter.ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(MessageAdapter.ViewHolder holder, int position) {
-        Message Message = mMessageList.get(position);
-        holder.mTitleTV.setText(Message.getTitle());
-        holder.mSubheadTV.setText(Message.getSubhead());
-        holder.mCreateTimeTV.setText(AppUtils.getDataToString(Message.getCreatetime()));
-        //使用Glide库加载图片
-        //Glide.with(mContext).load(Message.getAvatar()).into(holder.mAvatarView);
+        Message msg = mMessageList.get(position);
+        if (msg.getCode()==100000){
+            holder.leftMsgLayout.setVisibility(View.VISIBLE);
+            holder.rightMsgLayout.setVisibility(View.GONE);
+            holder.leftText.setText(msg.getText());
+        }else if (msg.getCode()==718){
+            holder.rightMsgLayout.setVisibility(View.VISIBLE);
+            holder.leftMsgLayout.setVisibility(View.GONE);
+            holder.rightText.setText(msg.getText());
+            //Glide.with(mContext).load(msg.getAvatar()).thumbnail(0.1f).into(holder.rightAvatarImage);
+        }
+        if (mMessageList.size()-1==position){
+            holder.view.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
