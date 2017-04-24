@@ -22,6 +22,7 @@ import club.imemory.app.R;
 import club.imemory.app.db.City;
 import club.imemory.app.db.County;
 import club.imemory.app.db.Province;
+import club.imemory.app.entity.Weather;
 import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
@@ -52,30 +53,13 @@ public class ChooseAreaActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private List<String> dataList = new ArrayList<>();
 
-    /**
-     * 省列表
-     */
     private List<Province> provinceList;
-    /**
-     * 市列表
-     */
     private List<City> cityList;
-    /**
-     * 县列表
-     */
     private List<County> countyList;
-    /**
-     * 选中的省份
-     */
     private Province selectedProvince;
-    /**
-     * 选中的城市
-     */
     private City selectedCity;
-    /**
-     * 当前选中的级别
-     */
     private int currentLevel;
+    private Boolean isMainActivityOpen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +86,7 @@ public class ChooseAreaActivity extends BaseActivity {
                         queryCounties();
                         break;
                     case LEVEL_COUNTY:
-                        gotoWeather(countyList.get(position).getWeatherId());
+                        gotoWeatherActivity(countyList.get(position).getWeatherId());
                         break;
                 }
             }
@@ -117,6 +101,7 @@ public class ChooseAreaActivity extends BaseActivity {
                 }
             }
         });
+        isMainActivityOpen = getIntent().getBooleanExtra("isMainActivityOpen",false);
         queryProvinces();
     }
 
@@ -131,18 +116,24 @@ public class ChooseAreaActivity extends BaseActivity {
         }
     }
 
-    public void gotoWeather(String weatherId) {
+    public void gotoWeatherActivity(String weatherId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getString("weather", null) != null) {
+        if (prefs.getString("weatherInfor", null) != null) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.remove("weather");
+            editor.remove("weatherInfor");
             editor.apply();
         }
-
-        Intent intent = new Intent();
-        intent.putExtra("weather_id", weatherId);
-        setResult(RESULT_OK, intent);
-        finish();
+        if (isMainActivityOpen){
+            Intent intent = new Intent(ChooseAreaActivity.this, WeatherActivity.class);
+            intent.putExtra("weatherId",weatherId);
+            startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent();
+            intent.putExtra("weatherId", weatherId);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     /**
@@ -241,7 +232,6 @@ public class ChooseAreaActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call call, IOException e) {
-                // 通过runOnUiThread()方法回到主线程处理逻辑
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

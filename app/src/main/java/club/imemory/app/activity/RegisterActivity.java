@@ -46,16 +46,15 @@ public class RegisterActivity extends BaseActivity {
     /**
      * 启动RegisterActivity
      */
-    public static void actionStart(Context context,Pair<View, String>... sharedElements) {
+    public static void actionStart(Context context, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, RegisterActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,sharedElements).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, sharedElements).toBundle());
     }
 
     private CoordinatorLayout coordinator;
     private TextInputLayout mPhoneText;
     private TextInputLayout mPasswordText;
     private TextInputLayout mNameText;
-    private Button mRegisterBtn;
     private ProgressDialog progressDialog;
     private User user = new User();
 
@@ -72,7 +71,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
-        mRegisterBtn = (Button) findViewById(R.id.btn_register);
+        Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
         mPhoneText = (TextInputLayout) findViewById(R.id.text_input_layout_phone);
         mPasswordText = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         mNameText = (TextInputLayout) findViewById(R.id.text_input_layout_name);
@@ -81,13 +80,15 @@ public class RegisterActivity extends BaseActivity {
         mPasswordText.setHint("密码");
         mNameText.setHint("昵称");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String userInfo = prefs.getString("userInfoJson", null);
-        if (userInfo != null) {
-            JSONObject userInfoJson = JSON.parseObject(userInfo);
-            user.setName(userInfoJson.getString("nickname"));
-            user.setHead(userInfoJson.getString("figureurl_qq_2"));
-            user.setSex(userInfoJson.getString("gender"));
-            user.setAddress(userInfoJson.getString("province") + userInfoJson.getString("city"));
+        String nickname = prefs.getString("nickname", null);
+        String figureUrlQQ = prefs.getString("figureUrlQQ", null);
+        String gender = prefs.getString("gender", null);
+        String area = prefs.getString("area", null);
+        if (nickname != null || figureUrlQQ != null || gender != null || area != null) {
+            user.setName(nickname);
+            user.setHead(figureUrlQQ);
+            user.setSex(gender);
+            user.setAddress(area);
             mNameText.getEditText().setText(user.getName());
             Glide.with(this).load(user.getHead()).into(headImage);
         }
@@ -99,8 +100,8 @@ public class RegisterActivity extends BaseActivity {
                 if (!hasFocus) {
                     if (RegexUtils.isMobileExact(((TextView) v).getText().toString().trim())) {
                         mPhoneText.setError(null);
+                        mPhoneText.setErrorEnabled(false);
                     } else {
-                        SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                         mPhoneText.setError("手机号码不正确");
                     }
                 }
@@ -112,8 +113,8 @@ public class RegisterActivity extends BaseActivity {
                 if (!hasFocus) {
                     if (((TextView) v).getText().toString().trim().length() >= 6) {
                         mPasswordText.setError(null);
+                        mPasswordText.setErrorEnabled(false);
                     } else {
-                        SnackbarUtil.ShortSnackbar(coordinator, "密码长度至少6位", SnackbarUtil.Alert).show();
                         mPasswordText.setError("密码长度至少6位");
                     }
                 }
@@ -126,9 +127,9 @@ public class RegisterActivity extends BaseActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
                     mPhoneText.setError(null);
+                    mPhoneText.setErrorEnabled(false);
                     return false;
                 } else {
-                    SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                     mPhoneText.setError("手机号码不正确");
                     return true;
                 }
@@ -139,9 +140,9 @@ public class RegisterActivity extends BaseActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (v.getText().toString().trim().length() >= 6) {
                     mPasswordText.setError(null);
+                    mPasswordText.setErrorEnabled(false);
                     return false;
                 } else {
-                    SnackbarUtil.ShortSnackbar(coordinator, "密码长度至少6位", SnackbarUtil.Alert).show();
                     mPasswordText.setError("密码长度至少6位");
                     return true;
                 }
@@ -171,6 +172,9 @@ public class RegisterActivity extends BaseActivity {
         mNameText.setError(null);
         mPhoneText.setError(null);
         mPasswordText.setError(null);
+        mNameText.setErrorEnabled(false);
+        mPhoneText.setErrorEnabled(false);
+        mPasswordText.setErrorEnabled(false);
 
         String name = mNameText.getEditText().getText().toString().trim();
         String phone = mPhoneText.getEditText().getText().toString().trim();
@@ -212,7 +216,7 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    public class UserRegisterTask extends AsyncTask<String, Integer, Boolean> {
+    private class UserRegisterTask extends AsyncTask<String, Integer, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
@@ -234,7 +238,7 @@ public class RegisterActivity extends BaseActivity {
             closeProgressDialog();
             if (result) {
                 AppManager.showToast("注册成功");
-                finish();
+                finishAfterTransition();
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "未知错误，请清除数据后重试", SnackbarUtil.Alert).show();
             }
@@ -246,10 +250,10 @@ public class RegisterActivity extends BaseActivity {
         }
     }
 
-    /**
+    /*
      * 弹框确认是否退出注册
      */
-    private void isDialog(String result) {
+    /*private void isDialog(String result) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);  //先得到构造器
         builder.setTitle("提示"); //设置标题
         builder.setMessage(result); //设置内容
@@ -258,7 +262,7 @@ public class RegisterActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 DataSupport.deleteAll(User.class);
-                LoginActivity.actionStart(RegisterActivity.this,findViewById(R.id.image_head));
+                LoginActivity.actionStart(RegisterActivity.this, findViewById(R.id.image_head));
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -267,7 +271,7 @@ public class RegisterActivity extends BaseActivity {
             }
         });
         builder.create().show();
-    }
+    }*/
 
     /**
      * 显示进度对话框

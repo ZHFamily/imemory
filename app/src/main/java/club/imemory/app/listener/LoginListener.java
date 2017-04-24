@@ -68,10 +68,17 @@ public class LoginListener implements IUiListener {
         public void onComplete(Object object) {
             JSONObject userInfoJson = (JSONObject) object;
             AppManager.logI("LoginActivity", userInfoJson.toString());
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationUtil.getContext());
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("userInfoJson",userInfoJson.toString());
-            editor.apply();
+            try {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ApplicationUtil.getContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("nickname",userInfoJson.getString("nickname"));
+                editor.putString("figureUrlQQ",userInfoJson.getString("figureurl_qq_2"));
+                editor.putString("gender",userInfoJson.getString("gender"));
+                editor.putString("area",userInfoJson.getString("province") + userInfoJson.getString("city"));
+                editor.apply();
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
             Message msg = new Message();
             msg.what = 0;
             mHandler.sendMessage(msg);

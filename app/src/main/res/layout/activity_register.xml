@@ -52,7 +52,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="8dp">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -74,8 +74,7 @@
                 android:layout_marginBottom="4dp"
                 android:layout_marginTop="4dp">
 
-                <EditText
-                    android:id="@+id/et_password"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="密码（至少6位）"
@@ -96,8 +95,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="4dp">
 
-                <EditText
-                    android:id="@+id/et_name"
+                <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="昵称"

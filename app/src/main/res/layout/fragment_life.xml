@@ -4,6 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/image_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:scaleType="center"
+        android:src="@drawable/ic_fiber_new" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
@@ -16,14 +24,6 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <ImageView
-        android:id="@+id/image_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:scaleType="center"
-        android:src="@drawable/ic_fiber_new" />
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_create_life"
         android:layout_width="wrap_content"
@@ -31,6 +31,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/margin"
         android:src="@drawable/ic_add_xml"
+        android:transitionName="fab"
         app:layout_behavior="club.imemory.app.ui.ScrollAwareViewBehavior"
         app:rippleColor="#ababb1" />
 

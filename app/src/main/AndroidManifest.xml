@@ -108,10 +108,10 @@
             </intent-filter>
         </activity>
 
-        <service
+        <!--<service
             android:name=".service.AutoUpdateWeatherService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" />-->
 
         <!-- QQ授权登录 -->
         <activity

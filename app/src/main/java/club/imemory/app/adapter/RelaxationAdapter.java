@@ -65,7 +65,6 @@ public class RelaxationAdapter extends RecyclerView.Adapter<RelaxationAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Meizi meizi = lists.get(position);
-        int height = (int) (250 + Math.random() * 1000);
         Glide.with(mContext).load(meizi.getUrl())
                 .thumbnail(0.1f)
                 .into(holder.imageView);

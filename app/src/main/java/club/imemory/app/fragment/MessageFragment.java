@@ -72,9 +72,9 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
         mRecyclerView.setLayoutManager(layoutManager);
+        adapter = new MessageAdapter(mMessageList);
+        mRecyclerView.setAdapter(adapter);
 
-        //adapter = new MessageAdapter(mMessageList);
-        //recyclerView.setAdapter(adapter);
         return view;
     }
 
@@ -132,7 +132,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                 mRecyclerView.setAdapter(adapter);
             } else {
                 adapter.notifyDataSetChanged();
-                mRecyclerView.smoothScrollToPosition(mMessageList.size()-1);
+                //mRecyclerView.scrollToPosition(mMessageList.size()-1);
             }
             getTuLing(msg);
         }
@@ -152,7 +152,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                         if (tulingMessage != null) {
                             mMessageList.add(tulingMessage);
                             adapter.notifyDataSetChanged();
-                            mRecyclerView.smoothScrollToPosition(mMessageList.size()-1);
+                            //mRecyclerView.scrollToPosition(mMessageList.size()-1);
                         } else {
                             AppManager.showToast("消息接收失败");
                         }

@@ -13,6 +13,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -38,9 +39,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     /**
      * 启动SettingsActivity
      */
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, SettingsActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, sharedElements).toBundle());
     }
 
     private CoordinatorLayout coordinator;
@@ -136,7 +137,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                         DataSupport.deleteAll(User.class);
                     }
                 }).start();
-                finish();
+                finishAfterTransition();
                 break;
             default:
                 break;

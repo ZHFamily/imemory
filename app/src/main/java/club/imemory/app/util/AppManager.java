@@ -77,7 +77,7 @@ public class AppManager {
      */
     public static void finishAll() {
         for (Activity activity : activities) {
-            activity.finish();
+            activity.finishAfterTransition();
         }
         AppManager.logI("AppManager", "程序成功关闭");
         activities.clear();

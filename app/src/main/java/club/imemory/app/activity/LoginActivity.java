@@ -2,13 +2,11 @@ package club.imemory.app.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,7 +19,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.tencent.tauth.Tencent;
@@ -47,9 +44,9 @@ public class LoginActivity extends BaseActivity {
     /**
      * 启动LoginActivity
      */
-    public static void actionStart(Context context, View view) {
+    public static void actionStart(Context context, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, LoginActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, view, "logo").toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, sharedElements).toBundle());
     }
 
     private CoordinatorLayout coordinator;
@@ -57,6 +54,8 @@ public class LoginActivity extends BaseActivity {
     private TextInputLayout mPasswordText;
     private View mProgressView;
     private View mLoginFormView;
+    private View logo;
+    private Button loginBtn;
     private Tencent mTencent; //qq主操作对象
     private LoginListener mLoginListener; //授权登录监听器
 
@@ -72,6 +71,12 @@ public class LoginActivity extends BaseActivity {
                 onBackPressed();
             }
         });
+        Button mQQLoginBtn = (Button) findViewById(R.id.btn_QQ);
+        Button mWeiBoLoginBtn = (Button) findViewById(R.id.btn_weibo);
+        Button mRegisterBtn = (Button) findViewById(R.id.btn_register);
+        Button mForgetBtn = (Button) findViewById(R.id.btn_forget);
+        logo = findViewById(R.id.image_logo);
+        loginBtn = (Button) findViewById(R.id.btn_login);
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -79,7 +84,7 @@ public class LoginActivity extends BaseActivity {
         mPasswordText = (TextInputLayout) findViewById(R.id.text_input_layout_password);
         mPhoneText.setHint("手机号码");
         mPasswordText.setHint("密码");
-        findViewById(R.id.btn_login).setOnClickListener(new OnClickListener() {
+        loginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 validateLogin();
@@ -93,8 +98,8 @@ public class LoginActivity extends BaseActivity {
                     // 此处为失去焦点时的处理内容
                     if (RegexUtils.isMobileExact(((TextView) v).getText().toString().trim())) {
                         mPhoneText.setError(null);
+                        mPhoneText.setErrorEnabled(false);
                     } else {
-                        SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                         mPhoneText.setError("手机号码不正确");
                     }
                 }
@@ -107,9 +112,9 @@ public class LoginActivity extends BaseActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (RegexUtils.isMobileExact(v.getText().toString().trim())) {
                     mPhoneText.setError(null);
+                    mPhoneText.setErrorEnabled(false);
                     return false;
                 } else {
-                    SnackbarUtil.ShortSnackbar(coordinator, "手机号码不正确", SnackbarUtil.Alert).show();
                     mPhoneText.setError("手机号码不正确");
                     return true;
                 }
@@ -123,31 +128,29 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.btn_register).setOnClickListener(new OnClickListener() {
+        mRegisterBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterActivity.actionStart(LoginActivity.this,
-                        Pair.create(findViewById(R.id.image_logo), "logo"), Pair.create(findViewById(R.id.btn_login),"btn_logo_register") );
+                gotoRegister();
             }
         });
 
-        findViewById(R.id.btn_forget).setOnClickListener(new OnClickListener() {
+        mForgetBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterActivity.actionStart(LoginActivity.this,
-                        Pair.create(findViewById(R.id.image_logo), "logo"), Pair.create(findViewById(R.id.btn_login),"btn_logo_register"));
+                gotoRegister();
                 AppManager.showToast("忘记密码就重新注册一个呗");
             }
         });
 
-        findViewById(R.id.btn_QQ).setOnClickListener(new OnClickListener() {
+        mQQLoginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 qqLogin();
             }
         });
 
-        findViewById(R.id.btn_weibo).setOnClickListener(new OnClickListener() {
+        mWeiBoLoginBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppManager.showToast("该功能没实现,试试QQ登录");
@@ -163,7 +166,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void run() {
                 final User user = DataSupport.findLast(User.class);
-                if (user!=null){
+                if (user != null) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -174,6 +177,16 @@ public class LoginActivity extends BaseActivity {
                 }
             }
         }).start();
+    }
+
+    private  void gotoRegister(){
+        mPhoneText.setError(null);
+        mPasswordText.setError(null);
+        mPhoneText.setErrorEnabled(false);
+        mPasswordText.setErrorEnabled(false);
+        RegisterActivity.actionStart(LoginActivity.this,
+                Pair.create(logo, "logo"),
+                Pair.create(((View)loginBtn), "btn_logo_register"));
     }
 
     private void qqLogin() {
@@ -211,6 +224,8 @@ public class LoginActivity extends BaseActivity {
         // 重置错误
         mPhoneText.setError(null);
         mPasswordText.setError(null);
+        mPhoneText.setErrorEnabled(false);
+        mPasswordText.setErrorEnabled(false);
 
         String phone = mPhoneText.getEditText().getText().toString().trim();
         String password = mPasswordText.getEditText().getText().toString().trim();
@@ -221,7 +236,6 @@ public class LoginActivity extends BaseActivity {
         //验证密码
         if (TextUtils.isEmpty(password) && password.length() < 6) {
             mPasswordText.setError("密码错误");
-            SnackbarUtil.ShortSnackbar(coordinator, "密码错误", SnackbarUtil.Alert).show();
             focusView = mPasswordText;
             cancel = true;
         }
@@ -229,12 +243,10 @@ public class LoginActivity extends BaseActivity {
         // 验证手机号
         if (TextUtils.isEmpty(phone)) {
             mPhoneText.setError("手机号不能为空");
-            SnackbarUtil.ShortSnackbar(coordinator, "手机号不能为空", SnackbarUtil.Alert).show();
             focusView = mPhoneText;
             cancel = true;
         } else if (!RegexUtils.isMobileExact(phone)) {
             mPhoneText.setError("手机号不正确");
-            SnackbarUtil.ShortSnackbar(coordinator, "手机号不正确", SnackbarUtil.Alert).show();
             focusView = mPhoneText;
             cancel = true;
         }
@@ -277,7 +289,7 @@ public class LoginActivity extends BaseActivity {
                     break;
                 case 1:
                     AppManager.showToast("登录成功");
-                    finish();
+                    finishAfterTransition();
                     break;
                 case 2:
                     SnackbarUtil.ShortSnackbar(coordinator, "账号或密码错误", SnackbarUtil.Alert).show();
@@ -295,32 +307,26 @@ public class LoginActivity extends BaseActivity {
     /**
      * 显示进度UI和隐藏登录表单
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+        int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(shortAnimTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
 }

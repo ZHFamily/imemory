@@ -74,7 +74,8 @@ public class RelaxationFragment extends Fragment {
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mLayoutManager = new GridLayoutManager(container.getContext(),2);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        adapter = new RelaxationAdapter(mMeiziList);
+        mRecyclerView.setAdapter(adapter);
         //recyclerview滚动监听
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

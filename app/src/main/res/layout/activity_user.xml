@@ -9,6 +9,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="280dp"
+        android:transitionName="image_bg"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -21,7 +22,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/image_avatar"
+                android:id="@+id/image_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
@@ -32,13 +33,14 @@
                 android:id="@+id/image_head"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_user_head"
                 android:transitionName="logo" />
 
             <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:transitionName="toolbar"
                 app:layout_collapseMode="pin" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -56,7 +58,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#01000000"
         android:elevation="16dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:navigationIcon="@drawable/ic_arrow_back"
@@ -94,6 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_play_circle_filled"
+        android:transitionName="fab"
         app:layout_anchor="@id/appBar"
         app:layout_anchorGravity="bottom|end" />
 

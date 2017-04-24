@@ -18,16 +18,16 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static club.imemory.app.http.HttpManager.GET_BingPic;
-import static club.imemory.app.http.HttpManager.WEATHER_INFO_KEY;
-import static club.imemory.app.http.HttpManager.WEATHER_INFO_URL;
-
 /**
  * @Author: 张杭
  * @Date: 2017/3/9 23:20
  */
 
 public class AutoUpdateWeatherService extends Service {
+
+    private static final String WEATHER_INFO_URL = "http://guolin.tech/api/weather?cityid=";
+    private static final String WEATHER_INFO_KEY = "&key=bc0418b57b2d4918819d3974ac1285d9";
+    private static final String GET_BingPic = "http://guolin.tech/api/bing_pic";
 
     @Override
     public IBinder onBind(Intent intent) {

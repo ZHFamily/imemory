@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import club.imemory.app.R;
 import club.imemory.app.activity.CreateLifeActivity;
+import club.imemory.app.activity.MainActivity;
 import club.imemory.app.adapter.LifeAdapter;
 import club.imemory.app.db.Life;
 import club.imemory.app.ui.SideslipRecyclerView;
@@ -37,7 +39,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
     private ImageView mImageAdd;
-    private int lastVisibleItem;
+    public  FloatingActionButton fabCreateLife;
 
     /**
      * 实例化MyLifeFragment
@@ -58,15 +60,17 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         mImageAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateLifeActivity.actionStart(getActivity());
+                MainActivity activity = (MainActivity) getActivity();
+                CreateLifeActivity.actionStart(activity, Pair.create(((View)activity.mToolbar), "toolbar"));
             }
         });
         //悬浮按钮
-        FloatingActionButton fabCreateLife = (FloatingActionButton) view.findViewById(R.id.fab_create_life);
+        fabCreateLife = (FloatingActionButton) view.findViewById(R.id.fab_create_life);
         fabCreateLife.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CreateLifeActivity.actionStart(getActivity());
+                MainActivity activity = (MainActivity) getActivity();
+                CreateLifeActivity.actionStart(activity, Pair.create(((View)activity.mToolbar), "toolbar"));
             }
         });
         //下拉刷新
@@ -124,7 +128,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }).start();
     }
 
-    //上拉加载风更多数据
+    //上拉加载更多数据
     private void Load() {
         List<Life> list = DataSupport.order("createtime desc").limit(5).offset(5).find(Life.class);
         for (int i = 0; i < list.size(); i++) {

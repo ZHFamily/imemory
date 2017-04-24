@@ -30,10 +30,10 @@ public class UserActivity extends BaseActivity {
     /**
      * 启动UserActivity
      */
-    public static void actionStart(Context context, User user ,View view) {
+    public static void actionStart(Context context, User user ,Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, UserActivity.class);
         intent.putExtra("user", user);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,view,"logo").toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context,sharedElements).toBundle());
     }
 
     private User user;
@@ -57,7 +57,7 @@ public class UserActivity extends BaseActivity {
         appBarLayout = (AppBarLayout) findViewById(R.id.appBar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        ImageView AvatarImg = (ImageView) findViewById(R.id.image_avatar);
+        ImageView BgImage = (ImageView) findViewById(R.id.image_bg);
         ImageView headImage = (ImageView) findViewById(R.id.image_head);
         setSupportActionBar(toolbar);
         playButton = (ButtonBarLayout) toolbar.findViewById(R.id.btn_play);
@@ -71,13 +71,13 @@ public class UserActivity extends BaseActivity {
         Glide.with(this)
                 .load(R.drawable.bg)
                 .bitmapTransform(new BlurTransformation(this, 5))
-                .into(AvatarImg);
+                .into(BgImage);
         if (user.getHead() != null) {
             Glide.with(this).load(user.getHead()).error(R.drawable.ic_user_head).into(headImage);
             Glide.with(this)
                     .load(user.getHead())
                     .bitmapTransform(new BlurTransformation(this, 5))
-                    .into(AvatarImg);
+                    .into(BgImage);
         }
 
         myAppBar();

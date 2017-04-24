@@ -1,14 +1,11 @@
 package club.imemory.app.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +23,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,7 +86,7 @@ public class MainActivity extends BaseActivity
     private static final int SHOW_FIND = 2;
     private static final int SHOW_MESSAGE = 3;
     private static final int SHOW_RELAXATION = 4;
-    private Toolbar mToolbar;
+    public Toolbar mToolbar;
     private DrawerLayout mDrawer;
     // 首次按下返回键时间戳
     private long firstBackPressedTime = 0;
@@ -97,7 +95,7 @@ public class MainActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppManager.logI("MainActivity","onCreate");
+        AppManager.logI("MainActivity", "onCreate");
         isFirstStart();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -118,20 +116,22 @@ public class MainActivity extends BaseActivity
         mNameTv = (TextView) headerView.findViewById(R.id.tv_user_name);
         mDegreeImage = (ImageView) headerView.findViewById(R.id.tv_degree);
         mAreaTv = (TextView) headerView.findViewById(R.id.tv_area);
-        ImageView headerImage = (ImageView) headerView.findViewById(R.id.image_header);
+        final ImageView headerBgImage = (ImageView) headerView.findViewById(R.id.image_header_bg);
         Glide.with(this)
                 .load(R.drawable.bg)
                 .bitmapTransform(new BlurTransformation(this, 10))
-                .into(headerImage);
+                .into(headerBgImage);
         //点击头像
         headerView.findViewById(R.id.layout_user_info).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (user != null) {
                     mDrawer.closeDrawer(GravityCompat.START);
-                    UserActivity.actionStart(MainActivity.this, user, mHeadImage);
+                    UserActivity.actionStart(MainActivity.this, user,
+                            //Pair.create(((View)mMyLifeFragment.fabCreateLife), "fab"),
+                            Pair.create(((View)headerBgImage),"image_bg"));
                 } else {
-                    LoginActivity.actionStart(MainActivity.this, mHeadImage);
+                    LoginActivity.actionStart(MainActivity.this, Pair.create(((View)mHeadImage), "logo"));
                 }
             }
         });
@@ -153,7 +153,7 @@ public class MainActivity extends BaseActivity
                     });
                 } else {
                     mDrawer.closeDrawer(GravityCompat.START);
-                    LoginActivity.actionStart(MainActivity.this, mHeadImage);
+                    LoginActivity.actionStart(MainActivity.this, Pair.create(((View)mHeadImage), "logo"));
                 }
             }
         });
@@ -162,7 +162,15 @@ public class MainActivity extends BaseActivity
         mWeatherBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WeatherActivity.actionStart(MainActivity.this);
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                String weatherString = prefs.getString("weatherInfor", null);
+                if (weatherString == null) {
+                    Intent intent = new Intent(MainActivity.this, ChooseAreaActivity.class);
+                    intent.putExtra("isMainActivityOpen", true);
+                    startActivity(intent);
+                } else {
+                    WeatherActivity.actionStart(MainActivity.this);
+                }
             }
         });
 
@@ -241,7 +249,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_my:
                 mToolbar.setTitle("生活");
@@ -252,7 +260,7 @@ public class MainActivity extends BaseActivity
                 addOrShowFragment(SHOW_FIND);
                 break;
             case R.id.nav_message:
-                mToolbar.setTitle("智能小黑");
+                mToolbar.setTitle("智能小慕");
                 addOrShowFragment(SHOW_MESSAGE);
                 AppManager.showToast("懂你才是真道理");
                 break;
@@ -261,7 +269,7 @@ public class MainActivity extends BaseActivity
                 addOrShowFragment(SHOW_RELAXATION);
                 break;
             case R.id.nav_setting:
-                SettingsActivity.actionStart(MainActivity.this);
+                SettingsActivity.actionStart(this, Pair.create(((View)mToolbar), "toolbar"));
                 break;
             case R.id.nav_about:
                 AboutActivity.actionStart(MainActivity.this);
@@ -419,8 +427,6 @@ public class MainActivity extends BaseActivity
 
     /**
      * 返回产生的二维码view
-     *
-     * @return
      */
     private ImageView getQrCodeView(String s) {
         ImageView imgView = new ImageView(this);
@@ -448,10 +454,8 @@ public class MainActivity extends BaseActivity
             }
         };
 
-        //声明AMapLocationClientOption对象
-        AMapLocationClientOption mLocationOption = null;
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
+        //声明AMapLocationClientOption对象 并 初始化AMapLocationClientOption对象
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
         //设置定位模式为AMapLocationMode.Battery_Saving，低功耗模式
         mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
         //获取一次定位结果
@@ -548,12 +552,11 @@ public class MainActivity extends BaseActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences getPrefs = PreferenceManager
-                        .getDefaultSharedPreferences(getBaseContext());
-                boolean isFirstStart = getPrefs.getBoolean("firstStart", true);
+                SharedPreferences getPrefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                boolean isFirstStart = getPrefs.getBoolean("isFirstStart", true);
                 if (isFirstStart) {
                     SharedPreferences.Editor edit = getPrefs.edit();
-                    edit.putBoolean("firstStart", false);
+                    edit.putBoolean("isFirstStart", false);
                     edit.apply();
                     AppIntroActivity.actionStart(MainActivity.this);
                 }

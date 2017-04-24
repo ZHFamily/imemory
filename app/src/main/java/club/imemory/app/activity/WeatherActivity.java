@@ -31,10 +31,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-import static club.imemory.app.http.HttpManager.GET_BingPic;
-import static club.imemory.app.http.HttpManager.WEATHER_INFO_KEY;
-import static club.imemory.app.http.HttpManager.WEATHER_INFO_URL;
-
 /**
  * @Author: 张杭
  * @Date: 2017/3/9 23:07
@@ -50,10 +46,11 @@ public class WeatherActivity extends BaseActivity {
         context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
-    private static final int REQUEST_CODE = 1;
-    public SwipeRefreshLayout swipeRefresh;
+    private static final String WEATHER_INFO_URL = "http://guolin.tech/api/weather?cityid=";
+    private static final String WEATHER_INFO_KEY = "&key=bc0418b57b2d4918819d3974ac1285d9";
+    private static final String GET_BingPic = "http://guolin.tech/api/bing_pic";
+    private SwipeRefreshLayout swipeRefresh;
     private ScrollView weatherLayout;
-    private ImageButton mRestsBtn;
     private TextView mTitleAreaTv;
     private TextView mUpdateTimeTv;
     private TextView mDegreeTv;
@@ -95,13 +92,13 @@ public class WeatherActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        mRestsBtn = (ImageButton) findViewById(R.id.btn_rests);
+        ImageButton mRestsBtn = (ImageButton) findViewById(R.id.btn_rests);
         mRestsBtn.setImageResource(R.drawable.ic_weather);
         mRestsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WeatherActivity.this, ChooseAreaActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                startActivityForResult(intent, 1);
             }
         });
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -111,39 +108,32 @@ public class WeatherActivity extends BaseActivity {
             }
         });
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String weatherString = prefs.getString("weather", null);
-        if (weatherString != null) {
-            // 有缓存时直接解析天气数据
-            Weather weather = JsonAnalyze.handleWeatherResponse(weatherString);
-            mWeatherId = weather.basic.weatherId;
-            showWeatherInfo(weather);
+        mWeatherId = getIntent().getStringExtra("weatherId");
+        if (mWeatherId != null) {
+            weatherLayout.setVisibility(View.INVISIBLE);
+            requestWeather(mWeatherId);
         } else {
-            // 无缓存时去服务器查询天气
-            mWeatherId = getIntent().getStringExtra("weather_id");
-            if (mWeatherId != null) {
-                weatherLayout.setVisibility(View.INVISIBLE);
-                requestWeather(mWeatherId);
-            } else {
-                Intent intent = new Intent(this, ChooseAreaActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String weatherString = prefs.getString("weatherInfor", null);
+            if (weatherString != null) {
+                // 有缓存时直接解析天气数据
+                Weather weather = JsonAnalyze.handleWeatherResponse(weatherString);
+                if (weather != null) {
+                    mWeatherId = weather.basic.weatherId;
+                    showWeatherInfo(weather);
+                }
             }
         }
 
-        String bingPic = prefs.getString("bing_pic", null);
-        if (bingPic != null) {
-            Glide.with(this).load(bingPic).into(mBingPicImg);
-        } else {
-            loadBingPic();
-        }
+        loadBingPic();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
-                mWeatherId = data.getStringExtra("weather_id");
+                mWeatherId = data.getStringExtra("weatherId");
                 requestWeather(mWeatherId);
             }
         }
@@ -200,9 +190,6 @@ public class WeatherActivity extends BaseActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String bingPic = response.body().string();
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                editor.putString("bing_pic", bingPic);
-                editor.apply();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

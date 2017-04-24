@@ -22,6 +22,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,9 +48,9 @@ public class CreateLifeActivity extends BaseActivity {
     /**
      * 启动CreateLifeActivity
      */
-    public static void actionStart(Context context) {
+    public static void actionStart(Context context, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(context, CreateLifeActivity.class);
-        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
+        context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context, sharedElements).toBundle());
     }
 
     private static final int CHOOSE_PHOTO = 2;
@@ -128,7 +129,7 @@ public class CreateLifeActivity extends BaseActivity {
             life.setLocation("武汉");
             life.setCreatetime(new Date());
             if (life.save()) {
-                finish();
+                finishAfterTransition();
                 AppManager.showToast("保存成功");
             } else {
                 SnackbarUtil.ShortSnackbar(coordinator, "保存失败", SnackbarUtil.Alert).show();
