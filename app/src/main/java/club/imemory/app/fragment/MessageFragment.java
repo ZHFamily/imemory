@@ -25,7 +25,6 @@ import club.imemory.app.db.Message;
 import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
-import club.imemory.app.util.SnackbarUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
@@ -50,8 +49,6 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
 
     /**
      * 实例化MessageFragment
-     *
-     * @return
      */
     public static MessageFragment instanceFragment() {
         if (mMessageFragment == null) {
@@ -85,16 +82,17 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                 mMessageList.clear();
                 List<Message> list = DataSupport.limit(20).find(Message.class);
                 mMessageList.addAll(list);
+                mMessageList.add(new Message(100000,"Hi, what can I help you"));
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (adapter == null) {
                             adapter = new MessageAdapter(mMessageList);
                             mRecyclerView.setAdapter(adapter);
-                            mRecyclerView.scrollToPosition(mMessageList.size()-1);
+                            mRecyclerView.scrollToPosition(mMessageList.size() - 1);
                         } else {
                             adapter.notifyDataSetChanged();
-                            mRecyclerView.scrollToPosition(mMessageList.size()-1);
+                            mRecyclerView.scrollToPosition(mMessageList.size() - 1);
                         }
                     }
                 });

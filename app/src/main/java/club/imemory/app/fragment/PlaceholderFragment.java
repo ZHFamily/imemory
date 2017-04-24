@@ -1,8 +1,6 @@
 package club.imemory.app.fragment;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.activity.WeatherActivity;
 import club.imemory.app.adapter.NewsAdapter;
 import club.imemory.app.db.News;
 import club.imemory.app.http.HttpManager;
@@ -83,19 +80,19 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
     private void initAdapter() {
         switch (mPage) {
             case 1:
-                AppManager.logI("news","top");
+                AppManager.logI("news", "top");
                 mAdapterOne = new NewsAdapter(mNewsListOne);
                 mRecyclerView.setAdapter(mAdapterOne);
                 initData("top");
                 break;
             case 2:
-                AppManager.logI("news","guoji");
+                AppManager.logI("news", "guoji");
                 mAdapterTwo = new NewsAdapter(mNewsListTwo);
                 mRecyclerView.setAdapter(mAdapterTwo);
                 initData("guoji");
                 break;
             case 3:
-                AppManager.logI("news","keji");
+                AppManager.logI("news", "keji");
                 mAdapterThree = new NewsAdapter(mNewsListThree);
                 mRecyclerView.setAdapter(mAdapterThree);
                 initData("keji");
@@ -108,10 +105,10 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<News> list = DataSupport.where("category=?",type).limit(20).find(News.class);
-                if (list!=null&&list.size()>0){
+                List<News> list = DataSupport.where("category=?", type).limit(20).find(News.class);
+                if (list != null && list.size() > 0) {
                     updateNews(list);
-                }else {
+                } else {
                     requestNews(type);
                 }
             }
@@ -121,8 +118,8 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onRefresh() {
-        AppManager.logI("news",mPage+"");
-        switch (mPage){
+        AppManager.logI("news", mPage + "");
+        switch (mPage) {
             case 1:
                 requestNews("top");
                 break;
@@ -135,15 +132,15 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         }
     }
 
-    private void requestNews(String type){
+    private void requestNews(String type) {
         HttpManager.sendOKHttpRequest(ALY_URl + type, AUTHENTICATOR, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseText = response.body().string();
-                if(response.code()==200){
+                if (response.code() == 200) {
                     updateNews(JsonAnalyze.handleNewsResponse(responseText));
-                }else{
-                    AppManager.logI("News",responseText);
+                } else {
+                    AppManager.logI("News", responseText);
                 }
             }
 
@@ -161,24 +158,24 @@ public class PlaceholderFragment extends Fragment implements SwipeRefreshLayout.
         });
     }
 
-    private void updateNews(final List<News> list){
+    private void updateNews(final List<News> list) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (list != null&&list.size()>0) {
+                if (list != null && list.size() > 0) {
                     String type = list.get(1).getCategory();
-                    AppManager.logI("news",type);
-                    if (type.equals("头条")){
+                    AppManager.logI("news", type);
+                    if (type.equals("头条")) {
                         mNewsListOne.clear();
                         mNewsListOne.addAll(list);
                         mAdapterOne.notifyDataSetChanged();
                     }
-                    if (type.equals("国际")){
+                    if (type.equals("国际")) {
                         mNewsListTwo.clear();
                         mNewsListTwo.addAll(list);
                         mAdapterTwo.notifyDataSetChanged();
                     }
-                    if (type.equals("科技")){
+                    if (type.equals("科技")) {
                         mNewsListThree.clear();
                         mNewsListThree.addAll(list);
                         mAdapterThree.notifyDataSetChanged();

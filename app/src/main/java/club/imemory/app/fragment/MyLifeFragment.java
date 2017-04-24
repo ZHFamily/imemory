@@ -39,12 +39,10 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private List<Life> mLifeList = new ArrayList<>();
     private LifeAdapter adapter;
     private ImageView mImageAdd;
-    public  FloatingActionButton fabCreateLife;
+    public FloatingActionButton fabCreateLife;
 
     /**
      * 实例化MyLifeFragment
-     *
-     * @return
      */
     public static MyLifeFragment instanceFragment() {
         if (mMyLifeFragment == null) {
@@ -61,7 +59,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View v) {
                 MainActivity activity = (MainActivity) getActivity();
-                CreateLifeActivity.actionStart(activity, Pair.create(((View)activity.mToolbar), "toolbar"));
+                CreateLifeActivity.actionStart(activity, Pair.create(((View) activity.mToolbar), "toolbar"));
             }
         });
         //悬浮按钮
@@ -70,7 +68,7 @@ public class MyLifeFragment extends Fragment implements SwipeRefreshLayout.OnRef
             @Override
             public void onClick(View view) {
                 MainActivity activity = (MainActivity) getActivity();
-                CreateLifeActivity.actionStart(activity, Pair.create(((View)activity.mToolbar), "toolbar"));
+                CreateLifeActivity.actionStart(activity, Pair.create(((View) activity.mToolbar), "toolbar"));
             }
         });
         //下拉刷新

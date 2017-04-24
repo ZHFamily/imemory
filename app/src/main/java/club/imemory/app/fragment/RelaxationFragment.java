@@ -31,14 +31,12 @@ public class RelaxationFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private List<Meizi> mMeiziList = new ArrayList<>();
     private RelaxationAdapter adapter;
-    private int page = 1;
+    private int page = (int)(Math.random()*25);
     private int lastVisibleItem;
     private GetData getData= null;
 
     /**
-     * 实例化NearShareFragment
-     *
-     * @return
+     * 实例化RelaxationFragment
      */
     public static RelaxationFragment instanceFragment() {
         if (mRelaxationFragment == null) {
