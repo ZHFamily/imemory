@@ -14,30 +14,30 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 import club.imemory.app.R;
-import club.imemory.app.db.Find;
+import club.imemory.app.db.News;
 
 /**
  * @Author: 张杭
  * @Date: 2017/3/31 22:17
  */
 
-public class FindActivity extends BaseActivity {
+public class NewsActivity extends BaseActivity {
 
     /**
-     * 启动FindActivity
+     * 启动NewsActivity
      */
-    public static void actionStart(Context context, Find find) {
-        Intent intent = new Intent(context, FindActivity.class);
-        intent.putExtra("find", find);
+    public static void actionStart(Context context, News news) {
+        Intent intent = new Intent(context, NewsActivity.class);
+        intent.putExtra("news", news);
         context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_life);
+        setContentView(R.layout.activity_news);
         Intent intent = getIntent();
-        Find find = (Find) intent.getSerializableExtra("find");
+        News news = (News) intent.getSerializableExtra("news");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         ImageView lifeAvatarImg = (ImageView) findViewById(R.id.image_avatar);
@@ -48,7 +48,7 @@ public class FindActivity extends BaseActivity {
                 onBackPressed();
             }
         });
-        collapsingToolbar.setTitle(find.getTitle());
-        Glide.with(this).load(find.getAvatar()).into(lifeAvatarImg);
+        collapsingToolbar.setTitle(news.getTitle());
+        Glide.with(this).load(news.getThumbnail_pic_s03()).into(lifeAvatarImg);
     }
 }

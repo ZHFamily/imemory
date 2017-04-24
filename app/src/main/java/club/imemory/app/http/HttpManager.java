@@ -8,11 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import club.imemory.app.listener.HttpCallbackListener;
+import okhttp3.Authenticator;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.Route;
 
 /**
  * @Author: 张杭
@@ -101,5 +103,17 @@ public class HttpManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 使用OKHttp发送HTTP请求，获取服务器数据(默认get方式)
+     * 包含授权信息
+     */
+    public static void sendOKHttpRequest(String address, String authenticator, Callback callback) {
+        Request request = new Request.Builder()
+                .url(address)
+                .header("Authorization",authenticator)
+                .build();
+        client.newCall(request).enqueue(callback);
     }
 }

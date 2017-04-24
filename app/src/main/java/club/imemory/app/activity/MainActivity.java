@@ -256,7 +256,7 @@ public class MainActivity extends BaseActivity
                 addOrShowFragment(SHOW_LIFE);
                 break;
             case R.id.nav_find:
-                mToolbar.setTitle("发现");
+                mToolbar.setTitle("实时新闻");
                 addOrShowFragment(SHOW_FIND);
                 break;
             case R.id.nav_message:

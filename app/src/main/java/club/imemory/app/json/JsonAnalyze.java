@@ -13,6 +13,7 @@ import java.util.List;
 import club.imemory.app.db.City;
 import club.imemory.app.db.County;
 import club.imemory.app.db.Message;
+import club.imemory.app.db.News;
 import club.imemory.app.db.Province;
 import club.imemory.app.db.User;
 import club.imemory.app.entity.Meizi;
@@ -116,7 +117,7 @@ public class JsonAnalyze {
     }
 
     /**
-     * 将返回的JSON数据解析成User实体类
+     * 将返回的JSON数据解析成Meizi实体类
      */
     public static List<Meizi> handleMeiziResponse(String response) {
         if (TextUtils.isEmpty(response)) {
@@ -139,7 +140,7 @@ public class JsonAnalyze {
     }
 
     /**
-     * 将返回的JSON数据解析成User实体类
+     * 将返回的JSON数据解析成Message实体类
      */
     public static Message handleMessageResponse(String response) {
         if (TextUtils.isEmpty(response)) {
@@ -150,6 +151,32 @@ public class JsonAnalyze {
             message.setUpdatetime(new Date());
             message.save();
             return message;
+        }
+    }
+
+    /**
+     * 将返回的JSON数据解析成News实体类
+     */
+    public static List<News> handleNewsResponse(String response) {
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        } else {
+            try {
+                JSONObject jsonObject = JSON.parseObject(response);
+                if ("成功的返回".equals(jsonObject.getString("reason"))){
+                    jsonObject = JSON.parseObject(jsonObject.getString("result"));
+                    List<News> list = JSON.parseArray(jsonObject.getString("data"),News.class);
+                    for (News news: list) {
+                        news.save();
+                    }
+                    return list;
+                }else{
+                    return null;
+                }
+            }catch (JSONException e){
+                e.printStackTrace();
+                return null;
+            }
         }
     }
 }

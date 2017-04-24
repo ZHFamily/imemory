@@ -62,7 +62,7 @@
             android:name=".activity.MainActivity"
             android:theme="@style/StatusTransparentTheme" />
         <activity android:name=".activity.AppIntroActivity" />
-        <activity android:name=".activity.FindActivity" />
+        <activity android:name=".activity.NewsActivity" />
         <activity android:name=".activity.SettingsActivity" />
         <activity android:name=".activity.ScanActivity" />
         <activity android:name=".activity.ChooseAreaActivity" />

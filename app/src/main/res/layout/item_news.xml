@@ -11,7 +11,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_toStartOf="@+id/image_avatar"
+        android:layout_toStartOf="@+id/image_thumbnail"
         android:orientation="vertical">
 
         <TextView
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="6"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="3"
             android:textColor="#2e2e2e"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -35,37 +35,37 @@
             android:maxLines="2"
             android:textColor="#646464"
             android:textSize="14sp"
+            android:visibility="gone"
             tools:text="subhead" />
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/image_avatar"
+        android:id="@+id/image_thumbnail"
         android:layout_width="150dp"
         android:layout_height="100dp"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="6dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bg_imemory" />
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/Layout"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:layout_below="@+id/image_avatar"
+        android:layout_below="@+id/image_thumbnail"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:orientation="horizontal"
         android:paddingBottom="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/image_user_head"
+            android:id="@+id/image_author"
             android:layout_width="15dp"
             android:layout_height="match_parent" />
 
         <TextView
-            android:id="@+id/tv_user_name"
+            android:id="@+id/tv_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#989898"

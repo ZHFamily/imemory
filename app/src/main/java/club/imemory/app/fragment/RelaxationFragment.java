@@ -1,39 +1,23 @@
 package club.imemory.app.fragment;
 
 import android.app.Fragment;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import club.imemory.app.R;
-import club.imemory.app.activity.WeatherActivity;
-import club.imemory.app.adapter.FindAdapter;
 import club.imemory.app.adapter.RelaxationAdapter;
 import club.imemory.app.entity.Meizi;
-import club.imemory.app.entity.Weather;
 import club.imemory.app.http.HttpManager;
 import club.imemory.app.json.JsonAnalyze;
 import club.imemory.app.util.AppManager;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
 
 /**
  * @Author: 张杭
@@ -123,7 +107,7 @@ public class RelaxationFragment extends Fragment {
         protected void onPostExecute(String result) {
             List<Meizi> temp = JsonAnalyze.handleMeiziResponse(result);
             if (temp == null || temp.size() == 0) {
-                AppManager.showToast("获取失败");
+                AppManager.showToast("获取失败，请检查网络");
             } else {
                 mMeiziList.addAll(temp);
                 if (adapter==null){
