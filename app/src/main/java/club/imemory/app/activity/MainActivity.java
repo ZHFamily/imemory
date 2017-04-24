@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-                String weatherString = prefs.getString("weatherInfor", null);
+                String weatherString = prefs.getString("weatherInfo", null);
                 if (weatherString == null) {
                     Intent intent = new Intent(MainActivity.this, ChooseAreaActivity.class);
                     intent.putExtra("isMainActivityOpen", true);
@@ -564,4 +564,7 @@ public class MainActivity extends BaseActivity
         }).start();
     }
 
+    public android.support.v4.app.FragmentManager getMySupportFragmentManager(){
+        return getSupportFragmentManager();
+    }
 }

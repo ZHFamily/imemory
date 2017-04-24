@@ -114,7 +114,7 @@ public class WeatherActivity extends BaseActivity {
             requestWeather(mWeatherId);
         } else {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            String weatherString = prefs.getString("weatherInfor", null);
+            String weatherString = prefs.getString("weatherInfo", null);
             if (weatherString != null) {
                 // 有缓存时直接解析天气数据
                 Weather weather = JsonAnalyze.handleWeatherResponse(weatherString);
@@ -154,7 +154,7 @@ public class WeatherActivity extends BaseActivity {
                     public void run() {
                         if (weather != null && "ok".equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(WeatherActivity.this).edit();
-                            editor.putString("weather", responseText);
+                            editor.putString("weatherInfo", responseText);
                             editor.apply();
                             mWeatherId = weather.basic.weatherId;
                             showWeatherInfo(weather);

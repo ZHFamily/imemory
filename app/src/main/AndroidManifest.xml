@@ -3,7 +3,7 @@
     package="club.imemory.app">
 
     <!-- 获取账户 -->
-    <!--<uses-permission android:name="android.permission.GET_ACCOUNTS" />-->
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
     <!-- 读取配置文件 -->
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <!-- 网络 -->
@@ -16,24 +16,24 @@
 
     <!-- 危险权限（需要向用户申请） -->
     <!-- 日历 -->
-    <!--<uses-permission android:name="android.permission.READ_CALENDAR" />-->
-    <!-- 相机 0-->
+    <!-- <uses-permission android:name="android.permission.READ_CALENDAR" /> -->
+    <!-- 相机 0 -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <!-- 联系人 0-->
-    <!--<uses-permission android:name="android.permission.READ_CONTACTS" />-->
-    <!-- 定位 0-->
+    <!-- 联系人 0 -->
+    <!-- <uses-permission android:name="android.permission.READ_CONTACTS" /> -->
+    <!-- 定位 0 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 麦克风 -->
-    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
-    <!-- 手机 0-->
+    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
+    <!-- 手机 0 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--<uses-permission android:name="android.permission.CALL_PHONE" />-->
+    <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
     <!-- 传感器 -->
-    <!--<uses-permission android:name="android.permission.BODY_SENSORS" />-->
+    <!-- <uses-permission android:name="android.permission.BODY_SENSORS" /> -->
     <!-- 短信 -->
-    <!--<uses-permission android:name="android.permission.READ_SMS" />-->
-    <!-- 外部存储器 0-->
+    <!-- <uses-permission android:name="android.permission.READ_SMS" /> -->
+    <!-- 外部存储器 0 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -54,6 +54,7 @@
             android:theme="@style/AppThemeLaunch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,7 +68,7 @@
         <activity android:name=".activity.ChooseAreaActivity" />
         <activity android:name=".activity.WeatherActivity" />
         <activity android:name=".activity.ThankActivity" />
-        <activity android:name=".activity.MapActivity" /><!-- 高德地图 -->
+        <activity android:name=".activity.MapActivity" /> <!-- 高德地图 -->
         <activity
             android:name=".activity.RegisterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
@@ -91,27 +92,35 @@
             android:name=".activity.CreateLifeActivity"
             android:label="新建生活记录"
             android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter><!--接收文字-->
+            <intent-filter> <!-- 接收文字 -->
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/plain" />
             </intent-filter>
-            <intent-filter><!--接收单个图片-->
+            <intent-filter> <!-- 接收单个图片 -->
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
-            <intent-filter><!--接收多个图片-->
+            <intent-filter> <!-- 接收多个图片 -->
                 <action android:name="android.intent.action.SEND_MULTIPLE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
 
-        <!--<service
+        <!--
+            <service
             android:name=".service.AutoUpdateWeatherService"
             android:enabled="true"
-            android:exported="true" />-->
+            android:exported="true" />
+        -->
 
         <!-- QQ授权登录 -->
         <activity

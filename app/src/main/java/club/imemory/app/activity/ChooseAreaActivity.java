@@ -118,9 +118,9 @@ public class ChooseAreaActivity extends BaseActivity {
 
     public void gotoWeatherActivity(String weatherId) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getString("weatherInfor", null) != null) {
+        if (prefs.getString("weatherInfo", null) != null) {
             SharedPreferences.Editor editor = prefs.edit();
-            editor.remove("weatherInfor");
+            editor.remove("weatherInfo");
             editor.apply();
         }
         if (isMainActivityOpen){

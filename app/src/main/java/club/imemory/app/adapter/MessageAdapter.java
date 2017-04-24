@@ -80,9 +80,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.rightText.setText(msg.getText());
             //Glide.with(mContext).load(msg.getAvatar()).thumbnail(0.1f).into(holder.rightAvatarImage);
         }
-        if (mMessageList.size()-1==position){
+        /*if (mMessageList.size()-1==position){
             holder.view.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 
     @Override

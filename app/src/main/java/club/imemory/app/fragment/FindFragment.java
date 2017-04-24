@@ -2,20 +2,15 @@ package club.imemory.app.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import club.imemory.app.R;
-import club.imemory.app.adapter.FindAdapter;
-import club.imemory.app.db.Find;
+import club.imemory.app.activity.MainActivity;
+import club.imemory.app.adapter.SectionsPagerAdapter;
 
 /**
  * @Author: 张杭
@@ -25,14 +20,12 @@ import club.imemory.app.db.Find;
 public class FindFragment extends Fragment {
 
     private static FindFragment mFindFragment = null;
-    private SwipeRefreshLayout swipeRefresh;
-    private List<Find> mFindList = new ArrayList<>();
-    private FindAdapter adapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+
 
     /**
-     * 实例化NearShareFragment
-     *
-     * @return
+     * 实例化FindFragment
      */
     public static FindFragment instanceFragment() {
         if (mFindFragment == null) {
@@ -43,58 +36,18 @@ public class FindFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        initData();
         View view = inflater.inflate(R.layout.fragment_find, container, false);
-        //下拉刷新
-        swipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh);
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshFind();
-            }
-        });
-        //滚动内容
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(container.getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new FindAdapter(mFindList);
-        recyclerView.setAdapter(adapter);
+        MainActivity activity = (MainActivity) getActivity();
+        mSectionsPagerAdapter = new SectionsPagerAdapter(activity.getMySupportFragmentManager());
+
+        mViewPager = (ViewPager) view.findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         return view;
     }
 
-    private void refreshFind() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        initData();
-                        adapter.notifyDataSetChanged();
-                        swipeRefresh.setRefreshing(false);
-                    }
-                });
-            }
-        }).start();
-    }
 
-    private void initData() {
-        mFindList.clear();
-        for (int i = 1; i < 10; i++) {
-            Find find = new Find();
-            find.setTitle("大电池加快充，手机重度用户告别用电荒什么什么的");
-            find.setSubhead("要问智能手机用户最头疼的是什么，没有WiFi和电池不够用什么什么的");
-            find.setAvatar("");
-            find.setUserHead("");
-            find.setUserName("年青正好");
-            find.setCreatetime(new Date());
-            find.setHits(25684);
-            mFindList.add(find);
-        }
-    }
 }
