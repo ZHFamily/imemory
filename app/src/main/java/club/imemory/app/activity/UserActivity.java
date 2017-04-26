@@ -2,11 +2,13 @@ package club.imemory.app.activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.ButtonBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -18,6 +20,8 @@ import com.bumptech.glide.Glide;
 
 import club.imemory.app.R;
 import club.imemory.app.db.User;
+import club.imemory.app.fragment.RelaxationFragment;
+import club.imemory.app.util.AppManager;
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
@@ -79,8 +83,20 @@ public class UserActivity extends BaseActivity {
                     .bitmapTransform(new BlurTransformation(this, 5))
                     .into(BgImage);
         }
-
         myAppBar();
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        RelaxationFragment mRelaxationFragment = RelaxationFragment.instanceFragment();
+        fragmentTransaction.add(R.id.content_frame, mRelaxationFragment, "RelaxationFragment");
+        fragmentTransaction.commit();
+
+        FloatingActionButton fabCreateLife = (FloatingActionButton) findViewById(R.id.fab);
+        fabCreateLife.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppManager.showToast("用户信息暂时无法修改");
+            }
+        });
     }
 
     private void myAppBar() {
@@ -88,12 +104,13 @@ public class UserActivity extends BaseActivity {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
 
+                AppManager.logI("user",verticalOffset+"");
                 if (verticalOffset == 0) {
                     if (state != CollapsingToolbarLayoutState.EXPANDED) {
                         state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
                         collapsingToolbar.setTitle(user.getName());
                     }
-                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                } else if (Math.abs(verticalOffset)+100 >= appBarLayout.getTotalScrollRange()) {
                     if (state != CollapsingToolbarLayoutState.COLLAPSED) {
                         collapsingToolbar.setTitle("");//设置title不显示
                         playButton.setVisibility(View.VISIBLE);//隐藏播放按钮
@@ -111,6 +128,4 @@ public class UserActivity extends BaseActivity {
             }
         });
     }
-
-
 }
