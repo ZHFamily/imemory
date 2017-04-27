@@ -29,11 +29,13 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
         if (networkInfo != null && networkInfo.isAvailable()) {
             if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE && isChangeNetWork) {
                 AppManager.showToast("移动网络已连接");
+                isChangeNetWork = false;
             }
             if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI && isChangeNetWork) {
                 AppManager.showToast("WiFi已连接");
+                isChangeNetWork = false;
             }
-        } else {
+        } else if(!isChangeNetWork){
             isChangeNetWork = true;
             AppManager.showToast("网络已关闭");
         }
