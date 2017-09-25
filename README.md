@@ -15,6 +15,9 @@
 
 ### 运行效果图
 
-![](http://i.imgur.com/cCjGgna.png)![](http://i.imgur.com/sTkY0ma.png)
+![](publice/image/Screenshot_2017-04-27-17-40-12-725_imemory.png) ![](publice/image/Screenshot_2017-04-27-17-40-17-639_imemory.png)
+
+![](http://i.imgur.com/cCjGgna.png)  ![](http://i.imgur.com/sTkY0ma.png)
+
 
 ### 希望为开源世界添砖加瓦
